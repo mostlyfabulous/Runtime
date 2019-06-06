@@ -5,8 +5,7 @@ import Calendar from './Calendar.jsx'
 
 const App = () => (
   <div>
-    <h1>Welcome to Meteor!</h1>
-    <Hello />
+    <h1>Runtime</h1>
     <Info />
     <Calendar />
   </div>
