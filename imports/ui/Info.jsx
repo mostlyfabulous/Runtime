@@ -10,7 +10,10 @@ class Info extends Component {
       duration: "",
       start_time: "",
       end_time: "",
-
+      current_temp: "",
+      current_temp_min: "",
+      current_temp_max: "",
+      current_clouds: ""
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -20,26 +23,30 @@ class Info extends Component {
     this.setState({duration: event.target.duration});
   }
 
-  handleSubmit(event) {
+  handleSubmit() {
     event.preventDefault();
   }
 
+
   render() {
-
-    this.handleSubmit();
-
+    this.handleLoad();
+    //this.handleSubmit();
+    /*
     return (
       <div>
         <h2>Learn Meteor!</h2>
       </div>
     );
-    /*
+    */
+    let city = 'Vancouver';
     return (
       <div>
-        <h2>Learn Meteor!</h2>
-        <ul>{ links }</ul>
+        <h2>3-Hour Forecast: {city}</h2>
+        <p><b>Current Temp:</b> {this.state.current_temp}</p>
+        <p><b>Min/Max Temp:</b> {this.state.current_temp_min}/{this.state.current_temp_max}</p>
+        <p><b>Clouds:</b> {this.state.current_clouds} </p>
         <h2>Your Next Run</h2>
-        <form>
+        <form onSubmit={this.handleSubmit} ref='form'>
           <label htmlFor="duration">Duration</label>
           <input type="time" id="duration" step="60" placeholder="Hours: Minutes" />
           <br/>
@@ -56,16 +63,21 @@ class Info extends Component {
         </form>
       </div>
     );
-    */
+
   }
 
 
-  handleSubmit() {
-  axios.get('https://api.openweathermap.org/data/2.5/forecast?q=Vancouver,ca&appid=4897c08ee8512a8295bb4bafbd77b966')
+  handleLoad() {
+
+    axios.get('https://api.openweathermap.org/data/2.5/forecast?q=Vancouver,ca&appid=4897c08ee8512a8295bb4bafbd77b966')
   .then(response => {
     console.log(response.data.city.name)
     let localDate = new Date(response.data.list[0].dt * 1000);
     console.log(localDate)
+    this.state.current_temp = Math.round(response.data.list[0].main.temp-273.15) + '°C';
+    this.state.current_temp_min = Math.round(response.data.list[0].main.temp_min-273.15) + '°C';
+    this.state.current_temp_max = Math.round(response.data.list[0].main.temp_max-273.15) + '°C';
+    this.state.current_clouds = response.data.list[0].clouds.all + '%';
     console.log(Math.round(response.data.list[0].main.temp-273.15))
     console.log(Math.round(response.data.list[0].main.temp_min-273.15))
     console.log(Math.round(response.data.list[0].main.temp_max-273.15))
