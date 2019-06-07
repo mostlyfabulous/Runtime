@@ -3,6 +3,26 @@ import { withTracker } from 'meteor/react-meteor-data';
 import Links from '../api/links';
 
 class Info extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      duration: "",
+      start_time: "",
+      end_time: "",
+
+    };
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleChange(event) {
+    this.setState({duration: event.target.duration});
+  }
+
+  handleSubmit(event) {
+    event.preventDefault();
+  }
+
   render() {
     const links = this.props.links.map(
       link => this.makeLink(link)
@@ -14,17 +34,17 @@ class Info extends Component {
         <ul>{ links }</ul>
         <h2>Your Next Run</h2>
         <form>
-          Duration
-          <input type="text" name="duration" value="Hours: Minutes"></input>
+          <label htmlFor="duration">Duration</label>
+          <input type="time" id="duration" step="60" placeholder="Hours: Minutes" />
           <br/>
-          Start Time
-          <input type="text" name="start_time" value="Hours: Minutes"></input>
+          <label htmlFor="start_time">Start Time</label>
+          <input type="time" id="start_time" step="60" placeholder="Hours: Minutes" />
           <br/>
-          End Time
-          <input type="text" name="end_time" value="Hours: Minutes"></input>
+          <label htmlFor="end_time">End Time</label>
+          <input type="time" id="end_time" step="60" placeholder="Hours: Minutes" />
           <br/>
-          Distance
-          <input type="text" name="distance" value="km/m"></input>
+          <label htmlFor="distance">Distance</label>
+          <input type="number" id="distance" step="0.01" placeholder="km/m" />
           <br/>
           <button type="submit">Find a Run!</button>
         </form>
