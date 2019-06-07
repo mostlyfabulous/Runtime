@@ -1,13 +1,14 @@
 import React from 'react';
-import Hello from './Hello.jsx';
-import Info from './Info.jsx';
-import Calendar from './Calendar.jsx'
+import Sidebar from './Sidebar.jsx';
+import Topbar from './Topbar.jsx';
+import Main from './Main.jsx';
 
 const App = () => (
   <div>
-    <h1>Runtime</h1>
-    <Info />
-    <Calendar />
+    <h1 className='mainContent'>Runtime</h1>
+    <Sidebar/>
+    <Topbar/>
+    <Main/>
   </div>
 );
 

@@ -1,5 +1,53 @@
+
+
 body {
   padding: 10px;
   font-family: Nunito, sans-serif;
   background-color: skyblue;
+}
+
+.sidebar ul{
+  list-style-type: none;
+  padding-top: 5em;
+  padding-left: 0;
+}
+
+.sidebar li {
+  padding: 0.5em;
+  padding-left: 2em;
+}
+
+.sidebar li:hover {
+  background-color: blanchedalmond;
+  cursor: pointer;
+}
+
+#current {
+  color: darkcyan;
+}
+
+.sidebar {
+  background-color: powderblue;
+  height: 100%;
+  width: 15%;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+}
+
+.topbar {
+  background-color: powderblue;
+  width: 100%;
+  position: fixed;
+  z-index: 2;
+  top: 0;
+  padding: 2em;
+  left: 15%;
+}
+
+.mainContent {
+  margin-left: 15%;
+  margin-top: 3em;
 }
