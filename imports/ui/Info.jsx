@@ -29,8 +29,8 @@ class Info extends Component {
 
 
   render() {
-    this.handleLoad();
-    //this.handleSubmit();
+    // this.handleLoad();
+    // this.handleSubmit();
 
     let city = 'Vancouver';
     return (

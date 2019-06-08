@@ -7,6 +7,7 @@ import interactionPlugin from "@fullcalendar/interaction";
 import googleCalendar from "@fullcalendar/google-calendar";
 import '@fullcalendar/core/main.css';
 import '@fullcalendar/daygrid/main.css';
+import '@fullcalendar/timegrid/main.css';
 
 // Calendar component -
 export default class Calendar extends Component {
