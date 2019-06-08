@@ -4,6 +4,7 @@ class Sidebar extends React.Component {
     render() {
         return (
             <div className="sidebar">
+                <h1>Runtime</h1>
                 <ul>
                     <li>Home</li>
                     <li id='current'>Plan A Run</li>
