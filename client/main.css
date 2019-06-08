@@ -42,19 +42,17 @@ body {
 }
 
 .topbar {
-  width: 100%;
   z-index: 2;
-  top: 0;
   padding: 1em;
   padding-left: 17%;
   font-size: 18pt;
-  left: 0;
   box-shadow: 0 2px
 }
 
 .body {
   margin-left: 15%;
   margin-top: 1em;
+  padding-bottom: 2em;
 }
 
 #sideMenu {
@@ -64,7 +62,7 @@ body {
 }
 
 #mainContent {
-  width: 65%;
+  width: 60%;
   float: right;
-  padding-top: 1em;
+  padding: 1em;
 }
