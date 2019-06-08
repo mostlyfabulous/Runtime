@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import FullCalendar from "@fullcalendar/react"
 import dayGridPlugin from "@fullcalendar/daygrid"
+import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from "@fullcalendar/interaction";
 import googleCalendar from "@fullcalendar/google-calendar";
 import '@fullcalendar/core/main.css';
@@ -9,11 +10,23 @@ import '@fullcalendar/daygrid/main.css';
 
 // Calendar component -
 export default class Calendar extends Component {
+  constructor(props) {
+    super(props);
+    // must be bound for callback function to work
+    this.handleDateClick = this.handleDateClick.bind(this);
+  }
+
+  handleDateClick = (e) => {
+    alert(e.dateStr)
+  }
+
   render() {
     return (
       <div id='mainContent'>
-        <FullCalendar defaultView="dayGridMonth"
-        plugins={[ dayGridPlugin ]}
+        <FullCalendar
+        dateClick={this.handleDateClick}
+        defaultView="timeGridWeek"
+        plugins={[ dayGridPlugin, timeGridPlugin, interactionPlugin]}
         events={[
           { title: 'event 1', date: '2019-06-01' },
           { title: 'event 2', date: '2019-06-22' },
@@ -23,4 +36,5 @@ export default class Calendar extends Component {
       </div>
     );
   }
+
 }
