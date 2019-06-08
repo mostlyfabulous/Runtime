@@ -6,8 +6,12 @@ class Main extends React.Component {
     render() {
         return (
             <div className='body'>
-                <Info/>
-                <Calendar/>
+                <div id='sideMenu'>
+                    <Info/>
+                </div>
+                <div id='mainContent'>
+                    <Calendar/>
+                </div>
             </div>
         )
     }

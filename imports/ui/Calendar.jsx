@@ -11,7 +11,7 @@ import '@fullcalendar/daygrid/main.css';
 export default class Calendar extends Component {
   render() {
     return (
-      <div id='mainContent'>
+      <div>
         <FullCalendar defaultView="dayGridMonth"
         plugins={[ dayGridPlugin ]}
         events={[
