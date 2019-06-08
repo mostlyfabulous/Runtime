@@ -74,10 +74,12 @@ class Info extends Component {
     console.log(response.data.city.name)
     let localDate = new Date(response.data.list[0].dt * 1000);
     console.log(localDate)
-    this.state.current_temp = Math.round(response.data.list[0].main.temp-273.15) + '°C';
-    this.state.current_temp_min = Math.round(response.data.list[0].main.temp_min-273.15) + '°C';
-    this.state.current_temp_max = Math.round(response.data.list[0].main.temp_max-273.15) + '°C';
-    this.state.current_clouds = response.data.list[0].clouds.all + '%';
+    this.setState({
+      current_temp: Math.round(response.data.list[0].main.temp-273.15) + '°C',
+      current_temp_min: Math.round(response.data.list[0].main.temp_min-273.15) + '°C',
+      current_temp_max: Math.round(response.data.list[0].main.temp_max-273.15) + '°C',
+      current_clouds: response.data.list[0].clouds.all + '%'
+    })
     console.log(Math.round(response.data.list[0].main.temp-273.15))
     console.log(Math.round(response.data.list[0].main.temp_min-273.15))
     console.log(Math.round(response.data.list[0].main.temp_max-273.15))
