@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { withTracker } from 'meteor/react-meteor-data';
+import { config } from '../../config.js';
 import Links from '../api/links';
 const axios = require('axios');
 
@@ -17,7 +18,35 @@ class Info extends Component {
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleLoad();
   }
+
+  handleLoad() {
+    let weatherkey = config().openweatherapi
+    console.log(weatherkey);
+    axios.get('https://api.openweathermap.org/data/2.5/forecast?q=Vancouver,ca&appid=' + weatherkey)
+  .then(response => {
+    console.log(response.data.city.name)
+    let localDate = new Date(response.data.list[0].dt * 1000);
+    console.log(localDate)
+    this.setState({
+      current_temp: Math.round(response.data.list[0].main.temp-273.15) + '°C',
+      current_temp_min: Math.round(response.data.list[0].main.temp_min-273.15) + '°C',
+      current_temp_max: Math.round(response.data.list[0].main.temp_max-273.15) + '°C',
+      current_clouds: response.data.list[0].clouds.all + '%'
+    })
+    console.log(Math.round(response.data.list[0].main.temp-273.15))
+    console.log(Math.round(response.data.list[0].main.temp_min-273.15))
+    console.log(Math.round(response.data.list[0].main.temp_max-273.15))
+    // console.log(response.data.list[0].weather)
+    console.log(response.data.list[0].clouds.all + '%')
+    //console.log(response.data.list[0].rain.3h)
+    console.log(response.data)
+  })
+  .catch(error => {
+    console.log(error);
+  });
+}
 
   handleChange(event) {
     this.setState({duration: event.target.duration});
@@ -61,31 +90,7 @@ class Info extends Component {
   }
 
 
-  handleLoad() {
 
-    axios.get('https://api.openweathermap.org/data/2.5/forecast?q=Vancouver,ca&appid=4897c08ee8512a8295bb4bafbd77b966')
-  .then(response => {
-    console.log(response.data.city.name)
-    let localDate = new Date(response.data.list[0].dt * 1000);
-    console.log(localDate)
-    this.setState({
-      current_temp: Math.round(response.data.list[0].main.temp-273.15) + '°C',
-      current_temp_min: Math.round(response.data.list[0].main.temp_min-273.15) + '°C',
-      current_temp_max: Math.round(response.data.list[0].main.temp_max-273.15) + '°C',
-      current_clouds: response.data.list[0].clouds.all + '%'
-    })
-    console.log(Math.round(response.data.list[0].main.temp-273.15))
-    console.log(Math.round(response.data.list[0].main.temp_min-273.15))
-    console.log(Math.round(response.data.list[0].main.temp_max-273.15))
-    // console.log(response.data.list[0].weather)
-    console.log(response.data.list[0].clouds.all + '%')
-    //console.log(response.data.list[0].rain.3h)
-    console.log(response.data)
-  })
-  .catch(error => {
-    console.log(error);
-  });
-}
 
 
 }
