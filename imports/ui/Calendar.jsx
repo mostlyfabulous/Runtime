@@ -23,7 +23,7 @@ export default class Calendar extends Component {
 
   render() {
     return (
-      <div id='mainContent'>
+      <div>
         <FullCalendar
         dateClick={this.handleDateClick}
         defaultView="timeGridWeek"
