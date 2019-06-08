@@ -34,7 +34,7 @@ class Info extends Component {
 
     let city = 'Vancouver';
     return (
-      <div id='sideMenu'>
+      <div>
         <h2>3-Hour Forecast: {city}</h2>
         <p><b>Current Temp:</b> {this.state.current_temp}</p>
         <p><b>Min/Max Temp:</b> {this.state.current_temp_min}/{this.state.current_temp_max}</p>
