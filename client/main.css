@@ -6,7 +6,8 @@ body {
 
 .sidebar ul{
   list-style-type: none;
-  padding-top: 5em;
+  text-align: left;
+  padding-top: 1em;
   padding-left: 0;
   margin: 0;
 }
@@ -19,37 +20,50 @@ body {
 .sidebar li:hover {
   background-color: blanchedalmond;
   cursor: pointer;
+  color: black;
 }
 
 #current {
-  color: darkcyan;
+  color: steelblue;
 }
 
 .sidebar {
-  background-color: lightblue;
+  background-color: rgb(36, 36, 53);
   height: 100%;
   width: 15%;
   position: fixed;
-  z-index: 1;
+  z-index: 3;
   top: 0;
   left: 0;
   overflow: hidden;
   margin: 0;
+  color: aliceblue;
+  text-align: center;
 }
 
 .topbar {
-  background-color: lightblue;
   width: 100%;
-  position: fixed;
   z-index: 2;
   top: 0;
   padding: 1em;
-  padding-left: 20%;
+  padding-left: 17%;
   font-size: 18pt;
   left: 0;
+  box-shadow: 0 2px
 }
 
-.mainContent {
-  margin-left: 17%;
-  margin-top: 3em;
+.body {
+  margin-left: 15%;
+  margin-top: 1em;
+}
+
+#sideMenu {
+  padding-left: 2em;
+  width: 30%;
+  float: left;
+}
+
+#mainContent {
+  width: 65%;
+  float: right;
 }

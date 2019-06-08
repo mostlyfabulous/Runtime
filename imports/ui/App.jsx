@@ -5,9 +5,8 @@ import Main from './Main.jsx';
 
 const App = () => (
   <div>
-    <h1 className='mainContent'>Runtime</h1>
-    <Sidebar/>
     <Topbar/>
+    <Sidebar/>
     <Main/>
   </div>
 );
