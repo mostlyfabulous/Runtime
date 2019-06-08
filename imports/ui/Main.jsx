@@ -5,7 +5,7 @@ import Calendar from './Calendar.jsx';
 class Main extends React.Component {
     render() {
         return (
-            <div className='mainContent'>
+            <div className='body'>
                 <Info/>
                 <Calendar/>
             </div>
