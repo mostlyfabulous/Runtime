@@ -11,31 +11,69 @@ import '@fullcalendar/timegrid/main.css';
 
 // Calendar component -
 export default class Calendar extends Component {
-  constructor(props) {
-    super(props);
-    // must be bound for callback function to work
-    this.handleDateClick = this.handleDateClick.bind(this);
-  }
-
-  handleDateClick = (e) => {
-    alert(e.dateStr)
-  }
+  state = {
+      calendarEvents: [
+          {id: '1', title: "Event Now", start: new Date() },
+          {id: '2', title: "Event Now", start: new Date() }
+        ]
+      }
 
   render() {
     return (
       <div>
         <FullCalendar
         dateClick={this.handleDateClick}
+        eventClick={this.handleEventClick}
         defaultView="timeGridWeek"
+        header={{
+              left: "prev,next today",
+              center: "title",
+              right: "dayGridMonth,timeGridWeek,timeGridDay,listWeek"
+            }}
+        events={this.state.calendarEvents}
+        editable={true}
+        nowIndicator= {true}
         plugins={[ dayGridPlugin, timeGridPlugin, interactionPlugin]}
-        events={[
-          { title: 'event 1', date: '2019-06-01' },
-          { title: 'event 2', date: '2019-06-22' },
-          { title: 'another event', date: '2019-06-23' },
-          ]}
         />
       </div>
     );
   }
 
+  handleDateClick = (e) => {
+    if (confirm("Would you like to add a run to " + e.dateStr + " ?")) {
+      this.setState({
+        calendarEvents: this.state.calendarEvents.concat({
+          // creates a new array with event for Redux compatabilty
+          title: "New Run",
+          start: e.date,
+          allDay: e.allDay
+        })
+      });
+    }
+  }
+  // should trigger a component to display and allow event editting
+  // call component <EventModifier/>
+  handleEventClick = (e) => {
+    /* Without Redux, it is very inconvenient to modify an item.
+    ** Investigate: https://reactjs.org/docs/update.html
+    ** Currently using method: https://stackoverflow.com/a/49502115
+    ** Could use a ref so a call the the calendarAPI
+    ** would get the element more directly as well.
+    ** e.g: e.event.setExtendedProp( title, eventName );
+    */
+    let currentEvents = [...this.state.calendarEvents];
+    let newEventName = prompt("Change run name to: ");
+    let renameIndex = this.state.calendarEvents.findIndex(function (event) {
+      // console.log(e.event);
+      // console.log(event);
+      return e.event.id === event.id ;
+    });
+    let eventToRename = {...currentEvents[renameIndex]};
+    eventToRename.title = newEventName;
+    currentEvents[renameIndex] = eventToRename;
+
+    this.setState({
+      calendarEvents: currentEvents
+      })
+  }
 }
