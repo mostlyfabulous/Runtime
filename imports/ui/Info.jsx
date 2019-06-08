@@ -31,13 +31,7 @@ class Info extends Component {
   render() {
     this.handleLoad();
     //this.handleSubmit();
-    /*
-    return (
-      <div>
-        <h2>Learn Meteor!</h2>
-      </div>
-    );
-    */
+
     let city = 'Vancouver';
     return (
       <div id='sideMenu'>
