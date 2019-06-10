@@ -17,13 +17,7 @@ export default class Calendar extends Component {
   state = {
       calendarEvents: [
           {id: '1', title: "Event 1", start: new Date() },
-          {id: '2', title: "Event 2", start: new Date() },
-          {
-            id: '3',
-      start: '2014-11-10T10:00:00',
-      end: '2014-11-10T16:00:00',
-      rendering: 'background'
-    }
+          {id: '2', title: "Event 2", start: new Date() }
         ]
       }
     handleLoad() {
@@ -32,15 +26,23 @@ export default class Calendar extends Component {
         axios.get('https://api.openweathermap.org/data/2.5/forecast?q=Vancouver,ca&appid=' + weatherkey)
       .then(response => {
         let rd = response.data;
-        let localDate = new Date(rd.list[0].dt * 1000);
         let weatherEvents = rd.list.map( (threeHourEvent) =>
-            ({
+            {
+            let c = 'black';
+            let t = threeHourEvent.main.temp
+            if (t > 298.15) c = 'red'; // warm
+            else if (t > 295.15 && t <= 298.15) c = 'green'; // pleasant
+            else if (t <= 295.15) c = 'yellow'; // cool
+            else (console.log(t))
+            let e =  ({
             start: new Date(threeHourEvent.dt_txt+" GMT"),
-            end: new Date(threeHourEvent.dt_txt+" GMT+0300"),
+            end: new Date(threeHourEvent.dt_txt+" GMT-0300"),
             rendering: 'background',
-            color: 'red'
-            }))
-        // console.log(weatherEvents);
+            color: c
+            })
+            return e;
+          })
+        console.log(weatherEvents);
 
         this.setState({
           calendarEvents: this.state.calendarEvents.concat(weatherEvents)
