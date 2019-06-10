@@ -8,14 +8,48 @@ import googleCalendar from "@fullcalendar/google-calendar";
 import '@fullcalendar/core/main.css';
 import '@fullcalendar/daygrid/main.css';
 import '@fullcalendar/timegrid/main.css';
+import { config } from '../../config.js'
+const axios = require('axios');
 
 // Calendar component -
 export default class Calendar extends Component {
+
   state = {
       calendarEvents: [
-          {id: '1', title: "Event Now", start: new Date() },
-          {id: '2', title: "Event Now", start: new Date() }
+          {id: '1', title: "Event 1", start: new Date() },
+          {id: '2', title: "Event 2", start: new Date() },
+          {
+            id: '3',
+      start: '2014-11-10T10:00:00',
+      end: '2014-11-10T16:00:00',
+      rendering: 'background'
+    }
         ]
+      }
+    handleLoad() {
+        let weatherkey = config().openweatherapi
+        console.log(weatherkey);
+        axios.get('https://api.openweathermap.org/data/2.5/forecast?q=Vancouver,ca&appid=' + weatherkey)
+      .then(response => {
+        let rd = response.data;
+        let localDate = new Date(rd.list[0].dt * 1000);
+        let weatherEvents = rd.list.map( (threeHourEvent) =>
+            ({
+            start: new Date(threeHourEvent.dt_txt+" GMT"),
+            end: new Date(threeHourEvent.dt_txt+" GMT+0300"),
+            rendering: 'background',
+            color: 'red'
+            }))
+        // console.log(weatherEvents);
+
+        this.setState({
+          calendarEvents: this.state.calendarEvents.concat(weatherEvents)
+        });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+
       }
 
   render() {
@@ -37,6 +71,10 @@ export default class Calendar extends Component {
         />
       </div>
     );
+  }
+
+  componentDidMount() {
+    this.handleLoad();
   }
 
   handleDateClick = (e) => {
@@ -63,17 +101,24 @@ export default class Calendar extends Component {
     */
     let currentEvents = [...this.state.calendarEvents];
     let newEventName = prompt("Change run name to: ");
-    let renameIndex = this.state.calendarEvents.findIndex(function (event) {
-      // console.log(e.event);
-      // console.log(event);
-      return e.event.id === event.id ;
-    });
-    let eventToRename = {...currentEvents[renameIndex]};
-    eventToRename.title = newEventName;
-    currentEvents[renameIndex] = eventToRename;
+    if (newEventName) {
+      let renameIndex = this.state.calendarEvents.findIndex(function (event) {
+        console.log(e.event);
+        // console.log(event);
+        return e.event.id === event.id ;
+      });
+      let eventToRename = {...currentEvents[renameIndex]};
+      eventToRename.title = newEventName;
+      currentEvents[renameIndex] = eventToRename;
 
-    this.setState({
-      calendarEvents: currentEvents
-      })
-  }
+      this.setState({
+        calendarEvents: currentEvents
+        })
+      }
+    }
+
+}
+
+const mapStateToProps = (state) => {
+  return { weather: state.weather };
 }
