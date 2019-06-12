@@ -6,10 +6,10 @@ export const addWeatherData = content => {
   };
 };
 
-export const addRunData = runData => {
+export const addFormData = formData => {
   return {
-    type: 'ADD_RUN',
-    runData
+    type: 'ADD_RESPONSE',
+    formData
   };
 };
 
