@@ -1,4 +1,5 @@
 import React from 'react';
+import SideListElement from './SideListElement';
 
 class Sidebar extends React.Component {
     render() {
@@ -6,11 +7,11 @@ class Sidebar extends React.Component {
             <div className="sidebar">
                 <h1>Runtime</h1>
                 <ul>
-                    <li>Home</li>
-                    <li id='current'>Plan A Run</li>
-                    <li>Run History</li>
-                    <li>Manage Preferences</li>
-                    <li>Explore</li>
+                    <li><SideListElement title='Home' page='home'/></li>
+                    <li><SideListElement title='Plan A Run' page='plan'/></li>
+                    <li><SideListElement title='Run History' page='history'/></li>
+                    <li><SideListElement title='Manage Preferences' page='preferences'/></li>
+                    <li><SideListElement title='Explore' page='explore'/></li>
                 </ul>
             </div>
         )
