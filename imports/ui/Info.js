@@ -2,19 +2,27 @@ import React, { Component } from 'react';
 import { withTracker } from 'meteor/react-meteor-data';
 import { config } from '../../config.js';
 import Links from '../api/links';
+import { connect } from 'react-redux';
+import { addWeatherData } from 'actions/index'
+import {bindActionCreators} from 'redux'
 const axios = require('axios');
 
 class Info extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      duration: "",
-      start_time: "",
-      end_time: "",
-      current_temp: "",
-      current_temp_min: "",
-      current_temp_max: "",
-      current_clouds: ""
+      user_input: {
+        duration: "",
+        start_time: "",
+        end_time: ""
+      },
+      weather: {
+        current_temp: "",
+        current_temp_min: "",
+        current_temp_max: "",
+        current_clouds: "",
+      }
+
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -23,17 +31,20 @@ class Info extends Component {
 
   handleLoad() {
     let weatherkey = config().openweatherapi
-    console.log(weatherkey);
     axios.get('https://api.openweathermap.org/data/2.5/forecast?q=Vancouver,ca&appid=' + weatherkey)
   .then(response => {
+    this.props.addWeatherData(response);
+    console.log(this.props.content.data)
     console.log(response.data.city.name)
     let localDate = new Date(response.data.list[0].dt * 1000);
     console.log(localDate)
     this.setState({
-      current_temp: Math.round(response.data.list[0].main.temp-273.15) + '°C',
-      current_temp_min: Math.round(response.data.list[0].main.temp_min-273.15) + '°C',
-      current_temp_max: Math.round(response.data.list[0].main.temp_max-273.15) + '°C',
-      current_clouds: response.data.list[0].clouds.all + '%'
+      current_weather: {
+        current_temp: Math.round(response.data.list[0].main.temp-273.15) + '°C',
+        current_temp_min: Math.round(response.data.list[0].main.temp_min-273.15) + '°C',
+        current_temp_max: Math.round(response.data.list[0].main.temp_max-273.15) + '°C',
+        current_clouds: response.data.list[0].clouds.all + '%'
+      }
     })
     console.log(Math.round(response.data.list[0].main.temp-273.15))
     console.log(Math.round(response.data.list[0].main.temp_min-273.15))
@@ -49,7 +60,7 @@ class Info extends Component {
 }
 
   handleChange(event) {
-    this.setState({duration: event.target.duration});
+    //this.setState({duration: event.target.duration});
   }
 
   handleSubmit() {
@@ -58,10 +69,8 @@ class Info extends Component {
 
 
   render() {
-    // this.handleLoad();
-    // this.handleSubmit();
-
     let city = 'Vancouver';
+
     return (
       <div>
         <h2>3-Hour Forecast: {city}</h2>
@@ -90,14 +99,32 @@ class Info extends Component {
   }
 
 
-
-
-
 }
 
+const mapStateToProps = (state) => {
+  return {  current_weather: state.current_weather
+         };
+    // return {  user_input: state.user_input,
+    //           current_weather: state.current_weather
+    //        };
+}
+/*
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators(
+    {
+      addWeatherData
+    },
+    dispatch
+  );
+};
+*/
 
+export default connect(mapStateToProps, {addWeatherData})(Info);
+
+/*
 export default InfoContainer = withTracker(() => {
   return {
     links: Links.find().fetch(),
   };
 })(Info);
+*/
