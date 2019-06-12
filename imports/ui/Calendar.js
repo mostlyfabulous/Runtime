@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
 import FullCalendar from "@fullcalendar/react"
 import dayGridPlugin from "@fullcalendar/daygrid"
@@ -8,11 +9,9 @@ import googleCalendar from "@fullcalendar/google-calendar";
 import '@fullcalendar/core/main.css';
 import '@fullcalendar/daygrid/main.css';
 import '@fullcalendar/timegrid/main.css';
-import { config } from '../../config.js'
-const axios = require('axios');
 
 // Calendar component -
-export default class Calendar extends Component {
+class Calendar extends Component {
 
   state = {
       calendarEvents: [
@@ -20,41 +19,35 @@ export default class Calendar extends Component {
           {id: '2', title: "Event 2", start: new Date() }
         ]
       }
-    handleLoad() {
-        let weatherkey = config().openweatherapi
-        console.log(weatherkey);
-        axios.get('https://api.openweathermap.org/data/2.5/forecast?q=Vancouver,ca&appid=' + weatherkey)
-      .then(response => {
-        let rd = response.data;
-        let weatherEvents = rd.list.map( (threeHourEvent) =>
-            {
-            let c = 'black';
-            let t = threeHourEvent.main.temp
-            if (t > 298.15) c = 'red'; // warm
-            else if (t > 295.15 && t <= 298.15) c = 'green'; // pleasant
-            else if (t <= 295.15) c = 'yellow'; // cool
-            else (console.log(t))
-            let e =  ({
-            start: new Date(threeHourEvent.dt_txt+" GMT"),
-            end: new Date(threeHourEvent.dt_txt+" GMT-0300"),
-            rendering: 'background',
-            color: c
-            })
-            return e;
+
+  handleLoad(nextProps) {
+      let rd = nextProps.weather.data;
+      console.log(rd);
+      let weatherEvents = rd.list.map( (threeHourEvent) =>
+          {
+          let c = 'black';
+          let t = threeHourEvent.main.temp
+          if (t > 298.15) c = 'red'; // warm
+          else if (t > 295.15 && t <= 298.15) c = 'green'; // pleasant
+          else if (t <= 295.15) c = 'yellow'; // cool
+          else (console.log(t))
+          let e =  ({
+          start: new Date(threeHourEvent.dt_txt+" GMT"),
+          end: new Date(threeHourEvent.dt_txt+" GMT-0300"),
+          rendering: 'background',
+          color: c
           })
-        console.log(weatherEvents);
+          return e;
+        })
+      console.log(weatherEvents);
 
-        this.setState({
-          calendarEvents: this.state.calendarEvents.concat(weatherEvents)
-        });
-      })
-      .catch(error => {
-        console.log(error);
+      this.setState({
+        calendarEvents: this.state.calendarEvents.concat(weatherEvents)
       });
-
-      }
+    };
 
   render() {
+    console.log("calendar loading");
     return (
       <div>
         <FullCalendar
@@ -75,8 +68,13 @@ export default class Calendar extends Component {
     );
   }
 
-  componentDidMount() {
-    this.handleLoad();
+  componentWillReceiveProps(nextProps) {
+    console.log("Calendar WillReceiveProps Weather from Store");
+    // console.log(nextProps.weather);
+    if (nextProps.weather.data) {
+      // console.log(this.props.weather.data);
+      this.handleLoad(nextProps);
+    }
   }
 
   handleDateClick = (e) => {
@@ -94,6 +92,7 @@ export default class Calendar extends Component {
   // should trigger a component to display and allow event editting
   // call component <EventModifier/>
   handleEventClick = (e) => {
+    this.handleLoad();
     /* Without Redux, it is very inconvenient to modify an item.
     ** Investigate: https://reactjs.org/docs/update.html
     ** Currently using method: https://stackoverflow.com/a/49502115
@@ -124,3 +123,4 @@ export default class Calendar extends Component {
 const mapStateToProps = (state) => {
   return { weather: state.weather };
 }
+export default connect(mapStateToProps)(Calendar);
