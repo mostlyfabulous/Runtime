@@ -2,65 +2,75 @@ import React, { Component } from 'react';
 import { withTracker } from 'meteor/react-meteor-data';
 import { config } from '../../config.js';
 import Links from '../api/links';
+import { connect } from 'react-redux';
+import { addWeatherData } from './actions/index'
+import {bindActionCreators} from 'redux'
 const axios = require('axios');
 
 class Info extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      duration: "",
-      start_time: "",
-      end_time: "",
-      current_temp: "",
-      current_temp_min: "",
-      current_temp_max: "",
-      current_clouds: ""
+      user_input: {
+        duration: "",
+        start_time: "",
+        end_time: ""
+      },
+      weather: {
+      },
+      current_temp: '',
+      current_temp_min: '',
+      current_temp_max: '',
+      current_clouds: ''
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleLoad();
   }
-
+  /*  current_temp: "",
+    current_temp_min: "",
+    current_temp_max: "",
+    current_clouds: "",*/
   handleLoad() {
     let weatherkey = config().openweatherapi
-    console.log(weatherkey);
     axios.get('https://api.openweathermap.org/data/2.5/forecast?q=Vancouver,ca&appid=' + weatherkey)
   .then(response => {
-    console.log(response.data.city.name)
-    let localDate = new Date(response.data.list[0].dt * 1000);
-    console.log(localDate)
+    this.props.addWeatherData(response);
+    console.log(this.props.weather);
+    const {weather} = this.props;
     this.setState({
-      current_temp: Math.round(response.data.list[0].main.temp-273.15) + '°C',
-      current_temp_min: Math.round(response.data.list[0].main.temp_min-273.15) + '°C',
-      current_temp_max: Math.round(response.data.list[0].main.temp_max-273.15) + '°C',
-      current_clouds: response.data.list[0].clouds.all + '%'
-    })
-    console.log(Math.round(response.data.list[0].main.temp-273.15))
-    console.log(Math.round(response.data.list[0].main.temp_min-273.15))
-    console.log(Math.round(response.data.list[0].main.temp_max-273.15))
-    // console.log(response.data.list[0].weather)
-    console.log(response.data.list[0].clouds.all + '%')
-    //console.log(response.data.list[0].rain.3h)
-    console.log(response.data)
+            current_temp: Math.round(weather.data.list[0].main.temp-273.15) + '°C',
+            current_temp_min: Math.round(weather.data.list[0].main.temp_min-273.15) + '°C',
+            current_temp_max: Math.round(weather.data.list[0].main.temp_max-273.15) + '°C',
+            current_clouds: weather.data.list[0].clouds.all + '%'
+        })
+    //console.log(this.props.weather.data.city.name)
+    //let localDate = new Date(this.props.weather.data.list[0].dt * 1000);
+    //console.log(localDate)
+
+
+    //console.log(Math.round(this.props.weather.data.list[0].main.temp-273.15))
+    //console.log(Math.round(this.props.weather.data.list[0].main.temp_min-273.15))
+    //console.log(Math.round(this.props.weather.data.list[0].main.temp_max-273.15))
+    // console.log(this.props.weather.data.list[0].weather)
+  //  console.log(this.props.weather.data.list[0].clouds.all + '%')
+    //console.log(this.props.weather.data.list[0].rain.3h)
   })
   .catch(error => {
     console.log(error);
   });
 }
 
+
   handleChange(event) {
-    this.setState({duration: event.target.duration});
+    //this.setState({duration: event.target.duration});
   }
 
   handleSubmit() {
     event.preventDefault();
   }
 
-
   render() {
-    // this.handleLoad();
-    // this.handleSubmit();
-
     let city = 'Vancouver';
     return (
       <div>
@@ -90,14 +100,34 @@ class Info extends Component {
   }
 
 
+}
 
-
-
+const mapStateToProps = (state) => {
+  return {  weather: state.weather
+         };
+    // return {  user_input: state.user_input,
+    //           current_weather: state.current_weather
+    //        };
 }
 
 
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators(
+    {
+      addWeatherData
+    },
+    dispatch
+  );
+};
+
+
+
+export default connect(mapStateToProps/*, {addWeatherData}*/, mapDispatchToProps)(Info);
+
+/*
 export default InfoContainer = withTracker(() => {
   return {
     links: Links.find().fetch(),
   };
 })(Info);
+*/
