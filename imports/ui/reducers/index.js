@@ -6,39 +6,38 @@ const weatherReducer = (weather, action) => {
 	if (action.type === 'ADD_WEATHER_DATA') {
     let newState = action.content;
     weather = newState;
-    //console.log('cur_state1:' + JSON.stringify(weather));
-    return weather;
 	}
 	return weather
 };
-
-const displayMessageReducer = (old='', action) => {
-	if (action.type === 'DISPLAY_MESSAGE') {
-    old = action;
+/*
+const runDataReducer = (currentRuns, action) => {
+  currentRuns = currentRuns || {};
+	if (action.type === 'ADD_RUN') {
+    let newRun = {
+      user_id: action.runData.user_id,
+      calendar_id: action.runData.calendar_id,
+      calendar_date: action.runData.calendar_date,
+      calendar_start: action.runData.calendar_start,
+      calendar_end: action.runData.calendar_end,
+      calendar_title: action.runData.calendar_title,
+      expectedDuration: action.runData.expectedDuration,
+      actualDuration: 0,
+      distance: action.runData.distance};
 	}
-	return old;
+  return [...currentRuns, newRun
+          ]
 };
+*/
 
-const weatherReducer = (response, action) => {
-  weather = weather || {};
-
-	if (action.type === 'ADD_WEATHER_DATA') {
-    let newState = action.content;
-    weather = newState;
-    //console.log('cur_state1:' + JSON.stringify(weather));
-    return weather;
+const pagesReducer = (currentPage = '', action) => {
+	if (action.type === 'CHANGE_PAGE') {
+    currentPage = action.pageName;
 	}
-	return weather
+	return currentPage
 };
-
-const displayMessageReducer = (old='', action) => {
-	if (action.type === 'DISPLAY_MESSAGE') {
-    old = action;
-	}
-	return old;
-};
-
 export default combineReducers({
 	//user_input: userInputReducer,
-  weather: weatherReducer
+  weather: weatherReducer,
+  //runData: runDataReducer,
+  pages: pagesReducer
 });

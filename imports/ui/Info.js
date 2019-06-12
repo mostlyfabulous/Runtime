@@ -11,10 +11,7 @@ class Info extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      user_input: {
-        duration: "",
-        start_time: "",
-        end_time: ""
+      runData: {
       },
       weather: {
       },
@@ -63,7 +60,7 @@ class Info extends Component {
 
 
   handleChange(event) {
-    //this.setState({duration: event.target.duration});
+    this.setState({duration: event.target.duration});
   }
 
   handleSubmit() {
@@ -103,7 +100,8 @@ class Info extends Component {
 }
 
 const mapStateToProps = (state) => {
-  return {  weather: state.weather
+  return {  weather: state.weather,
+
          };
     // return {  user_input: state.user_input,
     //           current_weather: state.current_weather
