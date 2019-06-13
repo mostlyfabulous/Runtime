@@ -1,5 +1,10 @@
 import { combineReducers } from 'redux';
 
+let initCal = [
+    {id: '1', title: "Event Now", start: new Date() },
+    {id: '2', title: "Event Now", start: new Date() }
+  ];
+
 const weatherReducer = (weather, action) => {
   weather = weather || {};
 	if (action.type === 'ADD_WEATHER_DATA') {
@@ -30,6 +35,17 @@ expectedDuration: action.runData.expectedDuration,
 actualDuration: 0,
 distance: action.runData.distance};*/
 
+const calendarEventsReducer = (calendarEvents, action) => {
+  calendarEvents = calendarEvents || initCal;
+	if (action.type === 'ADD_EVENT') {
+    let newEvent = action.calendarEvent;
+    return [...calendarEvents, newEvent
+            ]
+	}
+
+	return calendarEvents
+};
+
 const pagesReducer = (currentPage = '', action) => {
 	if (action.type === 'CHANGE_PAGE') {
     currentPage = action.pageName;
@@ -40,5 +56,6 @@ export default combineReducers({
 	//user_input: userInputReducer,
   weather: weatherReducer,
   formData: formDataReducer,
+  calendarEvents: calendarEventsReducer,
   pages: pagesReducer
 });

@@ -19,3 +19,17 @@ export const changePage = pageName => {
     pageName
   };
 };
+
+export const addEvent = calendarEvent => {
+  return {
+    type: 'ADD_EVENT',
+    calendarEvent
+  };
+};
+
+export const renameEvent = calendarEvent => {
+  return {
+    type: 'RENAME_EVENT',
+    calendarEvent
+  };
+};
