@@ -14,12 +14,12 @@ import {bindActionCreators} from 'redux'
 
 // Calendar component -
 class Calendar extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-        calendarEvents: []
-        }
-  }
+  // constructor(props) {
+  //   super(props);
+  //   this.state = {
+  //       calendarEvents: this.props.calendarEvents
+  //       }
+  // }
 
   render() {
       return (
@@ -33,7 +33,7 @@ class Calendar extends Component {
                 center: "title",
                 right: "dayGridMonth,timeGridWeek,timeGridDay,listWeek"
               }}
-          events={this.state.calendarEvents}
+          events={this.props.calendarEvents}
           editable={true}
           nowIndicator= {true}
           plugins={[ dayGridPlugin, timeGridPlugin, interactionPlugin]}
@@ -45,12 +45,12 @@ class Calendar extends Component {
   handleDateClick = (e) => {
     if (confirm("Would you like to add a run to " + e.dateStr + " ?")) {
       let newEvent = {
+        id: (Date.parse(new Date)).toString(16) + Math.floor(Math.random()*1000),
         title: "New Run",
         start: e.date,
         allDay: e.allDay
       }
       this.props.addEvent(newEvent);
-      this.setState({calendarEvents: this.props.calendarEvents});
 
     }
   }
@@ -64,9 +64,9 @@ class Calendar extends Component {
     ** would get the element more directly as well.
     ** e.g: e.event.setExtendedProp( title, eventName );
     */
-    let currentEvents = [...this.state.calendarEvents];
+    let currentEvents = [...this.props.calendarEvents];
     let newEventName = prompt("Change run name to: ");
-    let renameIndex = this.state.calendarEvents.findIndex(function (event) {
+    let renameIndex = this.props.calendarEvents.findIndex(function (event) {
       // console.log(e.event);
       // console.log(event);
       return e.event.id === event.id ;
