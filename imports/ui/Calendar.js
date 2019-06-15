@@ -27,6 +27,7 @@ class Calendar extends Component {
           <FullCalendar
           dateClick={this.handleDateClick}
           eventClick={this.handleEventClick}
+          eventDrop={this.handleEventDrop}
           defaultView="timeGridWeek"
           header={{
                 left: "prev,next today",
@@ -45,10 +46,14 @@ class Calendar extends Component {
   handleDateClick = (e) => {
     if (confirm("Would you like to add a run to " + e.dateStr + " ?")) {
       let newEvent = {
+        // Date.parse returns the ms elapsed since January 1, 1970, 00:00:00 UTC
+        // toString(16) converts the ms to hex which is concatenated with a
+        // random number between 0 to 1000
         id: (Date.parse(new Date)).toString(16) + Math.floor(Math.random()*1000),
         title: "New Run",
         start: e.date,
-        allDay: e.allDay
+        allDay: e.allDay,
+        duration: "5km"
       }
       this.props.addEvent(newEvent);
 
@@ -57,18 +62,22 @@ class Calendar extends Component {
   // should trigger a component to display and allow event editting
   // call component <EventModifier/>
   handleEventClick = (e) => {
-    /* Without Redux, it is very inconvenient to modify an item.
-    ** Investigate: https://reactjs.org/docs/update.html
-    ** Currently using method: https://stackoverflow.com/a/49502115
-    ** Could use a ref so a call the the calendarAPI
-    ** would get the element more directly as well.
-    ** e.g: e.event.setExtendedProp( title, eventName );
-    */
-    // let currentEvents = [...this.props.calendarEvents];
     let newEventName = prompt("Change run name to: ");
     this.props.renameEvent(e.event, name=newEventName);
   }
+
+  handleEventDrop = (e) => {
+    console.log("test");
+    alert(e.event.title + " was dropped on " + e.event.start.toISOString());
+    if (!confirm("Are you sure about this change?")) {
+      e.revert();
+    }
+    // else call eventModifierReducer
+  }
+
 }
+
+
 
 const mapStateToProps = (state) => {
   return {  calendarEvents: state.calendarEvents
