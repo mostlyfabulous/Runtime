@@ -42,7 +42,24 @@ const calendarEventsReducer = (calendarEvents, action) => {
     return [...calendarEvents, newEvent
             ]
 	}
-
+  if (action.type === 'RENAME_EVENT') {
+    let e = action.payload.calendarEvent
+    let currentEvents = [...calendarEvents];
+    if (action.payload.name) {
+      let renameIndex = calendarEvents.findIndex(function (event) {
+        // console.log(event);
+        return e.id === event.id ;
+      });
+      let eventToRename = {...currentEvents[renameIndex]};
+      eventToRename.title = action.payload.name;
+      currentEvents[renameIndex] = eventToRename;
+      return currentEvents;
+      }
+      else {
+        console.log("Name passed was:" + action.payload.name);
+        return calendarEvents;
+      }
+    }
 	return calendarEvents
 };
 

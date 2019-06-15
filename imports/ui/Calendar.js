@@ -9,7 +9,7 @@ import '@fullcalendar/core/main.css';
 import '@fullcalendar/daygrid/main.css';
 import '@fullcalendar/timegrid/main.css';
 import { connect } from 'react-redux';
-import { addEvent } from './actions/index'
+import { addEvent, renameEvent } from './actions/index'
 import {bindActionCreators} from 'redux'
 
 // Calendar component -
@@ -64,20 +64,9 @@ class Calendar extends Component {
     ** would get the element more directly as well.
     ** e.g: e.event.setExtendedProp( title, eventName );
     */
-    let currentEvents = [...this.props.calendarEvents];
+    // let currentEvents = [...this.props.calendarEvents];
     let newEventName = prompt("Change run name to: ");
-    let renameIndex = this.props.calendarEvents.findIndex(function (event) {
-      // console.log(e.event);
-      // console.log(event);
-      return e.event.id === event.id ;
-    });
-    let eventToRename = {...currentEvents[renameIndex]};
-    eventToRename.title = newEventName;
-    currentEvents[renameIndex] = eventToRename;
-
-    this.setState({
-      calendarEvents: currentEvents
-      })
+    this.props.renameEvent(e.event, name=newEventName);
   }
 }
 
@@ -90,7 +79,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
     {
-      addEvent
+      addEvent,
+      renameEvent
     },
     dispatch
   );

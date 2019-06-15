@@ -30,6 +30,9 @@ export const addEvent = calendarEvent => {
 export const renameEvent = calendarEvent => {
   return {
     type: 'RENAME_EVENT',
-    calendarEvent
-  };
+    payload: {
+      calendarEvent,
+      name
+    }
+  }
 };
