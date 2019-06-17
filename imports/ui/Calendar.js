@@ -9,7 +9,7 @@ import '@fullcalendar/core/main.css';
 import '@fullcalendar/daygrid/main.css';
 import '@fullcalendar/timegrid/main.css';
 import { connect } from 'react-redux';
-import { addEvent, renameEvent } from './actions/index'
+import { addEvent, renameEvent, dragEvent } from './actions/index'
 import {bindActionCreators} from 'redux'
 
 // Calendar component -
@@ -64,6 +64,7 @@ class Calendar extends Component {
   handleEventClick = (e) => {
     let newEventName = prompt("Change run name to: ");
     this.props.renameEvent(e.event, name=newEventName);
+    console.log(this.props.calendarEvents);
   }
 
   handleEventDrop = (e) => {
@@ -71,8 +72,10 @@ class Calendar extends Component {
     alert(e.event.title + " was dropped on " + e.event.start.toISOString());
     if (!confirm("Are you sure about this change?")) {
       e.revert();
+    } else {
+      this.props.dragEvent(e);
     }
-    // else call eventModifierReducer
+    console.log(this.props.calendarEvents);
   }
 
 }
@@ -89,7 +92,8 @@ const mapDispatchToProps = dispatch => {
   return bindActionCreators(
     {
       addEvent,
-      renameEvent
+      renameEvent,
+      dragEvent
     },
     dispatch
   );

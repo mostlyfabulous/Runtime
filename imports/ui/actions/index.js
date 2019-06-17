@@ -34,5 +34,12 @@ export const renameEvent = calendarEvent => {
       calendarEvent,
       name
     }
-  }
+  };
+};
+
+export const dragEvent = calendarEvent => {
+  return {
+    type: 'DRAG_EVENT',
+    calendarEvent
+  };
 };

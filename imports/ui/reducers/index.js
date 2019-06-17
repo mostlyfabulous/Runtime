@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
 
 let initCal = [
-    {id: '1', title: "Event Now", start: new Date() },
-    {id: '2', title: "Event Now", start: new Date() }
+    {id: '1', title: "Event Now 1", start: new Date() },
+    {id: '2', title: "Event Now 2", start: new Date() }
   ];
 
 const weatherReducer = (weather, action) => {
@@ -44,24 +44,37 @@ const calendarEventsReducer = (calendarEvents, action) => {
 	}
   if (action.type === 'RENAME_EVENT') {
     let e = action.payload.calendarEvent
-    let currentEvents = [...calendarEvents];
     if (action.payload.name) {
-      let renameIndex = calendarEvents.findIndex(function (event) {
-        // console.log(e);
+      let targetID = calendarEvents.findIndex(function (event) {
         return e.id === event.id;
-        });
-      let eventToRename = {...currentEvents[renameIndex]};
-      eventToRename.title = action.payload.name;
-      currentEvents[renameIndex] = eventToRename;
-      return currentEvents;
-      }
-      else {
-        console.log("Name passed was:" + action.payload.name);
+      });
+      return calendarEvents.map((event, index) => {
+        if (index !== targetID) {
+          return event
+        }
+        let updatedEvent = {...event};
+        updatedEvent.title = action.payload.name;
+        return updatedEvent;
+      });
+      } else {
+        console.log("Invalid name passed was:" + action.payload.name);
         return calendarEvents;
       }
     }
-	return calendarEvents
-};
+  if (action.type === 'DRAG_EVENT') {
+    let e = action.calendarEvent.event
+    let targetID = calendarEvents.findIndex(function (event) {
+      return e.id === event.id;
+    });
+    return calendarEvents.map((event, index) => {
+      if (index !== targetID) {
+        return event
+      }
+        return {...event};
+    });
+  }
+  return calendarEvents;
+}
 
 const pagesReducer = (currentPage = '', action) => {
 	if (action.type === 'CHANGE_PAGE') {
@@ -76,3 +89,22 @@ export default combineReducers({
   calendarEvents: calendarEventsReducer,
   pages: pagesReducer
 });
+/*if (action.type === 'RENAME_EVENT') {
+  if (action.payload.name) {
+    // set up to prepare for event modification
+    let e = action.payload.calendarEvent
+    let currentEvents = [...calendarEvents];
+    let renameIndex = calendarEvents.findIndex(function (event) {
+      // console.log(e);
+      return e.id === event.id;
+    });
+    let eventToRename = {...currentEvents[renameIndex]};
+    eventToRename.title = action.payload.name;
+    currentEvents[renameIndex] = eventToRename;
+    return currentEvents;
+    }
+  else {
+    console.log("Name passed was:" + action.payload.name);
+    return calendarEvents;
+  }
+} */
