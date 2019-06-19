@@ -1,14 +1,74 @@
 import { combineReducers } from 'redux';
 
-const weatherReducer = (weather, action) => {
-  weather = weather || {};
+let initCal = [
+    {id: '1', title: "Event Now 1", start: new Date() },
+    {id: '2', title: "Event Now 2", start: new Date() }
+  ];
 
-	if (action.type === 'ADD_WEATHER_DATA') {
-    let newState = action.content;
-    weather = newState;
+  const weatherReducer = (weather, action) => {
+    weather = weather || {};
+  	if (action.type === 'ADD_WEATHER_DATA') {
+      let newState = action.content;
+      weather = newState;
+  	}
+  	return weather
+  };
+  const formDataReducer = (currentResponses, action) => {
+    currentResponses = currentResponses || [];
+  	if (action.type === 'ADD_RESPONSE') {
+      let newResponse = action.formData;
+      console.log('cur responses')
+      console.log(currentResponses);
+      return [...currentResponses, newResponse
+              ]
+  	}
+    return currentResponses;
+  };
+
+  const calendarEventsReducer = (calendarEvents, action) => {
+  calendarEvents = calendarEvents || initCal;
+	if (action.type === 'ADD_EVENT') {
+    let newEvent = action.calendarEvent;
+    return [...calendarEvents, newEvent
+            ]
 	}
-	return weather
-};
+  if (action.type === 'RENAME_EVENT') {
+    let e = action.id
+    if (action.newName) {
+      let targetID = calendarEvents.findIndex(function (event) {
+        return e.id === event.id;
+      });
+      return calendarEvents.map((event, index) => {
+        if (index !== targetID) {
+          return event
+        }
+        let updatedEvent = {...event};
+        updatedEvent.title = action.newName;
+        return updatedEvent;
+      });
+      } else {
+        console.log("Invalid name passed was:" + action.newName);
+        return calendarEvents;
+      }
+    }
+  if (action.type === 'DRAG_EVENT') {
+    console.log("event dragging");
+    let e = action.calendarEvent
+    console.log(e);
+    let targetID = calendarEvents.findIndex(function (event) {
+      return e.id === event.id;
+    });
+    let modifiedEvent = Object.assign({}, e);
+    console.log(modifiedEvent.event);
+    return calendarEvents.map((event, index) => {
+      if (index !== targetID) {
+        return event
+      }
+        return modifiedEvent;
+    });
+  }
+  return calendarEvents;
+}
 /*
 const runDataReducer = (currentRuns, action) => {
   currentRuns = currentRuns || {};
@@ -38,6 +98,26 @@ const pagesReducer = (currentPage = '', action) => {
 export default combineReducers({
 	//user_input: userInputReducer,
   weather: weatherReducer,
-  //runData: runDataReducer,
+  formData: formDataReducer,
+  calendarEvents: calendarEventsReducer,
   pages: pagesReducer
 });
+/*if (action.type === 'RENAME_EVENT') {
+  if (action.payload.name) {
+    // set up to prepare for event modification
+    let e = action.payload.calendarEvent
+    let currentEvents = [...calendarEvents];
+    let renameIndex = calendarEvents.findIndex(function (event) {
+      // console.log(e);
+      return e.id === event.id;
+    });
+    let eventToRename = {...currentEvents[renameIndex]};
+    eventToRename.title = action.payload.name;
+    currentEvents[renameIndex] = eventToRename;
+    return currentEvents;
+    }
+  else {
+    console.log("Name passed was:" + action.payload.name);
+    return calendarEvents;
+  }
+} */

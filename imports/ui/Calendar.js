@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 
 import FullCalendar from "@fullcalendar/react"
 import dayGridPlugin from "@fullcalendar/daygrid"
@@ -10,16 +9,12 @@ import '@fullcalendar/core/main.css';
 import '@fullcalendar/daygrid/main.css';
 import '@fullcalendar/timegrid/main.css';
 
+import { connect } from 'react-redux';
+import { addEvent, renameEvent, dragEvent } from './actions/index'
+import {bindActionCreators} from 'redux'
+
 // Calendar component -
 class Calendar extends Component {
-
-  state = {
-      calendarEvents: [
-          {id: '1', title: "Event 1", start: new Date() },
-          {id: '2', title: "Event 2", start: new Date() }
-        ]
-      }
-
   handleLoad(nextProps) {
       let rd = nextProps.weather.data;
       console.log(rd);
@@ -53,13 +48,14 @@ class Calendar extends Component {
         <FullCalendar
         dateClick={this.handleDateClick}
         eventClick={this.handleEventClick}
+        eventDrop={this.handleEventDrop}
         defaultView="timeGridWeek"
         header={{
               left: "prev,next today",
               center: "title",
               right: "dayGridMonth,timeGridWeek,timeGridDay,listWeek"
             }}
-        events={this.state.calendarEvents}
+        events={this.props.calendarEvents}
         editable={true}
         nowIndicator= {true}
         plugins={[ dayGridPlugin, timeGridPlugin, interactionPlugin]}
@@ -73,54 +69,63 @@ class Calendar extends Component {
     // console.log(nextProps.weather);
     if (nextProps.weather.data) {
       // console.log(this.props.weather.data);
-      this.handleLoad(nextProps);
+      // this.handleLoad(nextProps);
     }
   }
 
   handleDateClick = (e) => {
     if (confirm("Would you like to add a run to " + e.dateStr + " ?")) {
-      this.setState({
-        calendarEvents: this.state.calendarEvents.concat({
-          // creates a new array with event for Redux compatabilty
-          title: "New Run",
-          start: e.date,
-          allDay: e.allDay
-        })
-      });
+      let newEvent = {
+        // Date.parse returns the ms elapsed since January 1, 1970, 00:00:00 UTC
+        // toString(16) converts the ms to hex which is concatenated with a
+        // random number between 0 to 1000
+        id: (Date.parse(new Date)).toString(16) + Math.floor(Math.random()*1000),
+        title: "New Run",
+        start: e.date,
+        allDay: e.allDay,
+        duration: "5km"
+      }
+      this.props.addEvent(newEvent);
+
     }
   }
   // should trigger a component to display and allow event editting
   // call component <EventModifier/>
   handleEventClick = (e) => {
-    this.handleLoad();
-    /* Without Redux, it is very inconvenient to modify an item.
-    ** Investigate: https://reactjs.org/docs/update.html
-    ** Currently using method: https://stackoverflow.com/a/49502115
-    ** Could use a ref so a call the the calendarAPI
-    ** would get the element more directly as well.
-    ** e.g: e.event.setExtendedProp( title, eventName );
-    */
-    let currentEvents = [...this.state.calendarEvents];
     let newEventName = prompt("Change run name to: ");
-    if (newEventName) {
-      let renameIndex = this.state.calendarEvents.findIndex(function (event) {
-        console.log(e.event);
-        // console.log(event);
-        return e.event.id === event.id ;
-      });
-      let eventToRename = {...currentEvents[renameIndex]};
-      eventToRename.title = newEventName;
-      currentEvents[renameIndex] = eventToRename;
-
-      this.setState({
-        calendarEvents: currentEvents
-        })
-      }
+       this.props.renameEvent(e.event, name=newEventName);
+       console.log(this.props.calendarEvents);
     }
+
+  handleEventDrop = (e) => {
+    alert(e.event.title + " was dropped on " + e.event.start.toISOString());
+    if (!confirm("Are you sure about this change?")) {
+      e.revert();
+    } else {
+      this.props.dragEvent(e);
+    }
+    console.log(this.props.calendarEvents);
+  }
 
 }
 
 const mapStateToProps = (state) => {
-  return { weather: state.weather };
+  return {
+    calendarEvents: state.calendarEvents,
+    weather: state.weather
+         };
 }
-export default connect(mapStateToProps)(Calendar);
+
+
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators(
+    {
+      addEvent,
+      renameEvent,
+      dragEvent
+    },
+    dispatch
+  );
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Calendar);

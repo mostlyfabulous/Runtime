@@ -19,3 +19,25 @@ export const changePage = pageName => {
     pageName
   };
 };
+
+export const dragEvent = calendarEvent => {
+  return {
+    type: 'DRAG_EVENT',
+    calendarEvent
+  };
+};
+
+export const addEvent = calendarEvent => {
+  return {
+    type: 'ADD_EVENT',
+    calendarEvent
+  };
+}
+
+export const renameEvent = (id, newName) => {
+  return {
+    type: 'RENAME_EVENT',
+    id,
+    newName
+  };
+}
