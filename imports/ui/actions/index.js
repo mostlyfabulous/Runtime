@@ -27,9 +27,10 @@ export const addEvent = calendarEvent => {
   };
 };
 
-export const renameEvent = calendarEvent => {
+export const renameEvent = (id, newName) => {
   return {
     type: 'RENAME_EVENT',
-    calendarEvent
+    id,
+    newName
   };
 };

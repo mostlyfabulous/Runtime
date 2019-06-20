@@ -41,7 +41,16 @@ const calendarEventsReducer = (calendarEvents, action) => {
     let newEvent = action.calendarEvent;
     return [...calendarEvents, newEvent
             ]
-	}
+	} else if (action.type === 'RENAME_EVENT') {
+    let newCalendarEvents = [];
+    for (let entry of calendarEvents) {
+      if (entry.id === action.id) {
+          entry.title = action.newName;
+      }
+      newCalendarEvents.push(entry);
+    }
+    calendarEvents = newCalendarEvents;
+  }
 
 	return calendarEvents
 };
