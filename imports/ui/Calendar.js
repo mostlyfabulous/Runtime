@@ -17,7 +17,6 @@ import {bindActionCreators} from 'redux'
 class Calendar extends Component {
 
   render() {
-    console.log("calendar loading");
     return (
       <div>
         <FullCalendar
@@ -50,7 +49,8 @@ class Calendar extends Component {
         title: "New Run",
         start: e.date,
         allDay: e.allDay,
-        duration: "5km"
+        distance: 5,
+        category: "run"
       }
       this.props.addEvent(newEvent);
 
