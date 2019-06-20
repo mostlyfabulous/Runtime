@@ -1,20 +1,23 @@
 import React from 'react';
-import Info from './Info.js';
-import Calendar from './Calendar.js';
+import {connect} from 'react-redux';
+import RunPlan from './pages/RunPlan';
+import History from './pages/History';
 
 class Main extends React.Component {
     render() {
+        let body = <RunPlan/>;
+        if (this.props.page === 'history')
+            body = <History/>;
         return (
-            <div className='body'>
-                <div id='sideMenu'>
-                    <Info/>
-                </div>
-                <div id='mainContent'>
-                    <Calendar/>
-                </div>
-            </div>
+            <div>{body}</div>
         )
     }
 }
 
-export default Main;
+const mapStateToProps = (state) => {
+    return {
+        page: state.pages
+    };
+}
+
+export default connect(mapStateToProps)(Main);
