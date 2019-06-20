@@ -8,47 +8,50 @@ import googleCalendar from "@fullcalendar/google-calendar";
 import '@fullcalendar/core/main.css';
 import '@fullcalendar/daygrid/main.css';
 import '@fullcalendar/timegrid/main.css';
+import { connect } from 'react-redux';
+import { addEvent } from './actions/index'
+import {bindActionCreators} from 'redux'
 
 // Calendar component -
-export default class Calendar extends Component {
-  state = {
-      calendarEvents: [
-          {id: '1', title: "Event Now", start: new Date() },
-          {id: '2', title: "Event Now", start: new Date() }
-        ]
-      }
+class Calendar extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+        calendarEvents: []
+        }
+  }
 
   render() {
-    return (
-      <div>
-        <FullCalendar
-        dateClick={this.handleDateClick}
-        eventClick={this.handleEventClick}
-        defaultView="timeGridWeek"
-        header={{
-              left: "prev,next today",
-              center: "title",
-              right: "dayGridMonth,timeGridWeek,timeGridDay,listWeek"
-            }}
-        events={this.state.calendarEvents}
-        editable={true}
-        nowIndicator= {true}
-        plugins={[ dayGridPlugin, timeGridPlugin, interactionPlugin]}
-        />
-      </div>
-    );
+      return (
+        <div>
+          <FullCalendar
+          dateClick={this.handleDateClick}
+          eventClick={this.handleEventClick}
+          defaultView="timeGridWeek"
+          header={{
+                left: "prev,next today",
+                center: "title",
+                right: "dayGridMonth,timeGridWeek,timeGridDay,listWeek"
+              }}
+          events={this.state.calendarEvents}
+          editable={true}
+          nowIndicator= {true}
+          plugins={[ dayGridPlugin, timeGridPlugin, interactionPlugin]}
+          />
+        </div>
+      );
   }
 
   handleDateClick = (e) => {
     if (confirm("Would you like to add a run to " + e.dateStr + " ?")) {
-      this.setState({
-        calendarEvents: this.state.calendarEvents.concat({
-          // creates a new array with event for Redux compatabilty
-          title: "New Run",
-          start: e.date,
-          allDay: e.allDay
-        })
-      });
+      let newEvent = {
+        title: "New Run",
+        start: e.date,
+        allDay: e.allDay
+      }
+      this.props.addEvent(newEvent);
+      this.setState({calendarEvents: this.props.calendarEvents});
+
     }
   }
   // should trigger a component to display and allow event editting
@@ -77,3 +80,22 @@ export default class Calendar extends Component {
       })
   }
 }
+
+const mapStateToProps = (state) => {
+  return {  calendarEvents: state.calendarEvents
+         };
+}
+
+
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators(
+    {
+      addEvent
+    },
+    dispatch
+  );
+};
+
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(Calendar);
