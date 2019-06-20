@@ -25,6 +25,7 @@ class Calendar extends Component {
         eventClick={this.handleEventClick}
         eventDrop={this.handleEventDrop}
         defaultView="timeGridWeek"
+        scrollTime={new Date(Date.now()).getHours()+":00"}
         header={{
               left: "prev,next today",
               center: "title",
