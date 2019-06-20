@@ -15,6 +15,7 @@ let initCal = [
   	}
   	return weather
   };
+
   const formDataReducer = (currentResponses, action) => {
     currentResponses = currentResponses || [];
   	if (action.type === 'ADD_RESPONSE') {
@@ -97,6 +98,9 @@ const pagesReducer = (currentPage = '', action) => {
 	}
 	return currentPage
 };
+
+
+
 export default combineReducers({
 	//user_input: userInputReducer,
   weather: weatherReducer,
