@@ -97,6 +97,7 @@ class Info extends Component {
   }
 
 componentWillReceiveProps(nextProps) {
+  // add colored weather events to calendar as background events
   let rd = nextProps.weather.data;
   let weatherEvents = rd.list.map( (threeHourEvent) =>
       {
@@ -110,7 +111,8 @@ componentWillReceiveProps(nextProps) {
       start: new Date(threeHourEvent.dt_txt+" GMT"),
       end: new Date(threeHourEvent.dt_txt+" GMT-0300"),
       rendering: 'background',
-      color: c
+      color: c,
+      editable: false // prevent users from modifying weather events
       })
       return e;
     })
