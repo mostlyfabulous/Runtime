@@ -1,35 +1,24 @@
 import React, { Component } from 'react';
-import {Bar} from 'react-chartjs-2';
-
-const data = {
-    labels: ['Mon', 'Tue', 'Wed', 'Thurs', 'Fri', 'Sat', 'Sun'],
-    datasets: [
-      {
-        label: 'Run #1',
-        backgroundColor:'blue',
-        data: [3,1,4,0,6,2,3]
-      },
-      {
-        label: 'Run #2',
-        backgroundColor:'green',
-        data: [3,10,1,0,0,1,2]
-      },
-      {
-        label: 'Run #3',
-        backgroundColor:'red',
-        data: [2,3,2,3,2,3,2]
-      }
-    ]
-  };
+import { Bar } from 'react-chartjs-2';
+import { getHistoryChartData, historyInfo } from './actions/index';
+import { connect } from 'react-redux';
 
 class HistoryChart extends React.Component {
+    componentDidMount() {
+        this.props.getHistoryChartData();
+    }
+    handleClick(elems) {
+        if (elems.length !== 0){
+            console.log(elems[0]._index);
+            this.props.historyInfo(elems[0]._index);
+        }
+    }
     render() {
         return (
             <div>
                 <Bar
-                    data={data}
-                    width={100}
-                    height={50}
+                    data={this.props.data}
+                    onElementsClick={elems => this.handleClick(elems)}
                     options={{
                         
                         maintainAspectRatio: true,
@@ -57,4 +46,10 @@ class HistoryChart extends React.Component {
     }
 }
 
-export default HistoryChart;
+const mapStateToProps = (state) => {
+    return {
+        data: state.runHistory
+    }
+}
+
+export default connect(mapStateToProps, {getHistoryChartData, historyInfo}) (HistoryChart);

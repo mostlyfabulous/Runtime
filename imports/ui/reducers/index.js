@@ -95,12 +95,136 @@ const pagesReducer = (currentPage = '', action) => {
 	}
 	return currentPage
 };
+
+let exampleRuns = [
+  [
+    // first run each day
+    {
+      day: 0,
+      distance: 3,
+      time: 40
+    },
+    {
+      day: 2,
+      distance: 1,
+      time: 10
+    },
+    {
+      day: 6,
+      distance: 4,
+      time: 40
+    }
+  ],
+  [
+    // second run each day
+    {
+      day: 0,
+      distance: 1,
+      time: 10
+    },
+    {
+      day: 1,
+      distance: 10,
+      time: 120
+    },
+    {
+      day: 4,
+      distance: 1,
+      time: 10
+    }
+  ],
+  [
+    {
+      day: 0,
+      distance: 2,
+      time: 20
+    },
+    {
+      day: 5,
+      distance: 5,
+      time: 65
+    },
+    {
+      day: 6,
+      distance: 3,
+      time: 36
+    }
+  ]
+]
+
+const getHistoryInfoReducer = (info = [], action) => {
+  if (action.type === 'HISTORY_INFO') {
+    let runList = exampleRuns;
+    let i;
+    for (i = 0; i < runList.length; i++){
+      let run = runList[i][action.period]
+      if (run) {
+        info[i] = run
+      }
+    }
+  }
+  console.log(info)
+  return info;
+}
+
+const runHistoryDataReducer = (data = {}, action) => {
+  if (action.type === 'GET_HISTORY') {
+    let barColors = ['blue', 'green', 'red', 'yellow', 'purple', 'orange', 'indigo']
+    let labels
+    if (action.format === 'WEEK') {
+
+      labels = ['Mon', 'Tue', 'Wed', 'Thurs', 'Fri', 'Sat', 'Sun'];
+    }
+    // else if (action.format === 'DAY'){
+    //   something
+    // } else if (action.format === 'MONTH') {
+    //   something
+    // }
+
+    let datasets = [];
+    let i;
+    let runList = exampleRuns
+
+    for (i = 0; i < runList.length; i++){
+      let distances = [];
+      runList[i].forEach(function (run) {
+        distances[run.day] = run.distance;
+      })
+      datasets[i] = {
+        label: 'Run #'+(i+1),
+        backgroundColor: barColors[i],
+        data: distances
+      }
+    }
+
+    data = {
+      labels: labels,
+      datasets: datasets
+      // datasets: [
+      //   {
+      //     label: 'Run #1',
+      //     backgroundColor:'blue',
+      //     data: [3,1,4,0,6,2,3]
+      //   },
+      //   {
+      //     label: 'Run #2',
+      //     backgroundColor:'green',
+      //     data: [3,10,1,null,null,1,2]
+      //   }
+      // ] 
+    }
+  }
+  return data;
+}
+
 export default combineReducers({
 	//user_input: userInputReducer,
   weather: weatherReducer,
   formData: formDataReducer,
   calendarEvents: calendarEventsReducer,
-  pages: pagesReducer
+  pages: pagesReducer,
+  runHistory: runHistoryDataReducer,
+  historyInfo: getHistoryInfoReducer,
 });
 /*if (action.type === 'RENAME_EVENT') {
   if (action.payload.name) {
