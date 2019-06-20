@@ -1,4 +1,5 @@
 import React from 'react';
+import HistoryChart from '../HistoryChart';
 
 class History extends React.Component {
     render() {
@@ -9,6 +10,7 @@ class History extends React.Component {
                 </div>
                 <div id='mainContent'>
                     Graph
+                    <HistoryChart/>
                 </div>
             </div>
         )
