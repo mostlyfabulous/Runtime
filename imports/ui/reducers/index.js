@@ -1,8 +1,10 @@
+import React from 'react';
 import { combineReducers } from 'redux';
+calendarRef = React.createRef()
 
 let initCal = [
-    {id: '1', title: "Event Now 1", start: new Date() },
-    {id: '2', title: "Event Now 2", start: new Date() }
+    {id: '1', title: "Event Now 1", start: new Date()},
+    {id: '2', title: "Event Now 2", start: new Date()}
   ];
 
   const weatherReducer = (weather, action) => {
@@ -29,8 +31,8 @@ let initCal = [
   calendarEvents = calendarEvents || initCal;
 	if (action.type === 'ADD_EVENT') {
     let newEvent = action.calendarEvent;
-    return [...calendarEvents, newEvent
-            ]
+    // concat allows an array of events to be added vs [...events, event(s)]
+    return [...calendarEvents.concat(newEvent)]
 	}
   if (action.type === 'RENAME_EVENT') {
     let e = action.id
@@ -54,12 +56,14 @@ let initCal = [
   if (action.type === 'DRAG_EVENT') {
     console.log("event dragging");
     let e = action.calendarEvent
-    console.log(e);
     let targetID = calendarEvents.findIndex(function (event) {
       return e.id === event.id;
     });
-    let modifiedEvent = Object.assign({}, e);
-    console.log(modifiedEvent.event);
+    let modifiedEvent = {};
+    processObjWithRef(e.event, modifiedEvent);
+    // console.log(modifiedEvent.start);
+
+    console.log(modifiedEvent);
     return calendarEvents.map((event, index) => {
       if (index !== targetID) {
         return event

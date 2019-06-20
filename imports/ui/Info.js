@@ -3,7 +3,7 @@ import { withTracker } from 'meteor/react-meteor-data';
 import { config } from '../../config.js';
 import Links from '../api/links';
 import { connect } from 'react-redux';
-import { addWeatherData } from './actions/index'
+import { addWeatherData, addEvent } from './actions/index'
 import {bindActionCreators} from 'redux'
 const axios = require('axios');
 
@@ -96,6 +96,26 @@ class Info extends Component {
 
   }
 
+componentWillReceiveProps(nextProps) {
+  let rd = nextProps.weather.data;
+  let weatherEvents = rd.list.map( (threeHourEvent) =>
+      {
+      let c = 'black';
+      let t = threeHourEvent.main.temp
+      if (t > 298.15) c = 'red'; // warm
+      else if (t > 295.15 && t <= 298.15) c = 'green'; // pleasant
+      else if (t <= 295.15) c = 'yellow'; // cool
+      else (console.log(t))
+      let e =  ({
+      start: new Date(threeHourEvent.dt_txt+" GMT"),
+      end: new Date(threeHourEvent.dt_txt+" GMT-0300"),
+      rendering: 'background',
+      color: c
+      })
+      return e;
+    })
+  this.props.addEvent(weatherEvents);
+}
 
 }
 
@@ -112,7 +132,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
     {
-      addWeatherData
+      addWeatherData, addEvent
     },
     dispatch
   );
