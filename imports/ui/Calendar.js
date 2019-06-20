@@ -15,31 +15,6 @@ import {bindActionCreators} from 'redux'
 
 // Calendar component -
 class Calendar extends Component {
-  handleLoad(nextProps) {
-      let rd = nextProps.weather.data;
-      console.log(rd);
-      let weatherEvents = rd.list.map( (threeHourEvent) =>
-          {
-          let c = 'black';
-          let t = threeHourEvent.main.temp
-          if (t > 298.15) c = 'red'; // warm
-          else if (t > 295.15 && t <= 298.15) c = 'green'; // pleasant
-          else if (t <= 295.15) c = 'yellow'; // cool
-          else (console.log(t))
-          let e =  ({
-          start: new Date(threeHourEvent.dt_txt+" GMT"),
-          end: new Date(threeHourEvent.dt_txt+" GMT-0300"),
-          rendering: 'background',
-          color: c
-          })
-          return e;
-        })
-      console.log(weatherEvents);
-
-      this.setState({
-        calendarEvents: this.state.calendarEvents.concat(weatherEvents)
-      });
-    };
 
   render() {
     console.log("calendar loading");
@@ -50,6 +25,7 @@ class Calendar extends Component {
         eventClick={this.handleEventClick}
         eventDrop={this.handleEventDrop}
         defaultView="timeGridWeek"
+        scrollTime={new Date(Date.now()).getHours()+":00"}
         header={{
               left: "prev,next today",
               center: "title",
@@ -62,15 +38,6 @@ class Calendar extends Component {
         />
       </div>
     );
-  }
-
-  componentWillReceiveProps(nextProps) {
-    console.log("Calendar WillReceiveProps Weather from Store");
-    // console.log(nextProps.weather);
-    if (nextProps.weather.data) {
-      // console.log(this.props.weather.data);
-      // this.handleLoad(nextProps);
-    }
   }
 
   handleDateClick = (e) => {

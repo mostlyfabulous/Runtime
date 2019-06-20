@@ -1,8 +1,10 @@
+import React from 'react';
 import { combineReducers } from 'redux';
+calendarRef = React.createRef()
 
 let initCal = [
-    {id: '1', title: "Event Now 1", start: new Date() },
-    {id: '2', title: "Event Now 2", start: new Date() }
+    {id: '1', title: "Event Now 1", start: new Date()},
+    {id: '2', title: "Event Now 2", start: new Date()}
   ];
 
   const weatherReducer = (weather, action) => {
@@ -29,10 +31,11 @@ let initCal = [
   calendarEvents = calendarEvents || initCal;
 	if (action.type === 'ADD_EVENT') {
     let newEvent = action.calendarEvent;
-    return [...calendarEvents, newEvent
-            ]
+    // concat allows an array of events to be added vs [...events, event(s)]
+    return [...calendarEvents.concat(newEvent)]
 	}
   if (action.type === 'RENAME_EVENT') {
+    console.log("rename event fire");
     let e = action.id
     if (action.newName) {
       let targetID = calendarEvents.findIndex(function (event) {
@@ -43,6 +46,7 @@ let initCal = [
           return event
         }
         let updatedEvent = {...event};
+        console.log(updatedEvent);
         updatedEvent.title = action.newName;
         return updatedEvent;
       });
@@ -52,20 +56,18 @@ let initCal = [
       }
     }
   if (action.type === 'DRAG_EVENT') {
-    console.log("event dragging");
+    console.log("revent drag fire");
     let e = action.calendarEvent
-    console.log(e);
-    let targetID = calendarEvents.findIndex(function (event) {
-      return e.id === event.id;
-    });
-    let modifiedEvent = Object.assign({}, e);
-    console.log(modifiedEvent.event);
-    return calendarEvents.map((event, index) => {
-      if (index !== targetID) {
-        return event
-      }
-        return modifiedEvent;
-    });
+    console.log(targetID);
+    let modifiedEvent = {
+      id    : e.event.id,
+      title : e.event.title,
+      start : e.event.start,
+      end : e.event.end
+    }
+    return [...calendarEvents.filter( (event) => {
+      return event.id !== (e.event.id)
+    }), modifiedEvent]
   }
   return calendarEvents;
 }
