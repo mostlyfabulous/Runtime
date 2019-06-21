@@ -11,7 +11,6 @@ class History extends React.Component {
                     <HistoryInfo/>
                 </div>
                 <div id='mainContent'>
-                    Graph
                     <HistoryChart/>
                 </div>
             </div>

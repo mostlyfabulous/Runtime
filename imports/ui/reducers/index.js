@@ -94,7 +94,7 @@ const runDataReducer = (currentRuns, action) => {
 };
 */
 
-const pagesReducer = (currentPage = '', action) => {
+const pagesReducer = (currentPage = 'plan', action) => {
 	if (action.type === 'CHANGE_PAGE') {
     currentPage = action.pageName;
 	}
