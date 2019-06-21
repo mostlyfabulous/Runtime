@@ -101,6 +101,12 @@ const pagesReducer = (currentPage = '', action) => {
 	return currentPage
 };
 
+const eventEditorReducer = (editEventView = false, action) => {
+	if (action.type === 'TOGGLE_EDITOR') {
+    editEventView = !editEventView;
+	}
+	return editEventView
+};
 
 
 export default combineReducers({
@@ -108,7 +114,8 @@ export default combineReducers({
   weather: weatherReducer,
   formData: formDataReducer,
   calendarEvents: calendarEventsReducer,
-  pages: pagesReducer
+  pages: pagesReducer,
+  editEventView: eventEditorReducer
 });
 /*if (action.type === 'RENAME_EVENT') {
   if (action.payload.name) {

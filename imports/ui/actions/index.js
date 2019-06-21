@@ -20,6 +20,13 @@ export const changePage = pageName => {
   };
 };
 
+export const toggleEventEditor = toggle => {
+  return {
+    type: 'TOGGLE_EDITOR',
+    toggle
+  };
+};
+
 export const dragEvent = calendarEvent => {
   return {
     type: 'DRAG_EVENT',

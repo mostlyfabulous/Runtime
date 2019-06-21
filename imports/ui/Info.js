@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import { withTracker } from 'meteor/react-meteor-data';
 import { config } from '../../config.js';
 import Links from '../api/links';
+import EventEditor from './EventEditor';
 import { connect } from 'react-redux';
-import { addWeatherData, addEvent } from './actions/index'
+import { addWeatherData, addEvent, toggleEventEditor } from './actions/index'
 import {bindActionCreators} from 'redux'
 const axios = require('axios');
 
@@ -69,32 +70,60 @@ class Info extends Component {
 
   render() {
     let city = 'Vancouver';
-    return (
-      <div>
-        <h2>3-Hour Forecast: {city}</h2>
-        <p><b>Current Temp:</b> {this.state.current_temp}</p>
-        <p><b>Min/Max Temp:</b> {this.state.current_temp_min}/{this.state.current_temp_max}</p>
-        <p><b>Clouds:</b> {this.state.current_clouds} </p>
-        <h2>Your Next Run</h2>
-        <form onSubmit={this.handleSubmit} ref='form'>
-          <label htmlFor="duration">Duration</label>
-          <input type="time" id="duration" step="60" placeholder="Hours: Minutes" />
-          <br/>
-          <label htmlFor="start_time">Start Time</label>
-          <input type="time" id="start_time" step="60" placeholder="Hours: Minutes" />
-          <br/>
-          <label htmlFor="end_time">End Time</label>
-          <input type="time" id="end_time" step="60" placeholder="Hours: Minutes" />
-          <br/>
-          <label htmlFor="distance">Distance</label>
-          <input type="number" id="distance" step="0.01" placeholder="km/m" />
-          <br/>
-          <button type="submit">Find a Run!</button>
-        </form>
-      </div>
-    );
 
+    if (this.props.editEventView) {
+      return (
+        <div>
+          <h2>3-Hour Forecast: {city}</h2>
+          <p><b>Current Temp:</b> {this.state.current_temp}</p>
+          <p><b>Min/Max Temp:</b> {this.state.current_temp_min}/{this.state.current_temp_max}</p>
+          <p><b>Clouds:</b> {this.state.current_clouds} </p>
+          <h2>Your Next Run</h2>
+          <form onSubmit={this.handleSubmit} ref='form'>
+            <label htmlFor="duration">Duration</label>
+            <input type="time" id="duration" step="60" placeholder="Hours: Minutes" />
+            <br/>
+            <label htmlFor="start_time">Start Time</label>
+            <input type="time" id="start_time" step="60" placeholder="Hours: Minutes" />
+            <br/>
+            <label htmlFor="end_time">End Time</label>
+            <input type="time" id="end_time" step="60" placeholder="Hours: Minutes" />
+            <br/>
+            <label htmlFor="distance">Distance</label>
+            <input type="number" id="distance" step="0.01" placeholder="km/m" />
+            <br/>
+            <button type="submit">Find a Run!</button>
+          </form>
+          <EventEditor/>
+        </div>
+    )
+  } else {
+      return (
+        <div>
+          <h2>3-Hour Forecast: {city}</h2>
+          <p><b>Current Temp:</b> {this.state.current_temp}</p>
+          <p><b>Min/Max Temp:</b> {this.state.current_temp_min}/{this.state.current_temp_max}</p>
+          <p><b>Clouds:</b> {this.state.current_clouds} </p>
+          <h2>Your Next Run</h2>
+          <form onSubmit={this.handleSubmit} ref='form'>
+            <label htmlFor="duration">Duration</label>
+            <input type="time" id="duration" step="60" placeholder="Hours: Minutes" />
+            <br/>
+            <label htmlFor="start_time">Start Time</label>
+            <input type="time" id="start_time" step="60" placeholder="Hours: Minutes" />
+            <br/>
+            <label htmlFor="end_time">End Time</label>
+            <input type="time" id="end_time" step="60" placeholder="Hours: Minutes" />
+            <br/>
+            <label htmlFor="distance">Distance</label>
+            <input type="number" id="distance" step="0.01" placeholder="km/m" />
+            <br/>
+            <button type="submit">Find a Run!</button>
+          </form>
+        </div>
+      );
   }
+}
 
 componentWillReceiveProps(nextProps) {
   // add colored weather events to calendar as background events
@@ -117,30 +146,27 @@ componentWillReceiveProps(nextProps) {
       return e;
     })
   this.props.addEvent(weatherEvents);
-}
-
+  }
 }
 
 const mapStateToProps = (state) => {
-  return {  weather: state.weather,
-
+  return {
+    weather: state.weather,
+    editEventView: state.editEventView
          };
     // return {  user_input: state.user_input,
     //           current_weather: state.current_weather
     //        };
 }
 
-
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
     {
-      addWeatherData, addEvent
+      addWeatherData, addEvent, toggleEventEditor
     },
     dispatch
   );
 };
-
-
 
 export default connect(mapStateToProps/*, {addWeatherData}*/, mapDispatchToProps)(Info);
 

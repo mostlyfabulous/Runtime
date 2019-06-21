@@ -10,7 +10,7 @@ import '@fullcalendar/daygrid/main.css';
 import '@fullcalendar/timegrid/main.css';
 
 import { connect } from 'react-redux';
-import { addEvent, renameEvent, dragEvent } from './actions/index'
+import { addEvent, renameEvent, dragEvent, toggleEventEditor } from './actions/index'
 import {bindActionCreators} from 'redux'
 
 // Calendar component -
@@ -60,7 +60,7 @@ class Calendar extends Component {
   // call component <EventModifier/>
   handleEventClick = (e) => {
     // e.jsEvent.cancelBubble=true;
-
+    this.props.toggleEventEditor();
     if (e.event.rendering !== "background") {
       let newEventName = prompt("Change run name to: ");
          this.props.renameEvent(e.event, name=newEventName);
@@ -94,7 +94,8 @@ const mapDispatchToProps = dispatch => {
     {
       addEvent,
       renameEvent,
-      dragEvent
+      dragEvent,
+      toggleEventEditor
     },
     dispatch
   );
