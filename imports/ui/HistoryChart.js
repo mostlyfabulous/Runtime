@@ -9,13 +9,13 @@ class HistoryChart extends React.Component {
     }
     handleClick(elems) {
         if (elems.length !== 0){
-            console.log(elems[0]._index);
             this.props.historyInfo(elems[0]._index);
         }
     }
     render() {
         return (
             <div>
+                <h1>Run History</h1>
                 <Bar
                     data={this.props.data}
                     onElementsClick={elems => this.handleClick(elems)}
@@ -48,7 +48,8 @@ class HistoryChart extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        data: state.runHistory
+        data: state.runHistory,
+        info: state.historyInfo
     }
 }
 

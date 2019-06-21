@@ -104,17 +104,17 @@ let exampleRuns = [
     {
       day: 0,
       distance: 3,
-      time: 40
+      duration: 40
     },
     {
       day: 2,
       distance: 1,
-      time: 10
+      duration: 10
     },
     {
       day: 6,
       distance: 4,
-      time: 40
+      duration: 40
     }
   ],
   [
@@ -122,34 +122,34 @@ let exampleRuns = [
     {
       day: 0,
       distance: 1,
-      time: 10
+      duration: 10
     },
     {
       day: 1,
       distance: 10,
-      time: 120
+      duration: 120
     },
     {
       day: 4,
       distance: 1,
-      time: 10
+      duration: 10
     }
   ],
   [
     {
       day: 0,
       distance: 2,
-      time: 20
+      duration: 20
     },
     {
       day: 5,
       distance: 5,
-      time: 65
+      duration: 65
     },
     {
       day: 6,
       distance: 3,
-      time: 36
+      duration: 36
     }
   ]
 ]
@@ -157,15 +157,16 @@ let exampleRuns = [
 const getHistoryInfoReducer = (info = [], action) => {
   if (action.type === 'HISTORY_INFO') {
     let runList = exampleRuns;
-    let i;
-    for (i = 0; i < runList.length; i++){
-      let run = runList[i][action.period]
-      if (run) {
-        info[i] = run
-      }
-    }
+    let newInfo = [];
+    runList.forEach(function (list) {
+      list.forEach(function (run) {
+        if (run.day === action.period){
+          newInfo.push(run);
+        }
+      })
+    })
+    return newInfo;
   }
-  console.log(info)
   return info;
 }
 
