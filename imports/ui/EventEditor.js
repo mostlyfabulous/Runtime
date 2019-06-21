@@ -27,6 +27,12 @@ export class EventEditor extends Component {
   }
 
   handleSubmit() {
+    this.setState({
+      title     : event.target.title,
+      start     : event.target.start,
+      end       : event.target.end,
+      distance  : event.target.distance
+    });
     event.preventDefault();
   }
 
@@ -34,6 +40,7 @@ export class EventEditor extends Component {
     return (
       <div>
         <h2>Edit Run:</h2>
+        // onChange={this.handleChange}
         <form onSubmit={this.handleSubmit} ref='form'>
           <label htmlFor="title">Run Name</label>
           <input type="string" id="title" placeholder="5km Run" />
@@ -47,7 +54,7 @@ export class EventEditor extends Component {
           <label htmlFor="distance">Distance</label>
           <input type="number" id="distance" step="0.01" placeholder="km/m" />
           <br/>
-          <button type="submit">Find a Run!</button>
+          <button type="submit">Update Run Information</button>
         </form>
       </div>
     );
@@ -56,7 +63,7 @@ export class EventEditor extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    weather: state.weather,
+    editEventView: state.editEventView,
   }
 }
 
