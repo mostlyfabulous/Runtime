@@ -4,7 +4,9 @@ calendarRef = React.createRef()
 
 let initCal = [
     {id: '1', title: "Event Now 1", start: new Date()},
-    {id: '2', title: "Event Now 2", start: new Date()}
+    {id: '2', title: "Event Now 2", start: new Date()},
+    {id: '3', title: "5km Run", start: new Date(Date.now()+(4*60*60000)), distance: 5, category: "run" },
+    {id: '4', title: "10km Run", start: new Date(Date.now()+(24*60*60000)), distance: 10, category: "run" }
   ];
 
   const weatherReducer = (weather, action) => {
@@ -15,6 +17,7 @@ let initCal = [
   	}
   	return weather
   };
+
   const formDataReducer = (currentResponses, action) => {
     currentResponses = currentResponses || [];
   	if (action.type === 'ADD_RESPONSE') {
@@ -219,6 +222,7 @@ const runHistoryDataReducer = (data = {}, action) => {
   }
   return data;
 }
+
 
 export default combineReducers({
 	//user_input: userInputReducer,

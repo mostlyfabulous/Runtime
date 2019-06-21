@@ -17,7 +17,6 @@ import {bindActionCreators} from 'redux'
 class Calendar extends Component {
 
   render() {
-    console.log("calendar loading");
     return (
       <div>
         <FullCalendar
@@ -50,7 +49,8 @@ class Calendar extends Component {
         title: "New Run",
         start: e.date,
         allDay: e.allDay,
-        duration: "5km"
+        distance: 5,
+        category: "run"
       }
       this.props.addEvent(newEvent);
 
@@ -59,12 +59,17 @@ class Calendar extends Component {
   // should trigger a component to display and allow event editting
   // call component <EventModifier/>
   handleEventClick = (e) => {
-    let newEventName = prompt("Change run name to: ");
-       this.props.renameEvent(e.event, name=newEventName);
-       console.log(this.props.calendarEvents);
+    // e.jsEvent.cancelBubble=true;
+
+    if (e.event.rendering !== "background") {
+      let newEventName = prompt("Change run name to: ");
+         this.props.renameEvent(e.event, name=newEventName);
+         console.log(this.props.calendarEvents);
+      }
     }
 
   handleEventDrop = (e) => {
+    // e.jsEvent.cancelBubble=true;
     alert(e.event.title + " was dropped on " + e.event.start.toISOString());
     if (!confirm("Are you sure about this change?")) {
       e.revert();

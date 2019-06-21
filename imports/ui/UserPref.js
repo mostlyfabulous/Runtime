@@ -7,13 +7,11 @@ import { addWeatherData, addEvent } from './actions/index'
 import {bindActionCreators} from 'redux'
 const axios = require('axios');
 
-class Info extends Component {
+class UserPref extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      runData: {
-      },
-      weather: {
+      userPref: {
       },
       current_temp: '',
       current_temp_min: '',
@@ -41,17 +39,6 @@ class Info extends Component {
             current_temp_max: Math.round(weather.data.list[0].main.temp_max-273.15) + '°C',
             current_clouds: weather.data.list[0].clouds.all + '%'
         })
-    //console.log(this.props.weather.data.city.name)
-    //let localDate = new Date(this.props.weather.data.list[0].dt * 1000);
-    //console.log(localDate)
-
-
-    //console.log(Math.round(this.props.weather.data.list[0].main.temp-273.15))
-    //console.log(Math.round(this.props.weather.data.list[0].main.temp_min-273.15))
-    //console.log(Math.round(this.props.weather.data.list[0].main.temp_max-273.15))
-    // console.log(this.props.weather.data.list[0].weather)
-  //  console.log(this.props.weather.data.list[0].clouds.all + '%')
-    //console.log(this.props.weather.data.list[0].rain.3h)
   })
   .catch(error => {
     console.log(error);
@@ -71,9 +58,8 @@ class Info extends Component {
     let city = 'Vancouver';
     return (
       <div>
-        <h2>3-Hour Forecast: {city}</h2>
-        <p><b>Current Temp:</b> {this.state.current_temp}</p>
-        <p><b>Min/Max Temp:</b> {this.state.current_temp_min}/{this.state.current_temp_max}</p>
+        <h2>Your Current Preferences:</h2>
+        <p><b>Temperature Range: </b> {this.state.current_temp_min} - {this.state.current_temp_max}</p>
         <p><b>Clouds:</b> {this.state.current_clouds} </p>
         <h2>Your Next Run</h2>
         <form onSubmit={this.handleSubmit} ref='form'>
@@ -97,7 +83,6 @@ class Info extends Component {
   }
 
 componentWillReceiveProps(nextProps) {
-  // add colored weather events to calendar as background events
   let rd = nextProps.weather.data;
   let weatherEvents = rd.list.map( (threeHourEvent) =>
       {
@@ -111,8 +96,7 @@ componentWillReceiveProps(nextProps) {
       start: new Date(threeHourEvent.dt_txt+" GMT"),
       end: new Date(threeHourEvent.dt_txt+" GMT-0300"),
       rendering: 'background',
-      color: c,
-      editable: false // prevent users from modifying weather events
+      color: c
       })
       return e;
     })
@@ -122,7 +106,7 @@ componentWillReceiveProps(nextProps) {
 }
 
 const mapStateToProps = (state) => {
-  return {  weather: state.weather,
+  return {  userPref: state.userPref,
 
          };
     // return {  user_input: state.user_input,
@@ -142,12 +126,4 @@ const mapDispatchToProps = dispatch => {
 
 
 
-export default connect(mapStateToProps/*, {addWeatherData}*/, mapDispatchToProps)(Info);
-
-/*
-export default InfoContainer = withTracker(() => {
-  return {
-    links: Links.find().fetch(),
-  };
-})(Info);
-*/
+export default connect(mapStateToProps/*, {addWeatherData}*/, mapDispatchToProps)(UserPref);
