@@ -22,8 +22,10 @@ class HistoryInfo extends React.Component {
             timeUnits = 'hour(s)'
         }
         
+        const dateDayToWeekDay = ['Sun', 'Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat'];
+        let date = info[0].day
         return {
-            day: info[0].day,
+            day: dateDayToWeekDay[date.getDay()]+' '+(date.getMonth()+1)+'/'+date.getDate(),
             avgSpeed: average.toFixed(2),
             totalDist: distance.toFixed(2),
             totalTime: time.toFixed(2),

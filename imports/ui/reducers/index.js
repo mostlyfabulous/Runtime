@@ -115,21 +115,44 @@ const pagesReducer = (currentPage = 'plan', action) => {
 	return currentPage
 };
 
+// for dummy history data
+const currentDate = new Date();
+
+const date1 = new Date();
+const date2 = new Date();
+const date3 = new Date();
+const date4 = new Date();
+const date5 = new Date();
+const date6 = new Date();
+const date7 = new Date();
+const date8 = new Date();
+const date9 = new Date();
+
+date1.setDate(currentDate.getDate()-6);
+date2.setDate(currentDate.getDate()-4);
+date3.setDate(currentDate.getDate());
+date4.setDate(currentDate.getDate()-6);
+date5.setDate(currentDate.getDate()-5);
+date6.setDate(currentDate.getDate()-2);
+date7.setDate(currentDate.getDate()-6);
+date8.setDate(currentDate.getDate()-1);
+date9.setDate(currentDate.getDate());
+
 let exampleRuns = [
   [
     // first run each day
     {
-      day: 0,
+      day: date1,
       distance: 3,
       duration: 40
     },
     {
-      day: 2,
+      day: date2,
       distance: 1,
       duration: 10
     },
     {
-      day: 6,
+      day: date3,
       distance: 4,
       duration: 40
     }
@@ -137,47 +160,56 @@ let exampleRuns = [
   [
     // second run each day
     {
-      day: 0,
+      day: date4,
       distance: 1,
       duration: 10
     },
     {
-      day: 1,
+      day: date5,
       distance: 10,
       duration: 120
     },
     {
-      day: 4,
+      day: date6,
       distance: 1,
       duration: 10
     }
   ],
   [
     {
-      day: 0,
+      day: date7,
       distance: 2,
       duration: 20
     },
     {
-      day: 5,
+      day: date8,
       distance: 5,
       duration: 65
     },
     {
-      day: 6,
+      day: date9,
       distance: 3,
       duration: 36
     }
   ]
 ]
 
+const dateDayToWeekDay = ['Sun', 'Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat'];
+let currentChartFormat = '';
+
 const getHistoryInfoReducer = (info = [], action) => {
   if (action.type === 'HISTORY_INFO') {
     let runList = exampleRuns;
     let newInfo = [];
+
+    let period = new Date();
+    if (currentChartFormat === 'WEEK') {
+      period.setDate(period.getDate()-6+action.period)
+    }
+
     runList.forEach(function (list) {
       list.forEach(function (run) {
-        if (run.day === action.period){
+        if (run.day.getDate() === period.getDate() && run.day.getMonth() === period.getMonth()){
           newInfo.push(run);
         }
       })
@@ -190,10 +222,22 @@ const getHistoryInfoReducer = (info = [], action) => {
 const runHistoryDataReducer = (data = {}, action) => {
   if (action.type === 'GET_HISTORY') {
     let barColors = ['blue', 'green', 'red', 'yellow', 'purple', 'orange', 'indigo']
-    let labels
-    if (action.format === 'WEEK') {
+    currentChartFormat = action.format;
 
-      labels = ['Mon', 'Tue', 'Wed', 'Thurs', 'Fri', 'Sat', 'Sun'];
+    let labels = [];
+    let numDays;
+    let i;
+    if (action.format === 'WEEK') {
+      numDays = 6
+
+      let startDay = currentDate;
+      startDay.setDate(startDay.getDate()-numDays);
+
+      for (i = 0; i <= numDays; i++){
+        let day = new Date();
+        day.setDate(startDay.getDate()+i)
+        labels[i] = dateDayToWeekDay[day.getDay()]+' '+(day.getMonth()+1)+'/'+day.getDate();
+      }
     }
     // else if (action.format === 'DAY'){
     //   something
@@ -202,13 +246,12 @@ const runHistoryDataReducer = (data = {}, action) => {
     // }
 
     let datasets = [];
-    let i;
     let runList = exampleRuns
 
     for (i = 0; i < runList.length; i++){
       let distances = [];
       runList[i].forEach(function (run) {
-        distances[run.day] = run.distance;
+        distances[(run.day-currentDate)/((3600000*24))] = run.distance;
       })
       datasets[i] = {
         label: 'Run #'+(i+1),
