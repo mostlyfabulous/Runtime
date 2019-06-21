@@ -108,13 +108,134 @@ const runDataReducer = (currentRuns, action) => {
 };
 */
 
-const pagesReducer = (currentPage = '', action) => {
+const pagesReducer = (currentPage = 'plan', action) => {
 	if (action.type === 'CHANGE_PAGE') {
     currentPage = action.pageName;
 	}
 	return currentPage
 };
 
+let exampleRuns = [
+  [
+    // first run each day
+    {
+      day: 0,
+      distance: 3,
+      duration: 40
+    },
+    {
+      day: 2,
+      distance: 1,
+      duration: 10
+    },
+    {
+      day: 6,
+      distance: 4,
+      duration: 40
+    }
+  ],
+  [
+    // second run each day
+    {
+      day: 0,
+      distance: 1,
+      duration: 10
+    },
+    {
+      day: 1,
+      distance: 10,
+      duration: 120
+    },
+    {
+      day: 4,
+      distance: 1,
+      duration: 10
+    }
+  ],
+  [
+    {
+      day: 0,
+      distance: 2,
+      duration: 20
+    },
+    {
+      day: 5,
+      distance: 5,
+      duration: 65
+    },
+    {
+      day: 6,
+      distance: 3,
+      duration: 36
+    }
+  ]
+]
+
+const getHistoryInfoReducer = (info = [], action) => {
+  if (action.type === 'HISTORY_INFO') {
+    let runList = exampleRuns;
+    let newInfo = [];
+    runList.forEach(function (list) {
+      list.forEach(function (run) {
+        if (run.day === action.period){
+          newInfo.push(run);
+        }
+      })
+    })
+    return newInfo;
+  }
+  return info;
+}
+
+const runHistoryDataReducer = (data = {}, action) => {
+  if (action.type === 'GET_HISTORY') {
+    let barColors = ['blue', 'green', 'red', 'yellow', 'purple', 'orange', 'indigo']
+    let labels
+    if (action.format === 'WEEK') {
+
+      labels = ['Mon', 'Tue', 'Wed', 'Thurs', 'Fri', 'Sat', 'Sun'];
+    }
+    // else if (action.format === 'DAY'){
+    //   something
+    // } else if (action.format === 'MONTH') {
+    //   something
+    // }
+
+    let datasets = [];
+    let i;
+    let runList = exampleRuns
+
+    for (i = 0; i < runList.length; i++){
+      let distances = [];
+      runList[i].forEach(function (run) {
+        distances[run.day] = run.distance;
+      })
+      datasets[i] = {
+        label: 'Run #'+(i+1),
+        backgroundColor: barColors[i],
+        data: distances
+      }
+    }
+
+    data = {
+      labels: labels,
+      datasets: datasets
+      // datasets: [
+      //   {
+      //     label: 'Run #1',
+      //     backgroundColor:'blue',
+      //     data: [3,1,4,0,6,2,3]
+      //   },
+      //   {
+      //     label: 'Run #2',
+      //     backgroundColor:'green',
+      //     data: [3,10,1,null,null,1,2]
+      //   }
+      // ] 
+    }
+  }
+  return data;
+}
 
 
 export default combineReducers({
@@ -122,7 +243,9 @@ export default combineReducers({
   weather: weatherReducer,
   formData: formDataReducer,
   calendarEvents: calendarEventsReducer,
-  pages: pagesReducer
+  pages: pagesReducer,
+  runHistory: runHistoryDataReducer,
+  historyInfo: getHistoryInfoReducer,
 });
 /*if (action.type === 'RENAME_EVENT') {
   if (action.payload.name) {

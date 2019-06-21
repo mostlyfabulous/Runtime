@@ -21,6 +21,20 @@ export const changePage = pageName => {
   };
 };
 
+export const getHistoryChartData = () => {
+  return {
+    type: 'GET_HISTORY',
+    format: 'WEEK'
+  }
+}
+
+export const historyInfo = period => {
+  return {
+    type: 'HISTORY_INFO',
+    period: period
+  }
+}
+
 export const dragEvent = calendarEvent => {
   return {
     type: 'DRAG_EVENT',
