@@ -31,7 +31,7 @@ let initCal = [
   };
 
   const calendarEventsReducer = (calendarEvents, action) => {
-  calendarEvents = calendarEvents || initCal;
+    calendarEvents = calendarEvents || initCal;
 	if (action.type === 'ADD_EVENT') {
     let newEvent = action.calendarEvent;
     // concat allows an array of events to be added vs [...events, event(s)]
@@ -71,6 +71,20 @@ let initCal = [
     return [...calendarEvents.filter( (event) => {
       return event.id !== (e.event.id)
     }), modifiedEvent]
+  }
+  if (action.type === 'NEXT_RUN') {
+    let now = new Date();
+    let events = calendarEvents.filter(calendarEvents =>
+      (calendarEvents.category === 'run') && (calendarEvents.start > now));
+    action.mostRecent = {};
+    if (events.length > 0) {
+        action.mostRecent = events[0];
+
+        for (let entry of events) {
+          if (entry.start < action.mostRecent.start)
+            action.mostRecent = entry;
+        }
+    }
   }
   return calendarEvents;
 }

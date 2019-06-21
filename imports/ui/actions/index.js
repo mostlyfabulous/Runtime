@@ -1,3 +1,4 @@
+let mostRecent = {};
 
 export const addWeatherData = content => {
   return {
@@ -39,5 +40,12 @@ export const renameEvent = (id, newName) => {
     type: 'RENAME_EVENT',
     id,
     newName
+  };
+}
+
+export const nextRun = mostRecent => {
+  return {
+    type: 'NEXT_RUN',
+    mostRecent
   };
 }

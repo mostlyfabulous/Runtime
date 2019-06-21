@@ -52,6 +52,8 @@ class Calendar extends Component {
         distance: 5,
         category: "run"
       }
+      console.log('newEvent')
+      console.log(newEvent)
       this.props.addEvent(newEvent);
 
     }

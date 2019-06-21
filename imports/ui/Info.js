@@ -3,7 +3,7 @@ import { withTracker } from 'meteor/react-meteor-data';
 import { config } from '../../config.js';
 import Links from '../api/links';
 import { connect } from 'react-redux';
-import { addWeatherData, addEvent } from './actions/index'
+import { addWeatherData, addEvent, nextRun } from './actions/index'
 import {bindActionCreators} from 'redux'
 const axios = require('axios');
 
@@ -11,10 +11,9 @@ class Info extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      runData: {
-      },
-      weather: {
-      },
+      runData: {},
+      weather: {},
+      nextRun: {},
       current_temp: '',
       current_temp_min: '',
       current_temp_max: '',
@@ -24,10 +23,6 @@ class Info extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleLoad();
   }
-  /*  current_temp: "",
-    current_temp_min: "",
-    current_temp_max: "",
-    current_clouds: "",*/
   handleLoad() {
     let weatherkey = config().openweatherapi
     axios.get('https://api.openweathermap.org/data/2.5/forecast?q=Vancouver,ca&appid=' + weatherkey)
@@ -40,7 +35,13 @@ class Info extends Component {
             current_temp_min: Math.round(weather.data.list[0].main.temp_min-273.15) + '°C',
             current_temp_max: Math.round(weather.data.list[0].main.temp_max-273.15) + '°C',
             current_clouds: weather.data.list[0].clouds.all + '%'
-        })
+        });
+
+
+    this.props.nextRun();
+    //let runEvents = this.props.calendarEvents.filter( (event)=> event.category==="run");
+    //console.log(event)
+
     //console.log(this.props.weather.data.city.name)
     //let localDate = new Date(this.props.weather.data.list[0].dt * 1000);
     //console.log(localDate)
@@ -123,18 +124,16 @@ componentWillReceiveProps(nextProps) {
 
 const mapStateToProps = (state) => {
   return {  weather: state.weather,
+            nextRun: state.nextRun
 
          };
-    // return {  user_input: state.user_input,
-    //           current_weather: state.current_weather
-    //        };
 }
 
 
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
     {
-      addWeatherData, addEvent
+      addWeatherData, addEvent, nextRun
     },
     dispatch
   );
