@@ -215,7 +215,8 @@ const getHistoryInfoReducer = (info = [], action) => {
       })
     })
     return newInfo;
-  }
+  } else if (action.type === 'GET_HISTORY')
+    info = [];
   return info;
 }
 
@@ -230,8 +231,8 @@ const runHistoryDataReducer = (data = {}, action) => {
     if (action.format === 'WEEK') {
       numDays = 6
 
-      let startDay = currentDate;
-      startDay.setDate(startDay.getDate()-numDays);
+      let startDay = new Date();
+      startDay.setDate(currentDate.getDate()-numDays);
 
       for (i = 0; i <= numDays; i++){
         let day = new Date();
@@ -251,7 +252,7 @@ const runHistoryDataReducer = (data = {}, action) => {
     for (i = 0; i < runList.length; i++){
       let distances = [];
       runList[i].forEach(function (run) {
-        distances[(run.day-currentDate)/((3600000*24))] = run.distance;
+        distances[(run.day-currentDate)/((3600000*24))+numDays] = run.distance;
       })
       datasets[i] = {
         label: 'Run #'+(i+1),
