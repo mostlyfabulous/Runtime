@@ -21,6 +21,13 @@ export const changePage = pageName => {
   };
 };
 
+export const toggleEventEditor = toggle => {
+  return {
+    type: 'TOGGLE_EDITOR',
+    toggle
+  };
+};
+
 export const getHistoryChartData = () => {
   return {
     type: 'GET_HISTORY',

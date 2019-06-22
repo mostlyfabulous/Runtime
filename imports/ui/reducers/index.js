@@ -125,6 +125,12 @@ const pagesReducer = (currentPage = 'plan', action) => {
 
 // for dummy history data
 const currentDate = new Date();
+const eventEditorReducer = (editEventView = false, action) => {
+	if (action.type === 'TOGGLE_EDITOR') {
+    editEventView = !editEventView;
+	}
+	return editEventView
+};
 
 const date1 = new Date();
 const date2 = new Date();
@@ -299,6 +305,7 @@ export default combineReducers({
   pages: pagesReducer,
   runHistory: runHistoryDataReducer,
   historyInfo: getHistoryInfoReducer,
+  editEventView: eventEditorReducer
 });
 /*if (action.type === 'RENAME_EVENT') {
   if (action.payload.name) {
