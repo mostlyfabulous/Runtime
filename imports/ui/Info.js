@@ -3,7 +3,7 @@ import { withTracker } from 'meteor/react-meteor-data';
 import { config } from '../../config.js';
 import Links from '../api/links';
 import { connect } from 'react-redux';
-import { addWeatherData, addEvent, nextRun } from './actions/index'
+import { addWeatherData, addEvent, getNextRun } from './actions/index'
 import {bindActionCreators} from 'redux'
 const axios = require('axios');
 
@@ -36,22 +36,35 @@ class Info extends Component {
             current_temp_max: Math.round(weather.data.list[0].main.temp_max-273.15) + '°C',
             current_clouds: weather.data.list[0].clouds.all + '%'
         });
-
-
-    this.props.nextRun();
-    //let runEvents = this.props.calendarEvents.filter( (event)=> event.category==="run");
-    //console.log(event)
+    // add colored weather events to calendar as background events
+    let weatherEvents = weather.data.list.map( (threeHourEvent) =>
+        {
+        let c = 'black';
+        let t = threeHourEvent.main.temp
+        if (t > 298.15) c = 'red'; // warm
+        else if (t > 295.15 && t <= 298.15) c = 'green'; // pleasant
+        else if (t <= 295.15) c = 'yellow'; // cool
+        else (console.log(t))
+        let e =  ({
+        start: new Date(threeHourEvent.dt_txt+" GMT"),
+        end: new Date(threeHourEvent.dt_txt+" GMT-0300"),
+        rendering: 'background',
+        color: c,
+        editable: false // prevent users from modifying weather events
+        })
+        return e;
+      })
+    this.props.addEvent(weatherEvents);
 
     //console.log(this.props.weather.data.city.name)
     //let localDate = new Date(this.props.weather.data.list[0].dt * 1000);
     //console.log(localDate)
 
-
     //console.log(Math.round(this.props.weather.data.list[0].main.temp-273.15))
     //console.log(Math.round(this.props.weather.data.list[0].main.temp_min-273.15))
     //console.log(Math.round(this.props.weather.data.list[0].main.temp_max-273.15))
-    // console.log(this.props.weather.data.list[0].weather)
-  //  console.log(this.props.weather.data.list[0].clouds.all + '%')
+    //console.log(this.props.weather.data.list[0].weather)
+    //console.log(this.props.weather.data.list[0].clouds.all + '%')
     //console.log(this.props.weather.data.list[0].rain.3h)
   })
   .catch(error => {
@@ -79,16 +92,16 @@ class Info extends Component {
         <h2>Your Next Run</h2>
         <form onSubmit={this.handleSubmit} ref='form'>
           <label htmlFor="duration">Duration</label>
-          <input type="time" id="duration" step="60" placeholder="Hours: Minutes" />
+          <input type="text" id="duration" value={this.props.nextRun.duration} />
           <br/>
           <label htmlFor="start_time">Start Time</label>
-          <input type="time" id="start_time" step="60" placeholder="Hours: Minutes" />
+          <input type="text" id="start_time" value={this.props.nextRun.start} />
           <br/>
           <label htmlFor="end_time">End Time</label>
-          <input type="time" id="end_time" step="60" placeholder="Hours: Minutes" />
+          <input type="text" id="end_time" value={this.props.nextRun.end} />
           <br/>
           <label htmlFor="distance">Distance</label>
-          <input type="number" id="distance" step="0.01" placeholder="km/m" />
+          <input type="text" id="distance" value={this.props.nextRun.distance} />
           <br/>
           <button type="submit">Find a Run!</button>
         </form>
@@ -97,51 +110,29 @@ class Info extends Component {
 
   }
 
-componentWillReceiveProps(nextProps) {
-  // add colored weather events to calendar as background events
-  let rd = nextProps.weather.data;
-  let weatherEvents = rd.list.map( (threeHourEvent) =>
-      {
-      let c = 'black';
-      let t = threeHourEvent.main.temp
-      if (t > 298.15) c = 'red'; // warm
-      else if (t > 295.15 && t <= 298.15) c = 'green'; // pleasant
-      else if (t <= 295.15) c = 'yellow'; // cool
-      else (console.log(t))
-      let e =  ({
-      start: new Date(threeHourEvent.dt_txt+" GMT"),
-      end: new Date(threeHourEvent.dt_txt+" GMT-0300"),
-      rendering: 'background',
-      color: c,
-      editable: false // prevent users from modifying weather events
-      })
-      return e;
-    })
-  this.props.addEvent(weatherEvents);
-}
+  componentWillReceiveProps(nextProps) {
+    this.props.getNextRun(nextProps.calendarEvents)
+  }
 
 }
 
 const mapStateToProps = (state) => {
   return {  weather: state.weather,
-            nextRun: state.nextRun
-
+            nextRun: state.nextRun,
+            calendarEvents: state.calendarEvents
          };
 }
-
 
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
     {
-      addWeatherData, addEvent, nextRun
+      addWeatherData, addEvent, getNextRun
     },
     dispatch
   );
 };
 
-
-
-export default connect(mapStateToProps/*, {addWeatherData}*/, mapDispatchToProps)(Info);
+export default connect(mapStateToProps, mapDispatchToProps)(Info);
 
 /*
 export default InfoContainer = withTracker(() => {

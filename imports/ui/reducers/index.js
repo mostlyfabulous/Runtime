@@ -30,7 +30,7 @@ let initCal = [
     return currentResponses;
   };
 
-  const calendarEventsReducer = (calendarEvents, action) => {
+const calendarEventsReducer = (calendarEvents, action) => {
     calendarEvents = calendarEvents || initCal;
 	if (action.type === 'ADD_EVENT') {
     let newEvent = action.calendarEvent;
@@ -61,7 +61,6 @@ let initCal = [
   if (action.type === 'DRAG_EVENT') {
     console.log("revent drag fire");
     let e = action.calendarEvent
-    console.log(targetID);
     let modifiedEvent = {
       id    : e.event.id,
       title : e.event.title,
@@ -72,21 +71,30 @@ let initCal = [
       return event.id !== (e.event.id)
     }), modifiedEvent]
   }
-  if (action.type === 'NEXT_RUN') {
-    let now = new Date();
-    let events = calendarEvents.filter(calendarEvents =>
-      (calendarEvents.category === 'run') && (calendarEvents.start > now));
-    action.mostRecent = {};
-    if (events.length > 0) {
-        action.mostRecent = events[0];
+  return calendarEvents;
+}
 
+const nextRunReducer = (nextRun, action) => {
+  nextRun = nextRun || {};
+  if (action.type === 'NEXT_RUN') {
+    // console.log("get next run");
+    let now = new Date();
+    let events = action.calendarEvents.filter(calendarEvent => {
+      // console.log(calendarEvent);
+      return (calendarEvent.category === 'run') && (calendarEvent.start > now)
+    })
+    // action.mostRecent = {};
+    if (events.length > 0) {
+        nextRun = events[0];
+        // console.log(events);
         for (let entry of events) {
           if (entry.start < action.mostRecent.start)
-            action.mostRecent = entry;
+            nextRun = entry;
         }
     }
   }
-  return calendarEvents;
+  // console.log(nextRun);
+  return nextRun;
 }
 /*
 const runDataReducer = (currentRuns, action) => {
@@ -275,7 +283,7 @@ const runHistoryDataReducer = (data = {}, action) => {
       //     backgroundColor:'green',
       //     data: [3,10,1,null,null,1,2]
       //   }
-      // ] 
+      // ]
     }
   }
   return data;
@@ -287,6 +295,7 @@ export default combineReducers({
   weather: weatherReducer,
   formData: formDataReducer,
   calendarEvents: calendarEventsReducer,
+  nextRun: nextRunReducer,
   pages: pagesReducer,
   runHistory: runHistoryDataReducer,
   historyInfo: getHistoryInfoReducer,

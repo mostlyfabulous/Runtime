@@ -57,9 +57,10 @@ export const renameEvent = (id, newName) => {
   };
 }
 
-export const nextRun = mostRecent => {
+export const getNextRun = calendarEvents => {
   return {
     type: 'NEXT_RUN',
+    calendarEvents,
     mostRecent
   };
 }
