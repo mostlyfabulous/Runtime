@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import { withTracker } from 'meteor/react-meteor-data';
-import { config } from '../../config.js';
-import Links from '../api/links';
+import { config } from '../../../config.js';
 import { connect } from 'react-redux';
-import { addWeatherData, addEvent } from './actions/index'
+import { addWeatherData, addEvent } from '../actions/index'
 import {bindActionCreators} from 'redux'
 const axios = require('axios');
 

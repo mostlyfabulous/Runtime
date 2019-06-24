@@ -1,8 +1,8 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import RunPlan from './pages/RunPlan';
-import History from './pages/History';
-import Preferences from './pages/Preferences';
+import RunPlan from '../pages/RunPlan';
+import History from '../pages/History';
+import Preferences from '../pages/Preferences';
 
 class Main extends React.Component {
     render() {

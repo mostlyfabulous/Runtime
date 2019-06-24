@@ -10,7 +10,7 @@ import '@fullcalendar/daygrid/main.css';
 import '@fullcalendar/timegrid/main.css';
 
 import { connect } from 'react-redux';
-import { addEvent, renameEvent, dragEvent, toggleEventEditor } from './actions/index'
+import { addEvent, renameEvent, dragEvent, toggleEventEditor } from '../actions/index'
 import {bindActionCreators} from 'redux'
 
 // Calendar component -

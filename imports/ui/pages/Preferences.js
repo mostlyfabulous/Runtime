@@ -1,5 +1,5 @@
 import React from 'react';
-import UserPref from '../UserPref.js';
+import UserPref from '../components/UserPref.js';
 import {connect} from 'react-redux';
 
 

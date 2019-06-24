@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { Bar } from 'react-chartjs-2';
-import { getHistoryChartData, historyInfo } from './actions/index';
+import { getHistoryChartData, historyInfo } from '../actions/index';
 import { connect } from 'react-redux';
 
-class HistoryChart extends React.Component {
+class HistoryChart extends Component {
     componentDidMount() {
         this.props.getHistoryChartData();
     }
@@ -20,7 +20,7 @@ class HistoryChart extends React.Component {
                     data={this.props.data}
                     onElementsClick={elems => this.handleClick(elems)}
                     options={{
-                        
+
                         maintainAspectRatio: true,
                         scales: {
                             xAxes: [{

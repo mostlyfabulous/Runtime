@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import { withTracker } from 'meteor/react-meteor-data';
-import { config } from '../../config.js';
-import Links from '../api/links';
+import { config } from '../../../config.js';
 import EventEditor from './EventEditor';
 import { connect } from 'react-redux';
-import { addWeatherData, addEvent, getNextRun, toggleEventEditor } from './actions/index'
+import { addWeatherData, addEvent, getNextRun, toggleEventEditor } from '../actions/index'
 import {bindActionCreators} from 'redux'
 const axios = require('axios');
 
@@ -37,16 +36,7 @@ class Info extends Component {
             current_temp_max: Math.round(weather.data.list[0].main.temp_max-273.15) + '°C',
             current_clouds: weather.data.list[0].clouds.all + '%'
     })
-    //console.log(this.props.weather.data.city.name)
-    //let localDate = new Date(this.props.weather.data.list[0].dt * 1000);
-    //console.log(localDate)
 
-    //console.log(Math.round(this.props.weather.data.list[0].main.temp-273.15))
-    //console.log(Math.round(this.props.weather.data.list[0].main.temp_min-273.15))
-    //console.log(Math.round(this.props.weather.data.list[0].main.temp_max-273.15))
-    //console.log(this.props.weather.data.list[0].weather)
-    //console.log(this.props.weather.data.list[0].clouds.all + '%')
-    //console.log(this.props.weather.data.list[0].rain.3h)
     let weatherEvents = weather.data.list.map( (threeHourEvent) =>
          {
          let c = 'black';
