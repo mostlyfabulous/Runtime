@@ -18,11 +18,19 @@ export class EventEditor extends Component {
   }
 
   handleChange(event) {
-    const value = event.target.value
-    const name = event.target.name
-    this.setState({
-      [name]: value
-    });
+    const defaultValue = event.target.defaultValue;
+    const value = event.target.value;
+    const name = event.target.name;
+    if (value)
+      this.setState({
+        [name]: value
+      });
+    else{
+      console.log("defaultValue");
+      console.log(defaultValue);
+      this.setState({
+        [name]: defaultValue
+      });}
   }
 
   handleSubmit(jsEvent) {
@@ -45,7 +53,7 @@ export class EventEditor extends Component {
 
   render() {
     const {title, start, end, extendedProps} = this.props.editEventView.calendarEvent;
-    console.log(start);
+    // console.log(start);
     return (
       <div>
         <h2>Edit Run:</h2>

@@ -73,13 +73,17 @@ const pagesReducer = (currentPage = 'plan', action) => {
 };
 
 const eventEditorReducer = (editEventView, action) => {
-  editEventView = editEventView || {editorView: false, calendarEvent: null};
+  editEventView = editEventView || {editorView: false, calendarEvent: ""};
   if (action.type === 'TOGGLE_EDITOR') {
-    editEventView.editorView = action.payload.toggle;
-    editEventView.calendarEvent = action.payload.calendarEvent;
+    const newState = {
+      editorView: action.payload.toggle,
+      calendarEvent: action.payload.calendarEvent
+    }
+    console.log(newState);
+    return newState;
   }
   console.log(editEventView);
-  return editEventView
+  return editEventView;
 };
 
 // for dummy history data
