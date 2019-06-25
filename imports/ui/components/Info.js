@@ -8,6 +8,8 @@ import { addWeatherData, addEvent, getNextRun, toggleEventEditor } from '../acti
 import {bindActionCreators} from 'redux'
 const axios = require('axios');
 
+import NextRun from './NextRun';
+
 class Info extends Component {
   constructor(props) {
     super(props);
@@ -63,22 +65,7 @@ class Info extends Component {
           <p><b>Current Temp:</b> {this.state.current_temp}</p>
           <p><b>Min/Max Temp:</b> {this.state.current_temp_min}/{this.state.current_temp_max}</p>
           <p><b>Clouds:</b> {this.state.current_clouds} </p>
-          <h2>Your Next Run</h2>
-          <form onSubmit={this.handleSubmit} ref='form'>
-            <label htmlFor="duration">Duration</label>
-            <input type="text" id="duration" defaultValue={this.props.nextRun.duration} />
-            <br/>
-            <label htmlFor="start_time">Start Time</label>
-            <input type="text" id="start_time" defaultValue={this.props.nextRun.start} />
-            <br/>
-            <label htmlFor="end_time">End Time</label>
-            <input type="text" id="end_time" defaultValue={this.props.nextRun.end} />
-            <br/>
-            <label htmlFor="distance">Distance</label>
-            <input type="text" id="distance" defaultValue={this.props.nextRun.distance} />
-            <br/>
-            <button type="submit">Find a Run!</button>
-          </form>
+          <NextRun/>
           <EventEditor/>
         </div>
     )
@@ -89,22 +76,7 @@ class Info extends Component {
           <p><b>Current Temp:</b> {this.state.current_temp}</p>
           <p><b>Min/Max Temp:</b> {this.state.current_temp_min}/{this.state.current_temp_max}</p>
           <p><b>Clouds:</b> {this.state.current_clouds} </p>
-          <h2>Your Next Run</h2>
-          <form onSubmit={this.handleSubmit} ref='form'>
-            <label htmlFor="duration">Duration</label>
-            <input type="text" id="duration" defaultValue={this.props.nextRun.duration} />
-            <br/>
-            <label htmlFor="start_time">Start Time</label>
-            <input type="text" id="start_time" defaultValue={this.props.nextRun.start} />
-            <br/>
-            <label htmlFor="end_time">End Time</label>
-            <input type="text" id="end_time" defaultValue={this.props.nextRun.end} />
-            <br/>
-            <label htmlFor="distance">Distance</label>
-            <input type="text" id="distance" defaultValue={this.props.nextRun.distance} />
-            <br/>
-            <button type="submit">Find a Run!</button>
-          </form>
+          <NextRun/>
         </div>
       );
     }
