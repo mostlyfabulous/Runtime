@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { withTracker } from 'meteor/react-meteor-data';
 import { config } from '../../../config.js';
+import { createWeatherEvents } from '../../utils/createWeatherEvents.js'
 import EventEditor from './EventEditor';
 import { connect } from 'react-redux';
 import { addWeatherData, addEvent, getNextRun, toggleEventEditor } from '../actions/index'
@@ -37,24 +38,7 @@ class Info extends Component {
             current_clouds: weather.data.list[0].clouds.all + '%'
     })
 
-    let weatherEvents = weather.data.list.map( (threeHourEvent) =>
-         {
-         let c = 'black';
-         let t = threeHourEvent.main.temp
-         if (t > 298.15) c = 'red'; // warm
-         else if (t > 295.15 && t <= 298.15) c = 'green'; // pleasant
-         else if (t <= 295.15) c = 'yellow'; // cool
-         else (console.log(t))
-         let e =  ({
-           start: new Date(threeHourEvent.dt_txt+" GMT"),
-           end: new Date(threeHourEvent.dt_txt+" GMT-0300"),
-           rendering: 'background',
-           color: c,
-           editable: false // prevent users from modifying weather events
-         })
-         return e;
-       });
-     this.props.addEvent(weatherEvents);
+     this.props.addEvent(createWeatherEvents(weather.data.list));
   })
   .catch(error => {
     console.log(error);
