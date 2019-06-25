@@ -11,7 +11,9 @@ import { render } from 'react-dom';
 
 
   Meteor.startup(() => {
-    render(<Provider store={createStore(reducers)}>
+    render(<Provider store={createStore(reducers,
+      window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+    )}>
   		<App />
   	</Provider>, document.getElementById('react-target'));
   });
