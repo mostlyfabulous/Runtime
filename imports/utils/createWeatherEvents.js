@@ -9,8 +9,10 @@ export function createWeatherEvents(weatherDataList) {
        else if (t <= 295.15) c = 'yellow'; // cool
        else (console.log(t))
        let e =  ({
-         start: new Date(threeHourEvent.dt_txt+" GMT"),
-         end: new Date(threeHourEvent.dt_txt+" GMT-0300"),
+         // start: moment(threeHourEvent.dt_txt+" GMT"),
+         // end: moment(threeHourEvent.dt_txt+" GMT-0300"),
+         start: moment(threeHourEvent.dt_txt).format(),
+         end: moment(threeHourEvent.dt_txt).add(3, 'hours').format(),
          rendering: 'background',
          color: c,
          editable: false // prevent users from modifying weather events
