@@ -2,19 +2,6 @@ import React from 'react';
 import { combineReducers } from 'redux';
 import calendarEventsReducer from './calendarEventsReducer';
 
-import { config } from '../../../config';
-
-const MongoClient = require('mongodb').MongoClient;
-const uri = "mongodb+srv://"+config.mongoUser+":"+config.mongopw+"@sandbox-ifog1.mongodb.net/test?retryWrites=true&w=majority";
-const client = new MongoClient(uri, { useNewUrlParser: true });
-
-
-client.connect(err => {
-  const collection = client.db("Runtime").collection("runs");
-  // perform actions on the collection object
-  //client.close();
-});
-
   const weatherReducer = (weather, action) => {
     weather = weather || {};
   	if (action.type === 'ADD_WEATHER_DATA') {
