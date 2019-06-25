@@ -2,8 +2,10 @@ import React from 'react';
 import { combineReducers } from 'redux';
 import calendarEventsReducer from './calendarEventsReducer';
 
+import { config } from '../../../config';
+
 const MongoClient = require('mongodb').MongoClient;
-const uri = "mongodb+srv://m001-student:<password>@sandbox-ifog1.mongodb.net/test?retryWrites=true&w=majority";
+const uri = "mongodb+srv://"+config.mongoUser+":"+config.mongopw+"@sandbox-ifog1.mongodb.net/test?retryWrites=true&w=majority";
 const client = new MongoClient(uri, { useNewUrlParser: true });
 
 
