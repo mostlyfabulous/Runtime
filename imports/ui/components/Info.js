@@ -56,7 +56,8 @@ class Info extends Component {
 
   render() {
     let city = 'Vancouver';
-    if (this.props.editEventView) {
+    console.log(this.props.editEventView.editorView);
+    if (this.props.editEventView.editorView) {
       return (
         <div>
           <h2>3-Hour Forecast: {city}</h2>
