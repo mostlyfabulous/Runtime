@@ -6,31 +6,33 @@ import {bindActionCreators} from 'redux';
 export class EventEditor extends Component {
   constructor(props) {
     super(props);
+    // console.log(this.props.editEventView.calendarEvent);
+    const e = this.props.editEventView.calendarEvent;
     this.state = {
-      title     : this.props.title,
-      start     : this.props.start,
-      end       : this.props.end,
-      distance  : this.props.distance
-      // duration  : this.props.duration
+      title     : e.title,
+      start     : e.start,
+      end       : e.end,
+      distance  : e.extendedProps.distance
+      // duration  : e.extendedProps.duration
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleChange(event) {
-    const defaultValue = event.target.defaultValue;
-    const value = event.target.value;
     const name = event.target.name;
+    const value = event.target.value;
+    // const defaultValue = event.target[name];
     if (value)
       this.setState({
         [name]: value
       });
-    else{
-      console.log("defaultValue");
-      console.log(defaultValue);
-      this.setState({
-        [name]: defaultValue
-      });}
+    // else{
+    //   console.log("defaultValue");
+    //   console.log(defaultValue);
+    //   this.setState({
+    //     [name]: defaultValue
+    //   });}
   }
 
   handleSubmit(jsEvent) {
@@ -79,6 +81,17 @@ export class EventEditor extends Component {
       </div>
     );
   }
+
+  // componentWillReceiveProps(nextProps) {
+  //   const {eventTitle, eventStart, eventEnd, eventExtendedProps} = this.props.editEventView.calendarEvent;
+  //   this.state = {
+  //     title     : eventTitle,
+  //     start     : eventStart,
+  //     end       : eventEnd,
+  //     distance  : eventExtendedProps.distance
+  //     // duration  : this.props.duration
+  //   };
+  // }
 }
 
 const mapStateToProps = (state) => {
