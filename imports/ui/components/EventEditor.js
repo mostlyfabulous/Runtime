@@ -26,6 +26,7 @@ export class EventEditor extends Component {
   }
 
   handleSubmit(jsEvent) {
+    // event is being reserved for being passed into the dragEvent action
     let e = {
       event: {
         id        : this.props.editEventView.calendarEvent.id,
@@ -36,31 +37,33 @@ export class EventEditor extends Component {
       }
     }
     this.props.dragEvent(e);
-    this.props.toggleEventEditor(false, null);
+    this.props.toggleEventEditor(false, "");
     console.log("Submitted event:");
     console.log(e);
     jsEvent.preventDefault();
   }
 
   render() {
+    const {title, start, end, extendedProps} = this.props.editEventView.calendarEvent;
+    console.log(start);
     return (
       <div>
         <h2>Edit Run:</h2>
         <form onSubmit={this.handleSubmit} ref='form'>
           <label htmlFor="title">Run Name</label>
-          <input type="string" id="title" name="title" value={this.state.title}
+          <input type="string" id="title" name="title" defaultValue={title}
             onChange={this.handleChange} placeholder="5km Run" />
           <br/>
           <label htmlFor="start_time">Start Time</label>
-          <input type="datetime-local" id="start_time" name="start" value={this.state.start}
-            onChange={this.handleChange} placeholder="Hours: Minutes" />
+          <input type="datetime-local" id="start_time" name="start"
+            onChange={this.handleChange}  />
           <br/>
           <label htmlFor="end_time">End Time</label>
-          <input type="datetime-local" id="end_time" name="end" value={this.state.end}
-            onChange={this.handleChange} placeholder="Hours: Minutes" />
+          <input type="datetime-local" id="end_time" name="end"
+            onChange={this.handleChange}  />
           <br/>
           <label htmlFor="distance">Distance</label>
-          <input type="number" id="distance" name="distance" value={this.state.distance}
+          <input type="number" id="distance" name="distance" defaultValue={extendedProps.distance}
             onChange={this.handleChange} step="0.01" placeholder="km/m" />
           <br/>
           <button type="submit">Update Run Information</button>
