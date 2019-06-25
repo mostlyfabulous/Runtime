@@ -72,14 +72,18 @@ const pagesReducer = (currentPage = 'plan', action) => {
 	return currentPage
 };
 
+const eventEditorReducer = (editEventView, action) => {
+  editEventView = editEventView || {editorView: false, calendarEvent: null};
+  if (action.type === 'TOGGLE_EDITOR') {
+    editEventView.editorView = action.payload.toggle;
+    editEventView.calendarEvent = action.payload.calendarEvent;
+  }
+  console.log(editEventView);
+  return editEventView
+};
+
 // for dummy history data
 const currentDate = new Date();
-const eventEditorReducer = (editEventView = false, action) => {
-	if (action.type === 'TOGGLE_EDITOR') {
-    editEventView = !editEventView;
-	}
-	return editEventView
-};
 
 const date1 = new Date();
 const date2 = new Date();

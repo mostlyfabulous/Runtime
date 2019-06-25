@@ -62,10 +62,10 @@ class Calendar extends Component {
   // call component <EventModifier/>
   handleEventClick = (e) => {
     // e.jsEvent.cancelBubble=true;
-    this.props.toggleEventEditor();
     if (e.event.rendering !== "background") {
-      let newEventName = prompt("Change run name to: ");
-         this.props.renameEvent(e.event, name=newEventName);
+      this.props.toggleEventEditor(true, e.event);
+      // let newEventName = prompt("Change run name to: ");
+      //    this.props.renameEvent(e.event, name=newEventName);
          console.log(this.props.calendarEvents);
       }
     }

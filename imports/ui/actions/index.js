@@ -21,10 +21,13 @@ export const changePage = pageName => {
   };
 };
 
-export const toggleEventEditor = toggle => {
+export const toggleEventEditor = (toggle, calendarEvent) => {
   return {
     type: 'TOGGLE_EDITOR',
-    toggle
+    payload: {
+      toggle,
+      calendarEvent
+    }
   };
 };
 
