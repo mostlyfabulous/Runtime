@@ -1,5 +1,8 @@
 # CPSC436I—Runtime
 
+![Image of Run Plan view](https://raw.githubusercontent.com/mostlyfabulous/Runtime/master/screenshots/Runtime%20Run%20Plan%20page.png)
+
+
 ### Project Description
 Our project will encourage users to be more physically active by suggesting runs that fit within the user's schedule. Users can choose when to exercise based on preferences such as weather conditions, time of day and their availability. It can store details of the run such as the distance travelled, time taken, weather and then build a visualization to log their progress and show their current efforts. Given enough time, we would like to algorithmically provide best runs that suit the user instead of only being manually added and integrate a map to suggest points of interest as destinations
 ### Project task requirements:
