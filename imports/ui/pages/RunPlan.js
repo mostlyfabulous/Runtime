@@ -9,7 +9,7 @@ class RunPlan extends React.Component {
     render() {
       // set logged in to true for now
 
-      if (/*this.props.loggedIn*/ true === true) {
+      if (/*this.props.loggedIn*/ true === false) {
         return (
             <div className='body'>
                 <div id='sideMenu'>
