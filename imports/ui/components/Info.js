@@ -58,7 +58,7 @@ class Info extends Component {
 
   render() {
     let city = 'Vancouver';
-    if (this.props.editEventView) {
+    if (this.props.editEventView.editorView) {
       return (
         <div>
           <h2>3-Hour Forecast: {city}</h2>
@@ -83,7 +83,9 @@ class Info extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    console.log("change in prop—getting next run");
     this.props.getNextRun(nextProps.calendarEvents)
+    // this.setState({runEditor: nextProps.editEventView.editorView})
   }
 }
 
