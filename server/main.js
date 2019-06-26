@@ -13,14 +13,14 @@ const client = new MongoClient(uri, { useNewUrlParser: true });
 client.connect(err => {
   const collection = client.db("Runtime").collection("runs");
   assert.equal(null, err);
-  insertRun(collection);
+  // insertRun(collection);
   // perform actions on the collection object
   //client.close();
 });
 
 function insertRun(collection) {
   let newId = (Date.parse(new Date)).toString(16) + Math.floor(Math.random()*1000);
-  let run = {id: newId, title: "10km Run", start: new Date(Date.now()+(4*60*60000)), distance: 5, category: "run" };
+  let run = {_id: newId, title: "10km Run", start: new Date(Date.now()+(4*60*60000)), distance: 20, category: "run" };
   collection.insertOne(run);
   setTimeout(function() {
   // Fetch the document
