@@ -3,6 +3,7 @@ import Links from '/imports/api/links';
 
 import { config } from '../config';
 
+
 const MongoClient = require('mongodb').MongoClient;
 let assert = require('assert');
 let Db = require('mongodb').Db;
@@ -13,15 +14,15 @@ const client = new MongoClient(uri, { useNewUrlParser: true });
 client.connect(err => {
   const collection = client.db("Runtime").collection("runs");
   assert.equal(null, err);
-  // insertRun(collection);
+  insertUser(collection);
   // perform actions on the collection object
   //client.close();
 });
 
-function insertRun(collection) {
+function insertUser(collection) {
   let newId = (Date.parse(new Date)).toString(16) + Math.floor(Math.random()*1000);
-  let run = {_id: newId, title: "10km Run", start: new Date(Date.now()+(4*60*60000)), distance: 20, category: "run" };
-  collection.insertOne(run);
+  let user = {_id: newId, user: 'user', password: 'password' };
+  collection.insertOne(user);
   setTimeout(function() {
   // Fetch the document
   collection.find().toArray(function(err, items) {
@@ -62,7 +63,6 @@ Meteor.startup(() => {
   }
 });
 
-// Meteor.publish('user', function(){
-//     var currentUsername = this.userId;
-//     return PlayersList.find({userId: currentUsername});
+// Meteor.publish("user", function () {
+//   return Meteor.user();
 // });

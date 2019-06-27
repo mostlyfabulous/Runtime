@@ -4,34 +4,69 @@ import Login from '../components/Login.js';
 import Calendar from '../components/Calendar.js';
 import {connect} from 'react-redux';
 
+// import AccountsUIWrapper from '../components/AccountsUIWrapper.js';
+// import { Meteor } from 'meteor/meteor';
 
 class RunPlan extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      nextRun: {}
+    };
+  }
     render() {
+      // return (
+      //   <div className='body'>
+      //             <div id='sideMenu'>
+      //                 <Info/>
+      //             </div>
+      //             <div id='mainContent'>
+      //                 <AccountsUIWrapper />
+      //                 { this.props.currentUser ?
+      //                    <Calendar/>: ''
+      //                  }
+      //                 <Calendar />
+      //             </div>
+      //   </div>
+      // );
+
+      return (
+        <div className='body'>
+                  <div id='sideMenu'>
+                      <Info/>
+                  </div>
+                  <div id='mainContent'>
+                      <Calendar />
+                  </div>
+        </div>
+      );
+
+
       // set logged in to true for now
 
-      if (/*this.props.loggedIn*/ true === false) {
-        return (
-            <div className='body'>
-                <div id='sideMenu'>
-                    <Info/>
-                </div>
-                <div id='mainContent'>
-                    <Calendar/>
-                </div>
-            </div>
-        )
-      } else {
-        return (
-            <div className='body'>
-                <div id='sideMenu'>
-                    <Info/>
-                </div>
-                <div id='mainContent'>
-                    <Login/>
-                </div>
-            </div>
-        )
-      }
+      // if (/*this.props.loggedIn*/ true === false) {
+      //   return (
+      //       <div className='body'>
+      //           <div id='sideMenu'>
+      //               <Info/>
+      //           </div>
+      //           <div id='mainContent'>
+      //               <Calendar/>
+      //           </div>
+      //       </div>
+      //   )
+      // } else {
+      //   return (
+      //       <div className='body'>
+      //           <div id='sideMenu'>
+      //               <Info/>
+      //           </div>
+      //           <div id='mainContent'>
+      //               <Login/>
+      //           </div>
+      //       </div>
+      //   )
+      // }
 
     }
 }

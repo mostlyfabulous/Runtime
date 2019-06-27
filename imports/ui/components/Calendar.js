@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import { Meteor } from 'meteor/meteor';
-import { withTracker } from 'meteor/react-meteor-data';
 
 import FullCalendar from "@fullcalendar/react"
 import dayGridPlugin from "@fullcalendar/daygrid"
@@ -14,29 +12,40 @@ import '@fullcalendar/timegrid/main.css';
 import { connect } from 'react-redux';
 import { addEvent, renameEvent, dragEvent, toggleEventEditor } from '../actions/index'
 import {bindActionCreators} from 'redux'
+import { withTracker } from 'meteor/react-meteor-data';
+
+import AccountsUIWrapper from '../components/AccountsUIWrapper.js';
+// import { Meteor } from 'meteor/meteor';
 
 // Calendar component -
 class Calendar extends Component {
 
   render() {
+    // console.log('current user: ')
+    // console.log(this.props.currentUser)
+
     return (
       <div>
-        <FullCalendar
-        dateClick={this.handleDateClick}
-        eventClick={this.handleEventClick}
-        eventDrop={this.handleEventDrop}
-        defaultView="timeGridWeek"
-        scrollTime={new Date(Date.now()).getHours()+":00"}
-        header={{
-              left: "prev,next today",
-              center: "title",
-              right: "dayGridMonth,timeGridWeek,timeGridDay,listWeek"
-            }}
-        events={this.props.calendarEvents}
-        editable={true}
-        nowIndicator= {true}
-        plugins={[ dayGridPlugin, timeGridPlugin, interactionPlugin]}
-        />
+        <AccountsUIWrapper />
+        { (this.props.currentUser !== {}) ?
+          <FullCalendar
+          dateClick={this.handleDateClick}
+          eventClick={this.handleEventClick}
+          eventDrop={this.handleEventDrop}
+          defaultView="timeGridWeek"
+          scrollTime={new Date(Date.now()).getHours()+":00"}
+          header={{
+                left: "prev,next today",
+                center: "title",
+                right: "dayGridMonth,timeGridWeek,timeGridDay,listWeek"
+              }}
+          events={this.props.calendarEvents}
+          editable={true}
+          nowIndicator= {true}
+          plugins={[ dayGridPlugin, timeGridPlugin, interactionPlugin]}
+          />: ''
+        }
+
       </div>
     );
   }
@@ -88,9 +97,12 @@ class Calendar extends Component {
 }
 
 const mapStateToProps = (state) => {
+  // console.log("meteor users")
+  // console.log(Meteor.user())
   return {
     calendarEvents: state.calendarEvents,
-    weather: state.weather
+    weather: state.weather,
+    currentUser: Meteor.user() || {}
          };
 }
 
