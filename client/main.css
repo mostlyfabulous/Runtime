@@ -66,3 +66,30 @@ body {
   float: right;
   padding: 1em;
 }
+
+.editor-appear {
+  opacity: 0.01;
+}
+
+.editor-appear.editor-appear-active {
+  opacity: 1;
+  transition: opacity .5s ease-in;
+}
+
+.editor-enter {
+  opacity: 0.01;
+}
+
+.editor-enter.editor-enter-active {
+  opacity: 1;
+  transition: opacity 500ms ease-in;
+}
+
+.editor-leave {
+  opacity: 1;
+}
+
+.editor-leave.editor-leave-active {
+  opacity: 0.01;
+  transition: opacity 1300ms ease-in;
+}

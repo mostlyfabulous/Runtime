@@ -12,6 +12,7 @@ export class EventEditor extends Component {
       title     : e.title,
       start     : e.start,
       end       : e.end,
+      category  : e.extendedProps.category,
       distance  : e.extendedProps.distance,
       duration  : e.extendedProps.duration,
       owner     : e.extendedProps.owner,
@@ -47,6 +48,7 @@ export class EventEditor extends Component {
         start     : this.state.start,
         end       : this.state.end,
         extendedProps: {
+          category  : this.state.category,
           distance  : this.state.distance,
           owner     : this.state.owner,
           username  : this.state.username
@@ -62,31 +64,40 @@ export class EventEditor extends Component {
 
   render() {
     const {title, start, end, extendedProps} = this.props.editEventView.calendarEvent;
-    // console.log(start);
+    // if condition needed to prevent errors when transitioning out upon submit
+    // transitioning out will remove props from being accessible and throw errors
+    // when calling start.toString and accessing extendedProps.distance
+    if (this.props.editEventView.editorView) {
+      return (
+        <div className="editor">
+          <h2>Edit Run: {title}</h2>
+          <form onSubmit={this.handleSubmit} ref='form'>
+            <label htmlFor="title">Run Name</label>
+            <input type="string" id="title" name="title" defaultValue={title}
+              onChange={this.handleChange} placeholder="5km Run" />
+            <br/>
+            <label htmlFor="start_time">Start Time: {start.toString()}</label>
+            <input type="datetime-local" id="start_time" name="start"
+              onChange={this.handleChange}  />
+            <br/>
+            <label htmlFor="end_time">End Time</label>
+            <input type="datetime-local" id="end_time" name="end"
+              onChange={this.handleChange}  />
+            <br/>
+            <label htmlFor="distance">Distance: {extendedProps.distance}</label>
+            <input type="number" id="distance" name="distance" defaultValue={extendedProps.distance}
+              onChange={this.handleChange} step="0.01" placeholder="km/m" />
+            <br/>
+            <button type="submit">Update Run Information</button>
+          </form>
+        </div>
+      );
+    }
     return (
-      <div>
-        <h2>Edit Run: {title}</h2>
-        <form onSubmit={this.handleSubmit} ref='form'>
-          <label htmlFor="title">Run Name</label>
-          <input type="string" id="title" name="title" defaultValue={title}
-            onChange={this.handleChange} placeholder="5km Run" />
-          <br/>
-          <label htmlFor="start_time">Start Time: {start.toString()}</label>
-          <input type="datetime-local" id="start_time" name="start"
-            onChange={this.handleChange}  />
-          <br/>
-          <label htmlFor="end_time">End Time</label>
-          <input type="datetime-local" id="end_time" name="end"
-            onChange={this.handleChange}  />
-          <br/>
-          <label htmlFor="distance">Distance: {extendedProps.distance}</label>
-          <input type="number" id="distance" name="distance" defaultValue={extendedProps.distance}
-            onChange={this.handleChange} step="0.01" placeholder="km/m" />
-          <br/>
-          <button type="submit">Update Run Information</button>
-        </form>
+      <div className="editor">
+        <h2>Edit Run: Saving...</h2>
       </div>
-    );
+    )
   }
 
   // componentWillReceiveProps(nextProps) {
