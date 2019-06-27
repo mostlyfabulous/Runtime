@@ -9,6 +9,7 @@ import {bindActionCreators} from 'redux'
 const axios = require('axios');
 
 import NextRun from './NextRun';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 class Info extends Component {
   constructor(props) {
@@ -58,28 +59,31 @@ class Info extends Component {
 
   render() {
     let city = 'Vancouver';
-    if (this.props.editEventView.editorView) {
-      return (
-        <div>
-          <h2>3-Hour Forecast: {city}</h2>
-          <p><b>Current Temp:</b> {this.state.current_temp}</p>
-          <p><b>Min/Max Temp:</b> {this.state.current_temp_min}/{this.state.current_temp_max}</p>
-          <p><b>Clouds:</b> {this.state.current_clouds} </p>
-          <NextRun/>
-          <EventEditor/>
-        </div>
+    let editor = undefined;
+
+    if (this.props.editEventView.editorView) editor =<div key="1"><EventEditor/></div>;
+    else editor = undefined;
+
+    return (
+      <div>
+        <h2>3-Hour Forecast: {city}</h2>
+        <p><b>Current Temp:</b> {this.state.current_temp}</p>
+        <p><b>Min/Max Temp:</b> {this.state.current_temp_min}/{this.state.current_temp_max}</p>
+        <p><b>Clouds:</b> {this.state.current_clouds} </p>
+        <NextRun/>
+        <ReactCSSTransitionGroup
+          transitionName="editor"
+          transitionAppear={false}
+          transitionAppearTimeout={500}
+          transitionEnter={true}
+          transitionEnterTimeout={500}
+          transitionLeave={true}
+          transitionLeaveTimeout={1300}>
+
+          {editor}
+        </ReactCSSTransitionGroup>
+      </div>
     )
-  } else {
-      return (
-        <div>
-          <h2>3-Hour Forecast: {city}</h2>
-          <p><b>Current Temp:</b> {this.state.current_temp}</p>
-          <p><b>Min/Max Temp:</b> {this.state.current_temp_min}/{this.state.current_temp_max}</p>
-          <p><b>Clouds:</b> {this.state.current_clouds} </p>
-          <NextRun/>
-        </div>
-      );
-    }
   }
 
   componentWillReceiveProps(nextProps) {
