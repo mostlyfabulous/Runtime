@@ -39,14 +39,18 @@ const calendarEventsReducer = (calendarEvents, action) => {
   if (action.type === 'DRAG_EVENT') {
     console.log("event drag fire");
     let e = action.calendarEvent
+    console.log(e);
     let modifiedEvent = {
       id    : e.event.id,
       title : e.event.title,
       start : e.event.start,
       end : e.event.end,
-      distance: e.event.distance,
-      duration: e.event.duration,
-      category: e.event.category
+      allDay: e.allDay,
+      distance: e.event.extendedProps.distance,
+      duration: e.event.extendedProps.duration,
+      category: e.event.extendedProps.category,
+      owner: e.event.extendedProps.owner,
+      username: e.event.extendedProps.username,
     }
     console.log(modifiedEvent);
     return [...calendarEvents.filter( (event) => {

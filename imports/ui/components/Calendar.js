@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { Meteor } from 'meteor/meteor';
+import { withTracker } from 'meteor/react-meteor-data';
 
 import FullCalendar from "@fullcalendar/react"
 import dayGridPlugin from "@fullcalendar/daygrid"
@@ -50,7 +52,9 @@ class Calendar extends Component {
         start: e.date,
         allDay: e.allDay,
         distance: 5,
-        category: "run"
+        category: "run",
+        owner: Meteor.userId(),
+        username: Meteor.user().username
       }
       console.log('newEvent')
       console.log(newEvent)

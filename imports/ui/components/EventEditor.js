@@ -12,8 +12,10 @@ export class EventEditor extends Component {
       title     : e.title,
       start     : e.start,
       end       : e.end,
-      distance  : e.extendedProps.distance
-      // duration  : e.extendedProps.duration
+      distance  : e.extendedProps.distance,
+      duration  : e.extendedProps.duration,
+      owner     : e.extendedProps.owner,
+      username  : e.extendedProps.username
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -36,6 +38,7 @@ export class EventEditor extends Component {
   }
 
   handleSubmit(jsEvent) {
+    jsEvent.preventDefault();
     // event is being reserved for being passed into the dragEvent action
     let e = {
       event: {
@@ -43,14 +46,18 @@ export class EventEditor extends Component {
         title     : this.state.title,
         start     : this.state.start,
         end       : this.state.end,
-        distance  : this.state.distance
+        extendedProps: {
+          distance  : this.state.distance,
+          owner     : this.state.owner,
+          username  : this.state.username
+        }
       }
     }
     this.props.dragEvent(e);
     this.props.toggleEventEditor(false, "");
     console.log("Submitted event:");
     console.log(e);
-    jsEvent.preventDefault();
+
   }
 
   render() {
@@ -58,13 +65,13 @@ export class EventEditor extends Component {
     // console.log(start);
     return (
       <div>
-        <h2>Edit Run:</h2>
+        <h2>Edit Run: {title}</h2>
         <form onSubmit={this.handleSubmit} ref='form'>
           <label htmlFor="title">Run Name</label>
           <input type="string" id="title" name="title" defaultValue={title}
             onChange={this.handleChange} placeholder="5km Run" />
           <br/>
-          <label htmlFor="start_time">Start Time</label>
+          <label htmlFor="start_time">Start Time: {start.toString()}</label>
           <input type="datetime-local" id="start_time" name="start"
             onChange={this.handleChange}  />
           <br/>
@@ -72,7 +79,7 @@ export class EventEditor extends Component {
           <input type="datetime-local" id="end_time" name="end"
             onChange={this.handleChange}  />
           <br/>
-          <label htmlFor="distance">Distance</label>
+          <label htmlFor="distance">Distance: {extendedProps.distance}</label>
           <input type="number" id="distance" name="distance" defaultValue={extendedProps.distance}
             onChange={this.handleChange} step="0.01" placeholder="km/m" />
           <br/>
