@@ -23,7 +23,9 @@ class Calendar extends Component {
   render() {
     // console.log('current user: ')
     // console.log(this.props.currentUser)
-
+    if (this.props.currentUser) {
+      const handle = Meteor.subscribe('user.runs');
+    }
     return (
       <div>
         <AccountsUIWrapper />

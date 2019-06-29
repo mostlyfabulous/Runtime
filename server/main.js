@@ -33,6 +33,19 @@ function insertRun(collection) {
  });
 }
 
+const Runs = new Mongo.Collection('runs');
+
+Meteor.publish('user.runs', function() {
+  // args publish needs goes in: function(args)
+  if (!this.userId) {
+    return this.ready();
+  }
+
+  return Runs.find({
+    userId: this.userId
+  });
+})
+
 function insertLink(title, url) {
   Links.insert({ title, url, createdAt: new Date() });
 }
