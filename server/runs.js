@@ -10,15 +10,7 @@ let Db = require('mongodb').Db;
 const uri = "mongodb+srv://"+config().mongoUser+":"+config().mongopw+"@sandbox-ifog1.mongodb.net/test?retryWrites=true&w=majority";
 const client = new MongoClient(uri, { useNewUrlParser: true });
 
-client.connect(err => {
-  Runs = client.db("Runtime").collection("runs");
-  assert.equal(null, err);
-  Runs.find().toArray(function(err, items) {
-     assert.equal(null, err);
-     assert.notEqual(0, items.length);
-     // console.log(items);
-   });
-   
+
 function insertRun(collection) {
   let newId = (Date.parse(new Date)).toString(16) + Math.floor(Math.random()*1000);
   let run = {_id: newId, title: "10km Run", start: new Date(Date.now()+(4*60*60000)), distance: 20, category: "run", owner: "fHPjzSbmNmHXAB6yD", username: "awz"};
@@ -36,37 +28,38 @@ function insertRun(collection) {
 
 Meteor.publish('user.runs', function() {
   // args publish needs goes in: function(args)
-  // client.connect(err => {
-  //   Runs = client.db("Runtime").collection("runs");
-  //   assert.equal(null, err);
-  //   Runs.find().toArray(function(err, items) {
-  //      assert.equal(null, err);
-  //      assert.notEqual(0, items.length);
-  //      // console.log(items);
-  //    });
-
+  client.connect(err => {
+    Runs = client.db("Runtime").collection("runs");
+    assert.equal(null, err);
+    Runs.find().toArray(function(err, items) {
+       assert.equal(null, err);
+       assert.notEqual(0, items.length);
+       // console.log(items);
+     });
+     if (!this.userId) {
+       console.log("No userId supplied");
+       return this.ready();
+     }
+     console.log(this.userId);
+     Runs.find({owner: this.userId}).toArray(function(err, items) {
+       console.log("Returning any items found");
+       console.log(items);
+       console.log("End of items found");
+     });
+     return Runs.find(
+       //{
+       //owner: this.userId
+       // client.close(); ???
+   //  }
+     );
+   });
      // perform actions on the collection object
      // insertRun(Runs);
 
-    if (!this.userId) {
-      console.log("No userId supplied");
-      return this.ready();
-    }
-    console.log(this.userId);
-    Runs.find({owner: this.userId}).toArray(function(err, items) {
-      console.log("Returning any items found");
-      console.log(items);
-      console.log("End of items found");
-    });
-    return Runs.find(
-      //{
-      //owner: this.userId
-      // client.close(); ???
-  //  }
-    );
-  });
 
-})
+});
+
+// })
 
 // const handle = Meteor.subscribe('user.runs', args);
 // when passing args is optional and used
