@@ -12,10 +12,8 @@ import '@fullcalendar/timegrid/main.css';
 import { connect } from 'react-redux';
 import { addEvent, renameEvent, dragEvent, toggleEventEditor } from '../actions/index'
 import {bindActionCreators} from 'redux'
-import { withTracker } from 'meteor/react-meteor-data';
 
 import AccountsUIWrapper from '../components/AccountsUIWrapper.js';
-// import { Meteor } from 'meteor/meteor';
 
 // Calendar component -
 class Calendar extends Component {
@@ -23,9 +21,8 @@ class Calendar extends Component {
   render() {
     // console.log('current user: ')
     // console.log(this.props.currentUser)
-    if (this.props.currentUser) {
-      const handle = Meteor.subscribe('user.runs');
-    }
+    console.log(this.props);
+
     return (
       <div>
         <AccountsUIWrapper />
@@ -51,6 +48,8 @@ class Calendar extends Component {
       </div>
     );
   }
+
+
 
   handleDateClick = (e) => {
     if (confirm("Would you like to add a run to " + e.dateStr + " ?")) {
@@ -96,7 +95,13 @@ class Calendar extends Component {
     console.log(this.props.calendarEvents);
   }
 
+  componentWillMount() {
+    console.log(this.props);
+  }
+
 }
+
+
 
 const mapStateToProps = (state) => {
   // console.log("meteor users")
@@ -122,3 +127,10 @@ const mapDispatchToProps = dispatch => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Calendar);
+
+// Calendar.propTypes = {
+//   loadingRuns: React.PropTypes.object,
+//   runs: React.PropTypes.object,
+//   runsExists: React.PropTypes.bool,
+//   runEvents: React.PropTypes.object,
+// };
