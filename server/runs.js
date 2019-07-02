@@ -1,5 +1,5 @@
 import { Meteor } from 'meteor/meteor';
-import Runs from '/imports/api/runs';
+// import Runs from '/imports/api/runs';
 
 import { config } from '../config';
 
@@ -26,40 +26,36 @@ function insertRun(collection) {
  });
 }
 
-Meteor.publish('user.runs', function() {
+client.connect(
+ //  err => {
+ //  Runs = client.db("Runtime").collection("runs");
+ //  assert.equal(null, err);
+ //  Runs.find().toArray(function(err, items) {
+ //     assert.equal(null, err);
+ //     assert.notEqual(0, items.length);
+ //     // console.log(items);
+ //   })
+ // }
+).then(function () {
+   const Runs = client.db("Runtime").collection("runs");
+     Meteor.publish('user.runs', function() {
   // args publish needs goes in: function(args)
-  client.connect(err => {
-    Runs = client.db("Runtime").collection("runs");
-    assert.equal(null, err);
-    Runs.find().toArray(function(err, items) {
-       assert.equal(null, err);
-       assert.notEqual(0, items.length);
-       // console.log(items);
-     });
-     if (!this.userId) {
-       console.log("No userId supplied");
-       return this.ready();
-     }
-     console.log(this.userId);
-     Runs.find({owner: this.userId}).toArray(function(err, items) {
-       console.log("Returning any items found");
-       console.log(items);
-       console.log("End of items found");
-     });
-     return Runs.find(
+       if (!this.userId) {
+         console.log("No userId supplied");
+         return this.ready();
+       }
+       console.log(this.userId);
+       Runs.find({owner: this.userId}).toArray(function(err, items) {
+         console.log("Returning any items found");
+         console.log(items);
+         console.log("End of items found");
+       });
+       return Runs.find();
        //{
        //owner: this.userId
-       // client.close(); ???
    //  }
-     );
-   });
-     // perform actions on the collection object
-     // insertRun(Runs);
-
-
-});
-
-// })
+    });
+  });
 
 // const handle = Meteor.subscribe('user.runs', args);
 // when passing args is optional and used

@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import Links from '/imports/api/links';
-import Runs from '/imports/api/runs';
+// import Runs from '/imports/api/runs';
 
 import { config } from '../config';
 import './runs.js'; // user.runs publication
@@ -38,14 +38,14 @@ Meteor.publish('links', function() {
     return Links.find();
 });
 
-Meteor.publish('user.runs', function() {
-  Runs.remove({});
-  if (!this.userId) {
-    console.log("No userId supplied");
-    return this.ready();
-  }
-    return Runs.find();
-});
+// Meteor.publish('user.runs', function() {
+//   Runs.remove({});
+//   if (!this.userId) {
+//     console.log("No userId supplied");
+//     return this.ready();
+//   }
+//     return Runs.find();
+// });
 
 Meteor.startup(() => {
   // If the Links collection is empty, add some data.
