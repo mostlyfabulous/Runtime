@@ -30,8 +30,28 @@ function insertLink(title, url) {
   Links.insert({ title, url, createdAt: new Date() });
 }
 
+Meteor.publish('links', function() {
+  if (!this.userId) {
+    console.log("No userId supplied");
+    return this.ready();
+  }
+    return Links.find();
+});
+
+Meteor.publish('user.runs', function() {
+  Runs.remove({});
+  if (!this.userId) {
+    console.log("No userId supplied");
+    return this.ready();
+  }
+    return Runs.find();
+});
+
 Meteor.startup(() => {
   // If the Links collection is empty, add some data.
+  // let newId = (Date.parse(new Date)).toString(16) + Math.floor(Math.random()*1000);
+  // let run = {_id: newId, title: "10km Run", start: new Date(Date.now()+(4*60*60000)), distance: 20, category: "run", owner: "fHPjzSbmNmHXAB6yD", username: "awz"};
+
   if (Links.find().count() === 0) {
     insertLink(
       'Do the Tutorial',
