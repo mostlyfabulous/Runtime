@@ -21,7 +21,7 @@ class Calendar extends Component {
   render() {
     // console.log('current user: ')
     // console.log(this.props.currentUser)
-    console.log(this.props);
+    // console.log(this.props);
 
     return (
       <div>
@@ -38,7 +38,7 @@ class Calendar extends Component {
                 center: "title",
                 right: "dayGridMonth,timeGridWeek,timeGridDay,listWeek"
               }}
-          events={this.props.calendarEvents}
+          events={this.props.runEvents}
           editable={true}
           nowIndicator= {true}
           plugins={[ dayGridPlugin, timeGridPlugin, interactionPlugin]}
