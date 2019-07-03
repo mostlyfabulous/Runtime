@@ -5,7 +5,7 @@ import Calendar from '../components/Calendar.js'
 
 const CalendarContainer = withTracker( () => {
   // const UserRuns = new Mongo.Collection('user');
-  const runHandle = Meteor.subscribe('user.runs');
+  const runHandle = Meteor.subscribe('runs');
   const linksHandle = Meteor.subscribe('links');
   const loadingRuns = !runHandle.ready();
   const runs = Runs.find().fetch();
