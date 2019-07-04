@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { withTracker } from 'meteor/react-meteor-data';
 import { config } from '../../../config.js';
-import { createWeatherEvents } from '../../utils/createWeatherEvents.js'
+import { createUIWeatherEvents } from '../../utils/createWeatherEvents.js'
 import EventEditor from './EventEditor';
 import { connect } from 'react-redux';
 import { addWeatherData, addEvent, getNextRun, toggleEventEditor } from '../actions/index'
@@ -40,7 +40,7 @@ class Info extends Component {
             current_clouds: weather.data.list[0].clouds.all + '%'
     })
 
-     this.props.addEvent(createWeatherEvents(weather.data.list));
+     this.props.addEvent(createUIWeatherEvents(weather.data.list));
   })
   .catch(error => {
     console.log(error);
