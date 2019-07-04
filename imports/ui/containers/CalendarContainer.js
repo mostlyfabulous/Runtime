@@ -6,19 +6,14 @@ import Calendar from '../components/Calendar.js'
 const CalendarContainer = withTracker( () => {
   // const UserRuns = new Mongo.Collection('user');
   const runHandle = Meteor.subscribe('runs');
-  const linksHandle = Meteor.subscribe('links');
   const loadingRuns = !runHandle.ready();
   const runs = Runs.find().fetch();
-  const links = Links.find().fetch();
   // const runs = Runs.find({owner: this.userId}).fetch();
   const runsExists = !loadingRuns && !!runs;
-  console.log(runHandle.ready());
   return {
     loadingRuns,
-    runs,
     runsExists,
     runEvents: runsExists ? runs : [],
-    links
   };
 })(Calendar);
 

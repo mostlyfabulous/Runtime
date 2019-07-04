@@ -28,10 +28,12 @@ const nextRunReducer = (nextRun, action) => {
   if (action.type === 'NEXT_RUN') {
     // console.log("get next run");
     let now = new Date();
-    let events = action.calendarEvents.filter(calendarEvent => {
-      // console.log(calendarEvent);
-      return (calendarEvent.category === 'run') && (calendarEvent.start > now)
-    })
+    console.log(action.calendarEvents);
+    if (action.calendarEvents.category) {
+      let events = action.calendarEvents.filter(calendarEvent => {
+        // console.log(calendarEvent);
+        return (calendarEvent.category === 'run') && (calendarEvent.start > now)
+      })
     // action.mostRecent = {};
     if (events.length > 0) {
         nextRun = events[0];
@@ -40,6 +42,7 @@ const nextRunReducer = (nextRun, action) => {
           if (entry.start < action.mostRecent.start)
             nextRun = entry;
         }
+      }
     }
   }
   // console.log(nextRun);

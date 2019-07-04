@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
-import Runs from '/imports/api/runs';
+import Weather from '/imports/api/weather';
 
-Meteor.publish('runs', function() {
+Meteor.publish('weather', function() {
  // args publish needs goes in: function(args)
   if (!this.userId) {
     console.log("No userId supplied");
@@ -14,7 +14,7 @@ Meteor.publish('runs', function() {
   //   console.log(items);
   //   console.log("End of items found");
   // });
-  return Runs.find();
+  return Weather.find();
 });
 
 // const handle = Meteor.subscribe('user.runs', args);
