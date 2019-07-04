@@ -38,7 +38,7 @@ class Calendar extends Component {
                 center: "title",
                 right: "dayGridMonth,timeGridWeek,timeGridDay,listWeek"
               }}
-          events={this.props.runEvents}
+          events={this.props.runEvents.concat(this.props.weatherEvents)}
           editable={true}
           nowIndicator= {true}
           plugins={[ dayGridPlugin, timeGridPlugin, interactionPlugin]}

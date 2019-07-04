@@ -27,6 +27,8 @@ Meteor.publish('links', function() {
     return Links.find();
 });
 
+
+
 Meteor.startup(() => {
   // If the Links collection is empty, add some data.
   console.log(process.env.MONGO_URL);
@@ -35,6 +37,10 @@ Meteor.startup(() => {
   }
   // Should only add events that are not in the collection and
   // if possible, every 3 hours add a new event
+  const query = {};
+  const options = { sort: { start: -1 } };
+  const sortedEvents = Weather.find(query, options).fetch();
+  // console.log(sortedEvents);
   if (Weather.find().count() === 0) {
     // let event = {"start":"2019-07-04T03:00:00-07:00","end":"2019-07-04T06:00:00-07:00","rendering":"background","color":"yellow","editable":false}
     // Weather.insert(event);
@@ -74,6 +80,7 @@ Meteor.startup(() => {
       // if (err) console.log(err);
     // })
   }
+  // if (Weather.find().sort({start: -1})
 
   if (Links.find().count() === 0) {
     insertLink(
