@@ -9,10 +9,15 @@ import {bindActionCreators} from 'redux'
 const axios = require('axios');
 import NextRun from './NextRun';
 
-const city_options = ['Vancouver', 'Toronto', 'Calgary'];
+const city_options = ['Calgary', 'Toronto', 'Vancouver'];
 import Dropdown from 'react-dropdown';
 import 'react-dropdown/style.css';
-const defaultOption = city_options[0];
+const defaultOption = city_options[2];
+//let precip_url = "https://weather.gc.ca/wxlink/wxlink.html?cityCode=bc-74&amp;lang=e";
+let precip_url = ["https://weather.gc.ca/wxlink/wxlink.html?cityCode=ab-52&amp;lang=e",
+  "https://weather.gc.ca/wxlink/wxlink.html?cityCode=on-143&amp;lang=e",
+  "https://weather.gc.ca/wxlink/wxlink.html?cityCode=bc-74&amp;lang=e"]
+let precip_url_selected = "https://weather.gc.ca/wxlink/wxlink.html?cityCode=bc-74&amp;lang=e";
 
 class Info extends Component {
   constructor(props) {
@@ -31,13 +36,19 @@ class Info extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleDropDown = this.handleDropDown.bind(this);
     this.handleLoad();
-    city_options.sort();
   }
   handleLoad() {
     let weatherkey = config().openweatherapi
     let weather_url = 'https://api.openweathermap.org/data/2.5/forecast?q=Vancouver,ca&appid=' + weatherkey;
     if (this.state.city !== ''){
       weather_url = 'https://api.openweathermap.org/data/2.5/forecast?q=' + this.state.city + ',ca&appid=' + weatherkey;
+    }
+    if (this.state.city === 'Calgary') {
+      precip_url_selected = precip_url[0];
+    } else if (this.state.city === 'Toronto') {
+      precip_url_selected = precip_url[1];
+    } else {
+      precip_url_selected = precip_url[2];
     }
     // let weather_url = 'https://api.openweathermap.org/data/2.5/forecast?q=' + this.state.city + ',ca&appid=' + weatherkey;
     // axios.get('https://api.openweathermap.org/data/2.5/forecast?q=Vancouver,ca&appid=' + weatherkey)
@@ -80,6 +91,8 @@ class Info extends Component {
   }
 
   render() {
+
+
     if (this.props.editEventView.editorView) {
       return (
         <div>
@@ -88,6 +101,7 @@ class Info extends Component {
           <p><b>Current Temp:</b> {this.state.current_temp}</p>
           <p><b>Min/Max Temp:</b> {this.state.current_temp_min}/{this.state.current_temp_max}</p>
           <p><b>Clouds:</b> {this.state.current_clouds} </p>
+          <iframe title="Environment Canada Weather" width="287px" height="191px" src={precip_url_selected} allowtransparency="true" frameborder="0"></iframe>
           <NextRun/>
           <EventEditor/>
         </div>
@@ -100,6 +114,7 @@ class Info extends Component {
           <p><b>Current Temp:</b> {this.state.current_temp}</p>
           <p><b>Min/Max Temp:</b> {this.state.current_temp_min}/{this.state.current_temp_max}</p>
           <p><b>Clouds:</b> {this.state.current_clouds} </p>
+          <iframe title="Environment Canada Weather" width="287px" height="191px" src={precip_url_selected} allowtransparency="true" frameborder="0"></iframe>
           <NextRun/>
         </div>
       );
