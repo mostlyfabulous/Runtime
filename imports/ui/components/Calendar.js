@@ -19,9 +19,6 @@ import AccountsUIWrapper from '../components/AccountsUIWrapper.js';
 class Calendar extends Component {
 
   render() {
-    // console.log('current user: ')
-    // console.log(this.props.currentUser)
-    // console.log(this.props);
 
     return (
       <div>
@@ -73,13 +70,11 @@ class Calendar extends Component {
     }
   }
   // should trigger a component to display and allow event editting
-  // call component <EventModifier/>
+  // call component <EventEditor/>
   handleEventClick = (e) => {
     // e.jsEvent.cancelBubble=true;
     if (e.event.rendering !== "background") {
       this.props.toggleEventEditor(true, e.event);
-      // let newEventName = prompt("Change run name to: ");
-      //    this.props.renameEvent(e.event, name=newEventName);
          console.log(this.props.calendarEvents);
       }
     }
