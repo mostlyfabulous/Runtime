@@ -1,5 +1,4 @@
 import { Meteor } from 'meteor/meteor';
-import Links from '/imports/api/links';
 import Runs from '/imports/api/runs';
 import Weather from '/imports/api/weather';
 
@@ -15,22 +14,8 @@ function insertRun() {
   Runs.insert(run);
 }
 
-function insertLink(title, url) {
-  Links.insert({ title, url, createdAt: new Date() });
-}
-
-Meteor.publish('links', function() {
-  if (!this.userId) {
-    console.log("No userId supplied");
-    return this.ready();
-  }
-    return Links.find();
-});
-
-
-
 Meteor.startup(() => {
-  // If the Links collection is empty, add some data.
+
   console.log(process.env.MONGO_URL);
   if (Runs.find().count() < 15) {
     insertRun();
@@ -81,13 +66,6 @@ Meteor.startup(() => {
     // })
   }
   // if (Weather.find().sort({start: -1})
-
-  if (Links.find().count() === 0) {
-    insertLink(
-      'Do the Tutorial',
-      'https://www.meteor.com/tutorials/react/creating-an-app'
-    );
-  }
 
 });
 
