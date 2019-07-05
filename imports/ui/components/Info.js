@@ -7,8 +7,12 @@ import { connect } from 'react-redux';
 import { addWeatherData, addEvent, getNextRun, toggleEventEditor } from '../actions/index'
 import {bindActionCreators} from 'redux'
 const axios = require('axios');
-
 import NextRun from './NextRun';
+
+const city_options = ['Vancouver', 'Toronto', 'Calgary'];
+import Dropdown from 'react-dropdown';
+import 'react-dropdown/style.css';
+const defaultOption = city_options[0];
 
 class Info extends Component {
   constructor(props) {
@@ -20,15 +24,24 @@ class Info extends Component {
       current_temp: '',
       current_temp_min: '',
       current_temp_max: '',
-      current_clouds: ''
+      current_clouds: '',
+      city: ''
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleDropDown = this.handleDropDown.bind(this);
     this.handleLoad();
+    city_options.sort();
   }
   handleLoad() {
     let weatherkey = config().openweatherapi
-    axios.get('https://api.openweathermap.org/data/2.5/forecast?q=Vancouver,ca&appid=' + weatherkey)
+    let weather_url = 'https://api.openweathermap.org/data/2.5/forecast?q=Vancouver,ca&appid=' + weatherkey;
+    if (this.state.city !== ''){
+      weather_url = 'https://api.openweathermap.org/data/2.5/forecast?q=' + this.state.city + ',ca&appid=' + weatherkey;
+    }
+    // let weather_url = 'https://api.openweathermap.org/data/2.5/forecast?q=' + this.state.city + ',ca&appid=' + weatherkey;
+    // axios.get('https://api.openweathermap.org/data/2.5/forecast?q=Vancouver,ca&appid=' + weatherkey)
+    axios.get(weather_url)
   .then(response => {
     this.props.addWeatherData(response);
     console.log(this.props.weather);
@@ -41,6 +54,9 @@ class Info extends Component {
     })
 
      this.props.addEvent(createUIWeatherEvents(weather.data.list));
+     console.log('handleLoad: ' + weather_url)
+
+
   })
   .catch(error => {
     console.log(error);
@@ -56,12 +72,19 @@ class Info extends Component {
     event.preventDefault();
   }
 
+  handleDropDown(e){
+  this.setState({city: e.value});
+    console.log('handleDropDown')
+    console.log('handledropdown: ' + this.state.city)
+    this.handleLoad();
+  }
+
   render() {
-    let city = 'Vancouver';
     if (this.props.editEventView.editorView) {
       return (
         <div>
-          <h2>3-Hour Forecast: {city}</h2>
+          <Dropdown options={city_options} onChange={this.handleDropDown} value={defaultOption} placeholder="Select an option" />
+          <h2>3-Hour Forecast: {this.state.city}</h2>
           <p><b>Current Temp:</b> {this.state.current_temp}</p>
           <p><b>Min/Max Temp:</b> {this.state.current_temp_min}/{this.state.current_temp_max}</p>
           <p><b>Clouds:</b> {this.state.current_clouds} </p>
@@ -72,7 +95,8 @@ class Info extends Component {
   } else {
       return (
         <div>
-          <h2>3-Hour Forecast: {city}</h2>
+          <Dropdown options={city_options} onChange={this.handleDropDown} value={this.state.city} placeholder="Select a city" />
+          <h2>3-Hour Forecast: {this.state.city}</h2>
           <p><b>Current Temp:</b> {this.state.current_temp}</p>
           <p><b>Min/Max Temp:</b> {this.state.current_temp_min}/{this.state.current_temp_max}</p>
           <p><b>Clouds:</b> {this.state.current_clouds} </p>

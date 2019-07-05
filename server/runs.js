@@ -9,12 +9,12 @@ Meteor.publish('runs', function() {
   }
   console.log(this.userId);
   // console.log(Runs);
-  // Runs.find({owner: this.userId}).toArray(function(err, items) {
+  //Runs.find({owner: this.userId}).toArray(function(err, items) {
   //   console.log("Returning any items found");
   //   console.log(items);
   //   console.log("End of items found");
   // });
-  return Runs.find();
+  return Runs.find({owner: this.userId});
 });
 
 // const handle = Meteor.subscribe('user.runs', args);
