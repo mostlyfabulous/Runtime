@@ -1,3 +1,5 @@
+import { withTracker } from 'meteor/react-meteor-data';
+
 export const withAccount = withTracker((props) => {
   const user = Meteor.isServer ? null : Meteor.user()
   const userId = Meteor.isServer ? null : Meteor.userId()
