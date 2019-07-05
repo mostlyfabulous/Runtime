@@ -66,3 +66,15 @@ body {
   float: right;
   padding: 1em;
 }
+
+.warm {
+  background-color: orange;
+}
+
+.fair {
+  background-color: inherit;
+}
+
+.cold {
+  background-color: #9EE4D9;
+}
