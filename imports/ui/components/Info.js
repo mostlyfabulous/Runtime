@@ -13,10 +13,15 @@ const city_options = ['Calgary', 'Toronto', 'Vancouver'];
 import Dropdown from 'react-dropdown';
 import 'react-dropdown/style.css';
 const defaultOption = city_options[2];
-//let precip_url = "https://weather.gc.ca/wxlink/wxlink.html?cityCode=bc-74&amp;lang=e";
+// let precip_url = "https://weather.gc.ca/wxlink/wxlink.html?cityCode=bc-74&amp;lang=e";
 let precip_url = ["https://weather.gc.ca/wxlink/wxlink.html?cityCode=ab-52&amp;lang=e",
   "https://weather.gc.ca/wxlink/wxlink.html?cityCode=on-143&amp;lang=e",
   "https://weather.gc.ca/wxlink/wxlink.html?cityCode=bc-74&amp;lang=e"]
+// let precip_url = {};
+// precip_url.Calgary = "https://weather.gc.ca/wxlink/wxlink.html?cityCode=ab-52&amp;lang=e";
+// precip_url.Toronto = "https://weather.gc.ca/wxlink/wxlink.html?cityCode=on-143&amp;lang=e";
+// precip_url.Vancouver = "https://weather.gc.ca/wxlink/wxlink.html?cityCode=bc-74&amp;lang=e";
+
 let precip_url_selected = "https://weather.gc.ca/wxlink/wxlink.html?cityCode=bc-74&amp;lang=e";
 
 class Info extends Component {
@@ -40,9 +45,15 @@ class Info extends Component {
   handleLoad() {
     let weatherkey = config().openweatherapi
     let weather_url = 'https://api.openweathermap.org/data/2.5/forecast?q=Vancouver,ca&appid=' + weatherkey;
+    //precip_url_selected = precip_url.Vancouver;
     if (this.state.city !== ''){
       weather_url = 'https://api.openweathermap.org/data/2.5/forecast?q=' + this.state.city + ',ca&appid=' + weatherkey;
+      // let city = this.state.city;
+      // precip_url_selected = precip_url.city;
+      // console.log('handleLoad: ' + city);
+      // console.log(precip_url.city)
     }
+
     if (this.state.city === 'Calgary') {
       precip_url_selected = precip_url[0];
     } else if (this.state.city === 'Toronto') {
@@ -50,6 +61,9 @@ class Info extends Component {
     } else {
       precip_url_selected = precip_url[2];
     }
+
+    //console.log(precip_url)
+
     // let weather_url = 'https://api.openweathermap.org/data/2.5/forecast?q=' + this.state.city + ',ca&appid=' + weatherkey;
     // axios.get('https://api.openweathermap.org/data/2.5/forecast?q=Vancouver,ca&appid=' + weatherkey)
     axios.get(weather_url)
