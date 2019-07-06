@@ -12,6 +12,7 @@ export class EventEditor extends Component {
       title     : e.title,
       start     : e.start,
       end       : e.end,
+      category  : e.extendedProps.category,
       distance  : e.extendedProps.distance,
       duration  : e.extendedProps.duration,
       owner     : e.extendedProps.owner,
@@ -47,7 +48,8 @@ export class EventEditor extends Component {
         start     : this.state.start,
         end       : this.state.end,
         extendedProps: {
-          distance  : this.state.distance,
+          category  : this.state.category,
+          distance  : parseFloat(this.state.distance),
           owner     : this.state.owner,
           username  : this.state.username
         }

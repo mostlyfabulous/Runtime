@@ -33,14 +33,3 @@ const {
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
 //serviceWorker.unregister();
-
-/*
-import React from 'react';
-import { Meteor } from 'meteor/meteor';
-import { render } from 'react-dom';
-import App from '/imports/ui/App'
-
-Meteor.startup(() => {
-  render(<App />, document.getElementById('react-target'));
-});
-*/

@@ -9,6 +9,7 @@ import '@fullcalendar/core/main.css';
 import '@fullcalendar/daygrid/main.css';
 import '@fullcalendar/timegrid/main.css';
 
+import { withAccount } from './connector.js'
 import { connect } from 'react-redux';
 import { addEvent, dragEvent, toggleEventEditor,
   loadWeatherEvents, WEATHER_SUB, loadRunEvents, RUNS_SUB} from '../actions/index';
@@ -35,11 +36,11 @@ class Calendar extends Component {
  }
 
   render() {
-
+    // console.log(this.props);
     return (
       <div>
         <AccountsUIWrapper />
-        { (this.props.currentUser !== {}) ?
+        { (this.props.account.user !== {}) ?
           <FullCalendar
           dateClick={this.handleDateClick}
           eventClick={this.handleEventClick}
@@ -66,18 +67,20 @@ class Calendar extends Component {
 
   handleDateClick = (e) => {
     if (confirm("Would you like to add a run to " + e.dateStr + " ?")) {
-      let newEvent = {
         // Date.parse returns the ms elapsed since January 1, 1970, 00:00:00 UTC
         // toString(16) converts the ms to hex which is concatenated with a
         // random number between 0 to 1000
-        id: (Date.parse(new Date)).toString(16) + Math.floor(Math.random()*1000),
+        let unique = (Date.parse(new Date)).toString(16) + Math.floor(Math.random()*1000);
+        let newEvent = {
+        id: unique,
+        _id: unique,
         title: "New Run",
-        start: e.date,
+        start: e.date, // TODO: determine how to set timezone if needed
         allDay: e.allDay,
         distance: 5,
         category: "run",
-        owner: Meteor.userId(),
-        username: Meteor.user().username
+        owner: this.props.account.userId,
+        username: this.props.account.user.username,
       }
       console.log('newEvent')
       console.log(newEvent)
@@ -120,7 +123,6 @@ const mapStateToProps = (state) => {
     weatherReady: state.weatherMiddleware.weatherReady,
     weatherEvents: state.weatherMiddleware.weatherEvents,
     weatherSubscriptionStopped: state.weatherMiddleware.weatherSubscriptionStopped,
-    currentUser: Meteor.user() || {}
          };
 }
 
@@ -138,7 +140,9 @@ const mapDispatchToProps = dispatch => {
   );
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Calendar);
+const CalendarContainer = withAccount(Calendar);
+
+export default connect(mapStateToProps, mapDispatchToProps)(CalendarContainer);
 
 // Calendar.propTypes = {
 //   loadingRuns: React.PropTypes.object,

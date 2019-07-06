@@ -136,7 +136,8 @@ class Info extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log("change in prop—getting next run");
+    // console.log("change in prop—getting next run");
+    // console.log(nextProps);
     this.props.getNextRun(nextProps.calendarEvents)
     // this.setState({runEditor: nextProps.editEventView.editorView})
   }

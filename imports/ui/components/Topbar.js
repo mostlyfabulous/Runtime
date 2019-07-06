@@ -5,7 +5,7 @@ import { withAccount } from './connector.js'
 class Topbar extends React.Component {
 
   render() {
-    console.log(this.props);
+    // console.log(this.props);
     let user = "...logging in...";
     if (this.props.account.user) user = this.props.account.user.username
 

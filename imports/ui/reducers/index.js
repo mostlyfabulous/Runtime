@@ -27,9 +27,9 @@ const nextRunReducer = (nextRun, action) => {
   nextRun = nextRun || {};
   if (action.type === 'NEXT_RUN') {
     // console.log("get next run");
-    let now = new Date();
-    console.log(action.calendarEvents);
-    if (action.calendarEvents.category) {
+    let now = moment();
+    // console.log(action.calendarEvents);
+    if (action.calendarEvents) {
       let events = action.calendarEvents.filter(calendarEvent => {
         // console.log(calendarEvent);
         return (calendarEvent.category === 'run') && (calendarEvent.start > now)
@@ -82,10 +82,10 @@ const eventEditorReducer = (editEventView, action) => {
       editorView: action.payload.toggle,
       calendarEvent: action.payload.calendarEvent
     }
-    console.log(newState);
+    // console.log(newState);
     return newState;
   }
-  console.log(editEventView);
+  // console.log(editEventView);
   return editEventView;
 };
 

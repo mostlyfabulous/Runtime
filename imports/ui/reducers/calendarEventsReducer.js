@@ -1,4 +1,6 @@
+import { Meteor } from 'meteor/meteor';
 import React from 'react';
+import Runs from '../../api/runs.js';
 import { STOP_SUBSCRIPTION } from 'meteor-redux-middlewares';
 
 import {
@@ -65,7 +67,7 @@ export function calendarEventsReducer(state = initialCalendarState, action) {
 	case ADD_EVENT:
     let newEvent = action.calendarEvent;
     console.log(newEvent);
-    console.log(state);
+    Runs.insert(newEvent); // any security needed here?
     // concat allows an array of events to be added vs [...events, event(s)]
     return {
       ...state,
@@ -73,6 +75,7 @@ export function calendarEventsReducer(state = initialCalendarState, action) {
     }
 
   case RENAME_EVENT:
+  // TODO: delete this as DRAG_EVENT is the succesor
     console.log("rename event fire");
     let e = action.id
     if (action.newName) {
@@ -97,9 +100,10 @@ export function calendarEventsReducer(state = initialCalendarState, action) {
   case DRAG_EVENT:
     console.log("event drag fire");
     let de = action.calendarEvent
-    console.log(de);
+    // console.log(de);
     let modifiedEvent = {
-      id    : de.event.id,
+      id     : de.event.id,
+      _id    : de.event.id,
       title : de.event.title,
       start : de.event.start,
       end : de.event.end,
@@ -110,8 +114,17 @@ export function calendarEventsReducer(state = initialCalendarState, action) {
       owner: de.event.extendedProps.owner,
       username: de.event.extendedProps.username,
     }
+    // https://docs.meteor.com/api/collections.html#modifiers
+    // Without using $-operators, a modifier is interpreted as a literal document,
+    // and completely replaces whatever was previously in the database.
+    // Find the document with ID 'de.id' and completely replace it.
+    Runs.update({_id: de.event.id}, modifiedEvent, function (err, docsChanged) {
+      if (err) console.log(err);
+      // console.log("event had id: " + de.event.id);
+      // console.log(docsChanged + " documents were changed");
+    })
 
-    console.log(modifiedEvent);
+    // console.log(modifiedEvent);
     return { ...state,
       calendarEvents: [...state.calendarEvents.filter( (event) => {
         return event.id !== (de.event.id)
