@@ -10,15 +10,27 @@ export const WEATHER_SUBSCRIPTION_READY = 'WEATHER_SUBSCRIPTION_READY';
 export const WEATHER_SUBSCRIPTION_CHANGED = 'WEATHER_SUBSCRIPTION_CHANGED';
 export const WEATHER_SUB = 'weather';
 
+export const RUNS_SUBSCRIPTION_READY = 'RUNS_SUBSCRIPTION_READY';
+export const RUNS_SUBSCRIPTION_CHANGED = 'RUNS_SUBSCRIPTION_CHANGED';
+export const RUNS_SUB = 'runs';
+export const ADD_EVENT = 'ADD_EVENT'
+export const RENAME_EVENT = 'RENAME_EVENT'
+export const DRAG_EVENT = 'DRAG_EVENT'
+
 export const loadWeatherEvents = () =>
 // do not put console.log here, it causes a semi-cryptic error
   startSubscription({
-    action: {
-      type: 'START_SUBSCRIPTION'
-    },
     key: WEATHER_SUB,
     get: () => Weather.find().fetch(), // find should recieve a location
-    subscribe: () => Meteor.subscribe('weather'),
+    subscribe: () => Meteor.subscribe(WEATHER_SUB),
+  });
+
+export const loadRunEvents = () =>
+// do not put console.log here, it causes a semi-cryptic error
+  startSubscription({
+    key: RUNS_SUB,
+    get: () => Runs.find().fetch(), // find should recieve a user
+    subscribe: () => Meteor.subscribe(RUNS_SUB),
   });
 
 export const addWeatherData = content => {
@@ -68,14 +80,14 @@ export const historyInfo = period => {
 
 export const dragEvent = calendarEvent => {
   return {
-    type: 'DRAG_EVENT',
+    type: DRAG_EVENT,
     calendarEvent
   };
 };
 
 export const addEvent = calendarEvent => {
   return {
-    type: 'ADD_EVENT',
+    type: ADD_EVENT,
     calendarEvent
   };
 }

@@ -1,7 +1,8 @@
 import React from 'react';
 import Info from '../components/Info.js';
 import Login from '../components/Login.js';
-import CalendarContainer from '../containers/CalendarContainer.js';
+import Calendar from '../components/Calendar.js';
+// import CalendarContainer from '../containers/CalendarContainer.js';
 import {connect} from 'react-redux';
 
 // import AccountsUIWrapper from '../components/AccountsUIWrapper.js';
@@ -36,7 +37,7 @@ class RunPlan extends React.Component {
                       <Info/>
                   </div>
                   <div id='mainContent'>
-                      <CalendarContainer />
+                      <Calendar />
                   </div>
         </div>
       );

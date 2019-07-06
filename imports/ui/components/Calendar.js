@@ -10,8 +10,8 @@ import '@fullcalendar/daygrid/main.css';
 import '@fullcalendar/timegrid/main.css';
 
 import { connect } from 'react-redux';
-import { addEvent, renameEvent, dragEvent, toggleEventEditor,
-  loadWeatherEvents, WEATHER_SUB} from '../actions/index';
+import { addEvent, dragEvent, toggleEventEditor,
+  loadWeatherEvents, WEATHER_SUB, loadRunEvents, RUNS_SUB} from '../actions/index';
 import {bindActionCreators} from 'redux';
 import PropTypes from 'prop-types';
 
@@ -24,11 +24,14 @@ class Calendar extends Component {
     weatherReady: PropTypes.bool.isRequired,
     weatherEvents: PropTypes.array.isRequired,
     weatherSubscriptionStopped: PropTypes.bool.isRequired,
+    calendarReady: PropTypes.bool.isRequired,
+    calendarEvents: PropTypes.array.isRequired,
+    calendarSubscriptionStopped: PropTypes.bool.isRequired,
   }
 
   componentDidMount() {
    this.props.loadWeatherEvents();
-   // this.props.loadRunEvents();
+   this.props.loadRunEvents();
  }
 
   render() {
@@ -48,7 +51,7 @@ class Calendar extends Component {
                 center: "title",
                 right: "dayGridMonth,timeGridWeek,timeGridDay,listWeek"
               }}
-          events={this.props.weatherEvents}
+          events={this.props.calendarEvents.concat(this.props.weatherEvents)}
           editable={true}
           nowIndicator= {true}
           plugins={[ dayGridPlugin, timeGridPlugin, interactionPlugin]}
@@ -109,8 +112,11 @@ class Calendar extends Component {
 const mapStateToProps = (state) => {
 
   return {
-    calendarEvents: state.calendarEvents,
+    // calendarEvents: state.calendarEvents,
     // weather: state.weather,
+    calendarReady: state.calendar.calendarReady,
+    calendarEvents: state.calendar.calendarEvents,
+    calendarSubscriptionStopped: state.calendar.calendarSubscriptionStopped,
     weatherReady: state.weatherMiddleware.weatherReady,
     weatherEvents: state.weatherMiddleware.weatherEvents,
     weatherSubscriptionStopped: state.weatherMiddleware.weatherSubscriptionStopped,
@@ -123,10 +129,10 @@ const mapDispatchToProps = dispatch => {
   return bindActionCreators(
     {
       addEvent,
-      renameEvent,
       dragEvent,
       toggleEventEditor,
-      loadWeatherEvents
+      loadWeatherEvents,
+      loadRunEvents
     },
     dispatch
   );

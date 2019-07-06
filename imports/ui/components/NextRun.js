@@ -51,7 +51,7 @@ class NextRun extends Component {
 const mapStateToProps = (state) => {
   return {
             nextRun: state.nextRun,
-            calendarEvents: state.calendarEvents
+            calendarEvents: state.calendar.calendarEvents
          };
 }
 
