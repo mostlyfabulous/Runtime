@@ -9,14 +9,14 @@ import '@fullcalendar/core/main.css';
 import '@fullcalendar/daygrid/main.css';
 import '@fullcalendar/timegrid/main.css';
 
-import { withAccount } from './connector.js'
+import { withAccount } from '../accounts/connector.js'
 import { connect } from 'react-redux';
 import { addEvent, dragEvent, toggleEventEditor,
-  loadWeatherEvents, WEATHER_SUB, loadRunEvents, RUNS_SUB} from '../actions/index';
+  loadWeatherEvents, WEATHER_SUB, loadRunEvents, RUNS_SUB} from '../../actions/index';
 import {bindActionCreators} from 'redux';
 import PropTypes from 'prop-types';
 
-import AccountsUIWrapper from '../components/AccountsUIWrapper.js';
+import AccountsUIWrapper from '../accounts/AccountsUIWrapper.js';
 
 // Calendar component -
 class Calendar extends Component {

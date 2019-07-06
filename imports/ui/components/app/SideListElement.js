@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {changePage} from '../actions/index';
+import {changePage} from '../../actions/index';
 
 class SideListElement extends React.Component {
     handleClick = () => {

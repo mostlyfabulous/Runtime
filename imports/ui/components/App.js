@@ -1,7 +1,7 @@
 import React from 'react';
-import Sidebar from './Sidebar.js';
-import Topbar from './Topbar.js';
-import Main from './Main.js';
+import Sidebar from './app/Sidebar.js';
+import Topbar from './app/Topbar.js';
+import Main from './app/Main.js';
 
 function App() {
   return (

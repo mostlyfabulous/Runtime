@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { getNextRun } from '../actions/index'
+import { getNextRun } from '../../actions/index'
 import {bindActionCreators} from 'redux'
 
 class NextRun extends Component {

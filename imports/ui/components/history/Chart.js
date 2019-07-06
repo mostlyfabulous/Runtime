@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Bar } from 'react-chartjs-2';
-import { getHistoryChartData, historyInfo } from '../actions/index';
+import { getHistoryChartData, historyInfo } from '../../actions/index';
 import { connect } from 'react-redux';
 
 class Chart extends Component {

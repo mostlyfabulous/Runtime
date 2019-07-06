@@ -1,6 +1,6 @@
 import { withTracker } from 'meteor/react-meteor-data';
 import Preferences from '/imports/api/preferences';
-import UserPref from '../components/UserPref.js'
+import UserPref from '../components/preferences/UserPref.js'
 
 const PreferencesContainer = withTracker( () => {
   // const UserRuns = new Mongo.Collection('user');

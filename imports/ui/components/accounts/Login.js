@@ -1,5 +1,5 @@
 import React from 'react';
-import AccountsUIWrapper from '../components/AccountsUIWrapper.js';
+import AccountsUIWrapper from './AccountsUIWrapper.js';
 import { Meteor } from 'meteor/meteor';
 
 

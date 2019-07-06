@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
-import { dragEvent, toggleEventEditor } from '../actions/index'
+import { dragEvent, toggleEventEditor } from '../../actions/index'
 import {bindActionCreators} from 'redux';
 
 export class EventEditor extends Component {

@@ -1,6 +1,6 @@
 import { withTracker } from 'meteor/react-meteor-data';
 import Runs from '/imports/api/runs';
-import HistoryChart from '../components/HistoryChart.js'
+import HistoryChart from '../components/history/HistoryChart.js'
 
 
 let date = new Date();

@@ -1,7 +1,7 @@
 import { withTracker } from 'meteor/react-meteor-data';
 import Runs from '/imports/api/runs';
 import Weather from '/imports/api/weather';
-import Calendar from '../components/Calendar.js'
+import Calendar from '../components/runPlan/Calendar.js'
 
 const CalendarContainer = withTracker( () => {
   // const UserRuns = new Mongo.Collection('user');

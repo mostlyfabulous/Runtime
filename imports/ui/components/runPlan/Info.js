@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { withTracker } from 'meteor/react-meteor-data';
-import { config } from '../../../config.js';
-import { createUIWeatherEvents } from '../../utils/createWeatherEvents.js'
+import { config } from '../../../../config.js';
+import { createUIWeatherEvents } from '../../../utils/createWeatherEvents.js'
 import EventEditor from './EventEditor';
 import { connect } from 'react-redux';
-import { addWeatherData, addEvent, getNextRun, toggleEventEditor } from '../actions/index'
+import { addWeatherData, addEvent, getNextRun, toggleEventEditor } from '../../actions/index'
 import {bindActionCreators} from 'redux'
 const axios = require('axios');
 import NextRun from './NextRun';

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { withTracker } from 'meteor/react-meteor-data';
-import { config } from '../../../config.js';
+import { config } from '../../../../config.js';
 import { connect } from 'react-redux';
-import { addWeatherData, addEvent } from '../actions/index'
+import { addWeatherData, addEvent } from '../../actions/index'
 import {bindActionCreators} from 'redux'
 const axios = require('axios');
 import PrefEditor from './PrefEditor';

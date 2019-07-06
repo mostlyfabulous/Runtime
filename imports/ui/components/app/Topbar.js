@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { withAccount } from './connector.js'
+import { withAccount } from '../accounts/connector.js'
 
 class Topbar extends React.Component {
 
