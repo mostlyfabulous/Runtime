@@ -1,6 +1,6 @@
 import React from 'react';
 import { combineReducers } from 'redux';
-import calendarEventsReducer from './calendarEventsReducer';
+import { weatherReducerMiddleware, calendarEventsReducer } from './calendarEventsReducer';
 
   const weatherReducer = (weather, action) => {
     weather = weather || {};
@@ -259,6 +259,7 @@ const runHistoryDataReducer = (data = {}, action) => {
 export default combineReducers({
 	//user_input: userInputReducer,
   weather: weatherReducer,
+  weatherMiddleware: weatherReducerMiddleware,
   formData: formDataReducer,
   calendarEvents: calendarEventsReducer,
   nextRun: nextRunReducer,

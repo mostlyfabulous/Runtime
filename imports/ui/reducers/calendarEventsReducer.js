@@ -1,15 +1,43 @@
 import React from 'react';
+import { STOP_SUBSCRIPTION } from 'meteor-redux-middlewares';
+
+import {
+  WEATHER_SUBSCRIPTION_READY,
+  WEATHER_SUBSCRIPTION_CHANGED,
+  WEATHER_SUB,
+} from '../actions/index';
 calendarRef = React.createRef()
 
-let initCal = [
-    {id: '1', title: "Event Now 1", start: new Date()},
-    {id: '2', title: "Event Now 2", start: new Date()},
-    {id: '3', title: "5km Run", start: new Date(Date.now()+(4*60*60000)), distance: 5, category: "run" },
-    {id: '4', title: "10km Run", start: new Date(Date.now()+(24*60*60000)), distance: 10, category: "run" }
-  ];
+const initialState = {
+  weatherReady: false,
+  weatherEvents: [],
+  weatherSubscriptionStopped: false,
+};
 
-const calendarEventsReducer = (calendarEvents, action) => {
-    calendarEvents = calendarEvents || initCal;
+export function weatherReducerMiddleware(state = initialState, action) {
+  switch (action.type) {
+    case WEATHER_SUBSCRIPTION_READY:
+      return {
+        ...state,
+        weatherReady: action.payload.ready,
+      };
+    case WEATHER_SUBSCRIPTION_CHANGED:
+      return {
+        ...state,
+        weatherEvents: action.payload,
+      };
+    case STOP_SUBSCRIPTION: // currently don't need to stop a sub
+      return action.payload === WEATHER_SUB
+        ? { ...state, weatherSubscriptionStopped: true }
+        : state;
+    default:
+      return state;
+  }
+}
+
+
+export const calendarEventsReducer = (calendarEvents, action) => {
+    calendarEvents = calendarEvents || [];
 	if (action.type === 'ADD_EVENT') {
     let newEvent = action.calendarEvent;
     // concat allows an array of events to be added vs [...events, event(s)]
@@ -52,6 +80,7 @@ const calendarEventsReducer = (calendarEvents, action) => {
       owner: e.event.extendedProps.owner,
       username: e.event.extendedProps.username,
     }
+
     console.log(modifiedEvent);
     return [...calendarEvents.filter( (event) => {
       return event.id !== (e.event.id)
@@ -59,8 +88,6 @@ const calendarEventsReducer = (calendarEvents, action) => {
   }
   return calendarEvents;
 }
-
-export default calendarEventsReducer
 /*if (action.type === 'RENAME_EVENT') {
   if (action.payload.name) {
     // set up to prepare for event modification

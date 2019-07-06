@@ -33,9 +33,18 @@ Meteor.startup(() => {
   // new events not in the DB
   if (elapsedHours < 0) {
     console.log(moment().format());
-    console.log(moment().add(9, 'hours').format());
-    // weather seems to be given only 9 hours ahead? don't delete nearest 3 events
-    Weather.remove({start: {$gt: moment().add(9, 'hours').format()}});
+    hours = moment().get('hours');
+    console.log(hours);
+    next3HourBlock = (Math.ceil(hours/3)+2)*3; // don't remove nearest 3 weather blocks (inclusive)
+    console.log(next3HourBlock);
+    // makes sure only the future 3 hour events are removed and not the current one
+    date3HourBlock = moment().hour(next3HourBlock).minute(0).second(0).format();
+    console.log("Time point to remove weather events from: " + date3HourBlock);
+    // weather seems to be given at GMT00:00 and so the api only returns
+    // 3 hour block events that are 7 hours ahead of us
+    Weather.remove({start: {$gt: date3HourBlock}}, function(err, count) {
+      console.log("Removed: " + count + " weather events");
+    });
   }
   // if 0 then we are at the latest event in the DB and should add new events
   // if +ve then DB should be sent new weather events via api call

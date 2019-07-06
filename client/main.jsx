@@ -5,16 +5,25 @@ import App from '/imports/ui/components/App'
 import '../imports/startup/accounts-config.js';
 
 //import * as serviceWorker from './serviceWorker';
-
+import { Tracker } from 'meteor/tracker';
+import createReactiveMiddlewares from 'meteor-redux-middlewares';
+// import createReactiveMiddlewares from 'meteor/samy:redux-middlewares';
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
+
+import { applyMiddleware, createStore, compose } from 'redux';
 import reducers from '/imports/ui/reducers';
 import { render } from 'react-dom';
 
+const {
+  sources,
+  subscriptions,
+} = createReactiveMiddlewares(Tracker);
+
 
   Meteor.startup(() => {
-    render(<Provider store={createStore(reducers,
-      window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+    render(<Provider store={createStore(reducers, compose(
+      applyMiddleware(sources, subscriptions, /*logger*/),
+      window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__() )
     )}>
   		<App />
   	</Provider>, document.getElementById('react-target'));
