@@ -5,16 +5,20 @@ import {
   WEATHER_SUBSCRIPTION_READY,
   WEATHER_SUBSCRIPTION_CHANGED,
   WEATHER_SUB,
+  RUNS_SUBSCRIPTION_READY,
+  RUNS_SUBSCRIPTION_CHANGED,
+  RUNS_SUB,
+  ADD_EVENT, RENAME_EVENT, DRAG_EVENT
 } from '../actions/index';
 calendarRef = React.createRef()
 
-const initialState = {
+const initialWeatherState = {
   weatherReady: false,
   weatherEvents: [],
   weatherSubscriptionStopped: false,
 };
 
-export function weatherReducerMiddleware(state = initialState, action) {
+export function weatherReducerMiddleware(state = initialWeatherState, action) {
   switch (action.type) {
     case WEATHER_SUBSCRIPTION_READY:
       return {
@@ -35,22 +39,47 @@ export function weatherReducerMiddleware(state = initialState, action) {
   }
 }
 
+const initialCalendarState = {
+  calendarReady: false,
+  calendarEvents: [],
+  calendarSubscriptionStopped: false,
+};
 
-export const calendarEventsReducer = (calendarEvents, action) => {
-    calendarEvents = calendarEvents || [];
-	if (action.type === 'ADD_EVENT') {
+export function calendarEventsReducer(state = initialCalendarState, action) {
+  switch (action.type) {
+    case RUNS_SUBSCRIPTION_READY:
+      return {
+        ...state,
+        calendarReady: action.payload.ready,
+      };
+    case RUNS_SUBSCRIPTION_CHANGED:
+      return {
+        ...state,
+        calendarEvents: action.payload,
+      };
+    case STOP_SUBSCRIPTION: // currently don't need to stop a sub
+      return action.payload === RUNS_SUB
+        ? { ...state, calendarSubscriptionStopped: true }
+        : state;
+
+	case ADD_EVENT:
     let newEvent = action.calendarEvent;
+    console.log(newEvent);
+    console.log(state);
     // concat allows an array of events to be added vs [...events, event(s)]
-    return [...calendarEvents.concat(newEvent)]
-	}
-  if (action.type === 'RENAME_EVENT') {
+    return {
+      ...state,
+      calendarEvents: [...state.calendarEvents.concat(newEvent)]
+    }
+
+  case RENAME_EVENT:
     console.log("rename event fire");
     let e = action.id
     if (action.newName) {
-      let targetID = calendarEvents.findIndex(function (event) {
+      let targetID = state.calendarEvents.findIndex(function (event) {
         return e.id === event.id;
       });
-      return calendarEvents.map((event, index) => {
+      return state.calendarEvents.map((event, index) => {
         if (index !== targetID) {
           return event
         }
@@ -58,52 +87,38 @@ export const calendarEventsReducer = (calendarEvents, action) => {
         console.log(updatedEvent);
         updatedEvent.title = action.newName;
         return updatedEvent;
-      });
+        });
       } else {
         console.log("Invalid name passed was:" + action.newName);
-        return calendarEvents;
+        return state;
       }
-    }
-  if (action.type === 'DRAG_EVENT') {
+
+
+  case DRAG_EVENT:
     console.log("event drag fire");
-    let e = action.calendarEvent
-    console.log(e);
+    let de = action.calendarEvent
+    console.log(de);
     let modifiedEvent = {
-      id    : e.event.id,
-      title : e.event.title,
-      start : e.event.start,
-      end : e.event.end,
-      allDay: e.allDay,
-      distance: e.event.extendedProps.distance,
-      duration: e.event.extendedProps.duration,
-      category: e.event.extendedProps.category,
-      owner: e.event.extendedProps.owner,
-      username: e.event.extendedProps.username,
+      id    : de.event.id,
+      title : de.event.title,
+      start : de.event.start,
+      end : de.event.end,
+      allDay: de.allDay,
+      distance: de.event.extendedProps.distance,
+      duration: de.event.extendedProps.duration,
+      category: de.event.extendedProps.category,
+      owner: de.event.extendedProps.owner,
+      username: de.event.extendedProps.username,
     }
 
     console.log(modifiedEvent);
-    return [...calendarEvents.filter( (event) => {
-      return event.id !== (e.event.id)
-    }), modifiedEvent]
-  }
-  return calendarEvents;
-}
-/*if (action.type === 'RENAME_EVENT') {
-  if (action.payload.name) {
-    // set up to prepare for event modification
-    let e = action.payload.calendarEvent
-    let currentEvents = [...calendarEvents];
-    let renameIndex = calendarEvents.findIndex(function (event) {
-      // console.log(e);
-      return e.id === event.id;
-    });
-    let eventToRename = {...currentEvents[renameIndex]};
-    eventToRename.title = action.payload.name;
-    currentEvents[renameIndex] = eventToRename;
-    return currentEvents;
+    return { ...state,
+      calendarEvents: [...state.calendarEvents.filter( (event) => {
+        return event.id !== (de.event.id)
+      }), modifiedEvent]
     }
-  else {
-    console.log("Name passed was:" + action.payload.name);
-    return calendarEvents;
+
+  default:
+    return state;
   }
-} */
+}

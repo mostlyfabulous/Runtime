@@ -28,7 +28,7 @@ const nextRunReducer = (nextRun, action) => {
   if (action.type === 'NEXT_RUN') {
     // console.log("get next run");
     let now = new Date();
-    //console.log(action.calendarEvents);
+    console.log(action.calendarEvents);
     if (action.calendarEvents.category) {
       let events = action.calendarEvents.filter(calendarEvent => {
         // console.log(calendarEvent);
@@ -189,7 +189,7 @@ export default combineReducers({
   weather: weatherReducer,
   weatherMiddleware: weatherReducerMiddleware,
   formData: formDataReducer,
-  calendarEvents: calendarEventsReducer,
+  calendar: calendarEventsReducer,
   nextRun: nextRunReducer,
   pages: pagesReducer,
   runHistory: runHistoryDataReducer,
