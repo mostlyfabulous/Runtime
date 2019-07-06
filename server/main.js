@@ -16,7 +16,7 @@ function insertRun() {
 
 Meteor.startup(() => {
 
-  console.log(process.env.MONGO_URL);
+  //console.log(process.env.MONGO_URL);
   if (Runs.find().count() < 15) {
     insertRun();
   }

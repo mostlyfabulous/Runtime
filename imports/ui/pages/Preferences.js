@@ -1,5 +1,6 @@
 import React from 'react';
-import UserPref from '../components/UserPref.js';
+//import UserPref from '../components/UserPref.js';
+import UserContainer from '../containers/UserContainer.js';
 import {connect} from 'react-redux';
 
 
@@ -11,7 +12,7 @@ class Preferences extends React.Component {
         return (
             <div className='body'>
                 <div id='mainContent'>
-                    <UserPref/>
+                    <UserContainer/>
                 </div>
             </div>
         )
