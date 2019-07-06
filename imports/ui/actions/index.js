@@ -67,27 +67,27 @@ export const toggleEventEditor = (toggle, calendarEvent) => {
 const orgainizeData = (data) => {
   console.log(data);
   let sorted = [];
-  let date = null;
-  let runCount = 0;
+  let runCount;
 
-  data.forEach(function (run) {
-    if (date === null || !(date.getDay() === run.start.getDay() && date.getMonth() === run.start.getMonth())){
-      runCount = 0;
-      date = run.start;
-    }
-    if (!sorted[runCount]) {
-      sorted[runCount] = [run];
-    }
-    else {
-      sorted[runCount].push(run);
-    }
-    runCount++;
-  });
+  let period = new Date();
+  period.setDate(period.getDate()-6)
+
+  for (let i = 0; i <=6; i++){ 
+    runCount = 0;
+    data.forEach(function (run) {
+      if (run.start.getDate() === period.getDate() && run.start.getMonth() === period.getMonth()){
+        if (sorted[runCount])
+          sorted[runCount].push(run);
+        else sorted[runCount] = [run];
+        runCount++;
+      }
+    })
+    period.setDate(period.getDate()+1);
+  }
   return sorted;
 }
 
 export const getHistoryChartData = (data) => {
-  console.log(data);
   return {
     type: 'GET_HISTORY',
     format: 'WEEK',

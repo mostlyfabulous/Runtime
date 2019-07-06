@@ -145,21 +145,25 @@ const runHistoryDataReducer = (data = {}, action) => {
     let datasets = [];
     historyData = action.data;
     let runList = historyData;
-    console.log(runList)
 
     for (i = 0; i < runList.length; i++){
       let distances = [];
       runList[i].forEach(function (run) {
         const difference = Math.abs(run.start.getTime() - currentDate.getTime());
-        const days = Math.ceil(difference / (3600000*24)); 
+        let days;
+        if (run.start.getDate() === currentDate.getDate() && run.start.getMonth() === currentDate.getMonth()){
+          days = 0;
+        } else days = Math.ceil(difference / (3600000*24)); 
         distances[numDays-days] = run.distance;
       })
       datasets[i] = {
         label: 'Run #'+(i+1),
-        backgroundColor: barColors[i],
+        backgroundColor: barColors[i%barColors.length],
         data: distances
       }
     }
+
+    console.log(datasets)
 
     data = {
       labels: labels,
@@ -178,7 +182,6 @@ const runHistoryDataReducer = (data = {}, action) => {
       // ]
     }
   }
-  console.log(data)
   return data;
 }
 

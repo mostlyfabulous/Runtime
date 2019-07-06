@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 
 class Chart extends Component {
     componentDidMount() {
-        console.log(this.props.runs)
         this.props.getHistoryChartData(this.props.runs);
     }
     handleClick(elems) {
