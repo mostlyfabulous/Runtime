@@ -8,6 +8,7 @@ import { addWeatherData, addEvent, getNextRun, toggleEventEditor } from '../acti
 import {bindActionCreators} from 'redux'
 const axios = require('axios');
 import NextRun from './NextRun';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 const city_options = ['Calgary', 'Toronto', 'Vancouver'];
 import Dropdown from 'react-dropdown';
@@ -105,34 +106,34 @@ class Info extends Component {
   }
 
   render() {
+    let city = 'Vancouver';
+    let editor = undefined;
 
+    if (this.props.editEventView.editorView) editor =<div key="1"><EventEditor/></div>;
+    else editor = undefined;
 
-    if (this.props.editEventView.editorView) {
-      return (
-        <div>
-          <Dropdown options={city_options} onChange={this.handleDropDown} value={defaultOption} placeholder="Select an option" />
-          <h2>3-Hour Forecast: {this.state.city}</h2>
-          <p><b>Current Temp:</b> {this.state.current_temp}</p>
-          <p><b>Min/Max Temp:</b> {this.state.current_temp_min}/{this.state.current_temp_max}</p>
-          <p><b>Clouds:</b> {this.state.current_clouds} </p>
-          <iframe title="Environment Canada Weather" width="287px" height="191px" src={precip_url_selected} allowtransparency="true" frameBorder="0"></iframe>
-          <NextRun/>
-          <EventEditor/>
-        </div>
+    return (
+      <div>
+        <h2>3-Hour Forecast: {city}</h2>
+        <p><b>Current Temp:</b> {this.state.current_temp}</p>
+        <p><b>Min/Max Temp:</b> {this.state.current_temp_min}/{this.state.current_temp_max}</p>
+        <p><b>Clouds:</b> {this.state.current_clouds} </p>
+        <iframe title="Environment Canada Weather" width="287px" height="191px" src={precip_url_selected} allowtransparency="true" frameBorder="0"></iframe>
+        <NextRun/>
+        <ReactCSSTransitionGroup
+          transitionName="editor"
+          transitionAppear={false}
+          transitionAppearTimeout={500}
+          transitionEnter={true}
+          transitionEnterTimeout={500}
+          transitionLeave={true}
+          transitionLeaveTimeout={1300}>
+
+          {editor}
+        </ReactCSSTransitionGroup>
+      </div>
+          
     )
-  } else {
-      return (
-        <div>
-          <Dropdown options={city_options} onChange={this.handleDropDown} value={this.state.city} placeholder="Select a city" />
-          <h2>3-Hour Forecast: {this.state.city}</h2>
-          <p><b>Current Temp:</b> {this.state.current_temp}</p>
-          <p><b>Min/Max Temp:</b> {this.state.current_temp_min}/{this.state.current_temp_max}</p>
-          <p><b>Clouds:</b> {this.state.current_clouds} </p>
-          <iframe title="Environment Canada Weather" width="287px" height="191px" src={precip_url_selected} allowtransparency="true" frameBorder="0"></iframe>
-          <NextRun/>
-        </div>
-      );
-    }
   }
 
   componentWillReceiveProps(nextProps) {
