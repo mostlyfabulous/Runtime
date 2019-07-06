@@ -36,7 +36,8 @@ class Info extends Component {
       current_temp_min: '',
       current_temp_max: '',
       current_clouds: '',
-      city: ''
+      city: '',
+      precip_url_selected:''
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -55,13 +56,19 @@ class Info extends Component {
       // console.log(precip_url.city)
     }
 
-    if (this.state.city === 'Calgary') {
-      precip_url_selected = precip_url[0];
-    } else if (this.state.city === 'Toronto') {
-      precip_url_selected = precip_url[1];
-    } else {
-      precip_url_selected = precip_url[2];
-    }
+    // if (this.state.city === 'Calgary') {
+    //   this.setState({
+    //     precip_url_selected: precip_url[0]
+    //   });
+    // } else if (this.state.city === 'Toronto') {
+    //   this.setState({
+    //     precip_url_selected: precip_url[1]
+    //   });
+    // } else {
+    //   this.setState({
+    //     precip_url_selected: precip_url[2]
+    //   });
+    // }
 
     //console.log(precip_url)
 
@@ -102,23 +109,39 @@ class Info extends Component {
   this.setState({city: e.value});
     console.log('handleDropDown')
     console.log('handledropdown: ' + this.state.city)
+
+  if (this.state.city === 'Calgary') {
+    this.setState({
+      precip_url_selected: precip_url[0]
+    });
+  } else if (this.state.city === 'Toronto') {
+    this.setState({
+      precip_url_selected: precip_url[1]
+    });
+  } else {
+    this.setState({
+      precip_url_selected: precip_url[2]
+    });
+  }
+  console.log(this.state.precip_url_selected);
     this.handleLoad();
   }
 
   render() {
-    let city = 'Vancouver';
     let editor = undefined;
-
+    let dropdownValue = defaultOption;
     if (this.props.editEventView.editorView) editor =<div key="1"><EventEditor/></div>;
     else editor = undefined;
-
+    if (this.state.city) dropdownValue = this.state.city;
+    console.log("Render:" + this.state.precip_url_selected);
     return (
       <div>
-        <h2>3-Hour Forecast: {city}</h2>
+        <Dropdown options={city_options} onChange={this.handleDropDown} value={dropdownValue} placeholder="Select an option" />
+        <h2>3-Hour Forecast: {this.state.city}</h2>
         <p><b>Current Temp:</b> {this.state.current_temp}</p>
         <p><b>Min/Max Temp:</b> {this.state.current_temp_min}/{this.state.current_temp_max}</p>
         <p><b>Clouds:</b> {this.state.current_clouds} </p>
-        <iframe title="Environment Canada Weather" width="287px" height="191px" src={precip_url_selected} allowtransparency="true" frameBorder="0"></iframe>
+        <iframe title="Environment Canada Weather" width="287px" height="191px" src={this.state.precip_url_selected} allowtransparency="true" frameBorder="0"></iframe>
         <NextRun/>
         <ReactCSSTransitionGroup
           transitionName="editor"
@@ -132,7 +155,7 @@ class Info extends Component {
           {editor}
         </ReactCSSTransitionGroup>
       </div>
-          
+
     )
   }
 
