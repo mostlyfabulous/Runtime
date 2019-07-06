@@ -1,56 +1,16 @@
 import React, { Component } from 'react';
-import { Bar } from 'react-chartjs-2';
-import { getHistoryChartData, historyInfo } from '../actions/index';
-import { connect } from 'react-redux';
+import Chart from './Chart';
 
 class HistoryChart extends Component {
-    componentDidMount() {
-        this.props.getHistoryChartData();
-    }
-    handleClick(elems) {
-        if (elems.length !== 0){
-            this.props.historyInfo(elems[0]._index);
-        }
-    }
+    component
     render() {
-        return (
-            <div>
-                <h2>Run History</h2>
-                <Bar
-                    data={this.props.data}
-                    onElementsClick={elems => this.handleClick(elems)}
-                    options={{
-
-                        maintainAspectRatio: true,
-                        scales: {
-                            xAxes: [{
-                                label: 'Day',
-                                griLines: {
-                                    display: false
-                                }
-                            }],
-                            yAxes: [{
-                                label: 'km',
-                                gridLines: {
-                                    display: false
-                                },
-                                ticks: {
-                                    beginAtZero: true
-                                }
-                            }]
-                        }
-                    }}
-                />
-          </div>
-        );
+        let runs = null;
+        if (this.props.loadingRuns === false && this.props.runsExists === true)
+            return (
+                <Chart runs={this.props.runEvents}/>
+            );
+        else return (<div className='spinner'/>);
     }
 }
 
-const mapStateToProps = (state) => {
-    return {
-        data: state.runHistory,
-        info: state.historyInfo
-    }
-}
-
-export default connect(mapStateToProps, {getHistoryChartData, historyInfo}) (HistoryChart);
+export default HistoryChart;

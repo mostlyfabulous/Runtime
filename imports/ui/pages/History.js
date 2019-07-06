@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import HistoryChart from '../components/HistoryChart';
+import HistoryChartContainer from '../containers/HistoryChartContainter';
 import HistoryInfo from '../components/HistoryInfo';
 
 class History extends React.Component {
@@ -12,7 +12,7 @@ class History extends React.Component {
                     <HistoryInfo/>
                 </div>
                 <div id='mainContent'>
-                    <HistoryChart/>
+                    <HistoryChartContainer/>
                 </div>
             </div>
         )

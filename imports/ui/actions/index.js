@@ -31,10 +31,12 @@ export const toggleEventEditor = (toggle, calendarEvent) => {
   };
 };
 
-export const getHistoryChartData = () => {
+export const getHistoryChartData = (data) => {
+  console.log(data);
   return {
     type: 'GET_HISTORY',
-    format: 'WEEK'
+    format: 'WEEK',
+    data: data
   }
 }
 
