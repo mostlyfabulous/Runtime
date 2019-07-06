@@ -22,8 +22,7 @@ const {
 
   Meteor.startup(() => {
     render(<Provider store={createStore(reducers, compose(
-      applyMiddleware(sources, subscriptions, /*logger*/),
-      window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__() )
+      applyMiddleware(sources, subscriptions, /*logger*/))
     )}>
   		<App />
   	</Provider>, document.getElementById('react-target'));

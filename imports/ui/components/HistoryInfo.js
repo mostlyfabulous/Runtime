@@ -12,24 +12,24 @@ class HistoryInfo extends React.Component {
 
         info.forEach(function (run) {
             distance += run.distance;
-            time += run.duration;
+            //time += run.duration;
         })
 
-        let average = distance/(time/60)
+        // let average = distance/(time/60)
 
-        if (time > 60) {
-            time = time/60
-            timeUnits = 'hour(s)'
-        }
+        // if (time > 60) {
+        //     time = time/60
+        //     timeUnits = 'hour(s)'
+        // }
         
         const dateDayToWeekDay = ['Sun', 'Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat'];
-        let date = info[0].day
+        let date = info[0].start
         return {
             day: dateDayToWeekDay[date.getDay()]+' '+(date.getMonth()+1)+'/'+date.getDate(),
-            avgSpeed: average.toFixed(2),
+            //avgSpeed: average.toFixed(2),
             totalDist: distance.toFixed(2),
-            totalTime: time.toFixed(2),
-            timeUnits: timeUnits
+            //totalTime: time.toFixed(2),
+            //timeUnits: timeUnits
         }
     }
 
@@ -42,17 +42,17 @@ class HistoryInfo extends React.Component {
             
             details = <div>
                 <h1>{stats.day}</h1>
-                Average speed: {stats.avgSpeed} km/h
-                <br />
+                {/* Average speed: {stats.avgSpeed} km/h
+                <br /> */}
                 Total distance travelled: {stats.totalDist} km
-                <br /> 
+                <br /> {/* 
                 Total time spent: {stats.totalTime} {stats.timeUnits}
-                <br />
+                <br /> */}
                 {info.map((run, index) => (
                     <div key = {index}>
                         <h3>Run #{index+1}</h3>
-                        Duration: {run.duration} min
-                        <br />
+                        {/* Duration: {run.duration} min
+                        <br /> */}
                         Distance: {run.distance} km
                     </div>
                 ))}

@@ -17,6 +17,16 @@ Meteor.publish('runs', function() {
   return Runs.find({owner: this.userId});
 });
 
+Meteor.publish('week', function() {
+  if (!this.userId) {
+    return this.ready();
+  }
+  let date = new Date();
+  let pastDate = new Date();
+  pastDate.setDate(pastDate.getDate()-6);
+  return Runs.find({'start': {$gte: pastDate, $lt: date}, owner: this.userId}, {sort: {start: 1}})
+})
+
 // const handle = Meteor.subscribe('user.runs', args);
 // when passing args is optional and used
 // to pass a parameter to publish
