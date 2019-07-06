@@ -25,8 +25,23 @@ Meteor.startup(() => {
   const query = {};
   const options = { sort: { start: -1 } };
   const sortedEvents = Weather.find(query, options).fetch();
+  // get number of elapsed hours since last weatherEvent in DB
+  const elapsedHours = moment().diff(moment(sortedEvents[0].start), 'hours');
+  console.log(elapsedHours);
+  // if -ve then DB will contain some overlapping events with an weather api call
+  // and we should update those overlapping events with new data whilst adding
+  // new events not in the DB
+  if (elapsedHours < 0) {
+    console.log(moment().format());
+    console.log(moment().add(9, 'hours').format());
+    // weather seems to be given only 9 hours ahead? don't delete nearest 3 events
+    Weather.remove({start: {$gt: moment().add(9, 'hours').format()}});
+  }
+  // if 0 then we are at the latest event in the DB and should add new events
+  // if +ve then DB should be sent new weather events via api call
+
   // console.log(sortedEvents);
-  if (Weather.find().count() === 0) {
+  if (Weather.find().count() === 0 || elapsedHours < 0 || elapsedHours >= 0) {
     // let event = {"start":"2019-07-04T03:00:00-07:00","end":"2019-07-04T06:00:00-07:00","rendering":"background","color":"yellow","editable":false}
     // Weather.insert(event);
     let weatherkey = config().openweatherapi
@@ -47,11 +62,14 @@ Meteor.startup(() => {
                end: moment(threeHourEvent.dt_txt).add(3, 'hours').format(),
                rendering: 'background',
                color: c,
-               editable: false // prevent users from modifying weather events
+               editable: false, // prevent users from modifying weather events
+               temp: t // in degrees kelvin
              })
              return e;
            });
         // console.log(weatherEvents);
+        // TODO: change to bulk insert
+        // Weather.rawCollection().insert([entry1, entry2, entry3]);
         weatherEvents.map( (event) => Weather.insert(event));
         return weatherEvents;
       })
@@ -61,11 +79,7 @@ Meteor.startup(() => {
       });
 
     // events.map( (event) => Weather.insert(event));
-    // Weather.insertMany(createWeatherEvents(), function (err, res) {
-      // if (err) console.log(err);
-    // })
   }
-  // if (Weather.find().sort({start: -1})
 
 });
 
