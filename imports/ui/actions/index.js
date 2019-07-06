@@ -1,4 +1,25 @@
+import { Meteor } from 'meteor/meteor';
+
+import { startSubscription } from 'meteor-redux-middlewares';
+import Weather from '../../api/weather.js'
+import Runs from '../../api/runs.js'
+
 let mostRecent = {};
+
+export const WEATHER_SUBSCRIPTION_READY = 'WEATHER_SUBSCRIPTION_READY';
+export const WEATHER_SUBSCRIPTION_CHANGED = 'WEATHER_SUBSCRIPTION_CHANGED';
+export const WEATHER_SUB = 'weather';
+
+export const loadWeatherEvents = () =>
+// do not put console.log here, it causes a semi-cryptic error
+  startSubscription({
+    action: {
+      type: 'START_SUBSCRIPTION'
+    },
+    key: WEATHER_SUB,
+    get: () => Weather.find().fetch(), // find should recieve a location
+    subscribe: () => Meteor.subscribe('weather'),
+  });
 
 export const addWeatherData = content => {
   return {

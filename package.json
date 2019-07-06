@@ -20,6 +20,7 @@
     "bcrypt": "^3.0.6",
     "chart.js": "^2.8.0",
     "meteor-node-stubs": "^0.4.1",
+    "meteor-redux-middlewares": "^3.0.7",
     "mongodb": "^3.2.7",
     "react": "^16.8.6",
     "react-chartjs-2": "^2.7.6",

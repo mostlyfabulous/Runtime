@@ -10,13 +10,26 @@ import '@fullcalendar/daygrid/main.css';
 import '@fullcalendar/timegrid/main.css';
 
 import { connect } from 'react-redux';
-import { addEvent, renameEvent, dragEvent, toggleEventEditor } from '../actions/index'
-import {bindActionCreators} from 'redux'
+import { addEvent, renameEvent, dragEvent, toggleEventEditor,
+  loadWeatherEvents, WEATHER_SUB} from '../actions/index';
+import {bindActionCreators} from 'redux';
+import PropTypes from 'prop-types';
 
 import AccountsUIWrapper from '../components/AccountsUIWrapper.js';
 
 // Calendar component -
 class Calendar extends Component {
+
+  static propTypes = {
+    weatherReady: PropTypes.bool.isRequired,
+    weatherEvents: PropTypes.array.isRequired,
+    weatherSubscriptionStopped: PropTypes.bool.isRequired,
+  }
+
+  componentDidMount() {
+   this.props.loadWeatherEvents();
+   // this.props.loadRunEvents();
+ }
 
   render() {
 
@@ -35,7 +48,7 @@ class Calendar extends Component {
                 center: "title",
                 right: "dayGridMonth,timeGridWeek,timeGridDay,listWeek"
               }}
-          events={this.props.runEvents.concat(this.props.weatherEvents)}
+          events={this.props.weatherEvents}
           editable={true}
           nowIndicator= {true}
           plugins={[ dayGridPlugin, timeGridPlugin, interactionPlugin]}
@@ -70,7 +83,7 @@ class Calendar extends Component {
     }
   }
   // should trigger a component to display and allow event editting
-  // call component <EventEditor/>
+  // Will send action to render <EventEditor/> in <Info/>
   handleEventClick = (e) => {
     // e.jsEvent.cancelBubble=true;
     if (e.event.rendering !== "background") {
@@ -90,20 +103,17 @@ class Calendar extends Component {
     console.log(this.props.calendarEvents);
   }
 
-  componentWillMount() {
-    console.log(this.props);
-  }
-
 }
 
 
-
 const mapStateToProps = (state) => {
-  // console.log("meteor users")
-  // console.log(Meteor.user())
+
   return {
     calendarEvents: state.calendarEvents,
-    weather: state.weather,
+    // weather: state.weather,
+    weatherReady: state.weatherMiddleware.weatherReady,
+    weatherEvents: state.weatherMiddleware.weatherEvents,
+    weatherSubscriptionStopped: state.weatherMiddleware.weatherSubscriptionStopped,
     currentUser: Meteor.user() || {}
          };
 }
@@ -115,7 +125,8 @@ const mapDispatchToProps = dispatch => {
       addEvent,
       renameEvent,
       dragEvent,
-      toggleEventEditor
+      toggleEventEditor,
+      loadWeatherEvents
     },
     dispatch
   );

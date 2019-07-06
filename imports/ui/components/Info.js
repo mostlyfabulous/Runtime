@@ -78,7 +78,7 @@ class Info extends Component {
             current_clouds: weather.data.list[0].clouds.all + '%'
     })
 
-     this.props.addEvent(createUIWeatherEvents(weather.data.list));
+     // this.props.addEvent(createUIWeatherEvents(weather.data.list));
      console.log('handleLoad: ' + weather_url)
 
 
@@ -115,7 +115,7 @@ class Info extends Component {
           <p><b>Current Temp:</b> {this.state.current_temp}</p>
           <p><b>Min/Max Temp:</b> {this.state.current_temp_min}/{this.state.current_temp_max}</p>
           <p><b>Clouds:</b> {this.state.current_clouds} </p>
-          <iframe title="Environment Canada Weather" width="287px" height="191px" src={precip_url_selected} allowtransparency="true" frameborder="0"></iframe>
+          <iframe title="Environment Canada Weather" width="287px" height="191px" src={precip_url_selected} allowtransparency="true" frameBorder="0"></iframe>
           <NextRun/>
           <EventEditor/>
         </div>
@@ -128,7 +128,7 @@ class Info extends Component {
           <p><b>Current Temp:</b> {this.state.current_temp}</p>
           <p><b>Min/Max Temp:</b> {this.state.current_temp_min}/{this.state.current_temp_max}</p>
           <p><b>Clouds:</b> {this.state.current_clouds} </p>
-          <iframe title="Environment Canada Weather" width="287px" height="191px" src={precip_url_selected} allowtransparency="true" frameborder="0"></iframe>
+          <iframe title="Environment Canada Weather" width="287px" height="191px" src={precip_url_selected} allowtransparency="true" frameBorder="0"></iframe>
           <NextRun/>
         </div>
       );
