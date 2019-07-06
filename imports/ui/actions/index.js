@@ -31,12 +31,34 @@ export const toggleEventEditor = (toggle, calendarEvent) => {
   };
 };
 
+const orgainizeData = (data) => {
+  console.log(data);
+  let sorted = [];
+  let date = null;
+  let runCount = 0;
+
+  data.forEach(function (run) {
+    if (date === null || !(date.getDay() === run.start.getDay() && date.getMonth() === run.start.getMonth())){
+      runCount = 0;
+      date = run.start;
+    }
+    if (!sorted[runCount]) {
+      sorted[runCount] = [run];
+    }
+    else {
+      sorted[runCount].push(run);
+    }
+    runCount++;
+  });
+  return sorted;
+}
+
 export const getHistoryChartData = (data) => {
   console.log(data);
   return {
     type: 'GET_HISTORY',
     format: 'WEEK',
-    data: data
+    data: orgainizeData(data)
   }
 }
 
