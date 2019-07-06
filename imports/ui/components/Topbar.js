@@ -7,25 +7,47 @@ class Topbar extends React.Component {
   render() {
     // console.log(this.props);
     let user = "...logging in...";
+    let baseUrl = 'https://robohash.org/';
     if (this.props.account.user) user = this.props.account.user.username
 
     let t = null;
     if (this.props.weather.data) t = this.props.weather.data.list[0].main.temp;
-    // warm
-    if (t > 298.15) return (
-        <div className="topbar warm">Hello {user}!</div>
-    )
-    // fair
-    else if (t > 295.15 && t <= 298.15) return (
-        <div className="topbar fair">Hello {user}!</div>
-    )
-    // cool
-    else if (t <= 295.15) return (
-        <div className="topbar cold">Hello {user}!</div>
-    )
-    return (
-        <div className="topbar">Hello {user}!</div>
-    )
+
+    if (user !== "...logging in...") {
+      let picture = baseUrl + this.props.account.user._id;
+      // warm
+      if (t > 298.15) return (
+          <div className="topbar warm">Hello {user}! <img src={picture} alt="Profile Icon" width="60" height="60"/> </div>
+      )
+      // fair
+      else if (t > 295.15 && t <= 298.15) return (
+          <div className="topbar fair">Hello {user}! <img src={picture} alt="Profile Icon" width="60" height="60"/></div>
+      )
+      // cool
+      else if (t <= 295.15) return (
+          <div className="topbar cold">Hello {user}! <img src={picture} alt="Profile Icon" width="60" height="60"/></div>
+      )
+      return (
+          <div className="topbar">Hello {user}! <img src={picture} alt="Profile Icon" width="60" height="60"/></div>
+      )
+    } else {
+      // warm
+      if (t > 298.15) return (
+          <div className="topbar warm">Hello {user}!</div>
+      )
+      // fair
+      else if (t > 295.15 && t <= 298.15) return (
+          <div className="topbar fair">Hello {user}!</div>
+      )
+      // cool
+      else if (t <= 295.15) return (
+          <div className="topbar cold">Hello {user}!</div>
+      )
+      return (
+          <div className="topbar">Hello {user}!</div>
+      )
+    }
+
   }
 }
 
