@@ -37,7 +37,7 @@ class Info extends Component {
       current_temp_max: '',
       current_clouds: '',
       city: '',
-      precip_url_selected:''
+      precip_url_selected: precip_url[2]
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);

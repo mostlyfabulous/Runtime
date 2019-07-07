@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import HistoryChartContainer from '../containers/HistoryChartContainter';
+import HistoryChartContainer from '../containers/HistoryChartContainer';
 import HistoryInfo from '../components/history/HistoryInfo';
 
 class History extends React.Component {
