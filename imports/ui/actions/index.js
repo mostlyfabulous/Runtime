@@ -14,7 +14,7 @@ export const RUNS_SUBSCRIPTION_READY = 'RUNS_SUBSCRIPTION_READY';
 export const RUNS_SUBSCRIPTION_CHANGED = 'RUNS_SUBSCRIPTION_CHANGED';
 export const RUNS_SUB = 'runs';
 export const ADD_EVENT = 'ADD_EVENT'
-export const RENAME_EVENT = 'RENAME_EVENT'
+export const HIGHLIGHT_EVENT = 'HIGHLIGHT_EVENT'
 export const DRAG_EVENT = 'DRAG_EVENT'
 
 export const loadWeatherEvents = () =>
@@ -72,7 +72,7 @@ const orgainizeData = (data) => {
   let period = new Date();
   period.setDate(period.getDate()-6)
 
-  for (let i = 0; i <=6; i++){ 
+  for (let i = 0; i <=6; i++){
     runCount = 0;
     data.forEach(function (run) {
       if (run.start.getDate() === period.getDate() && run.start.getMonth() === period.getMonth()){
@@ -116,11 +116,11 @@ export const addEvent = calendarEvent => {
   };
 }
 
-export const renameEvent = (id, newName) => {
+export const highlightEvent = (id) => {
   return {
-    type: 'RENAME_EVENT',
-    id,
-    newName
+    type: HIGHLIGHT_EVENT,
+    id
+    // should  prev_id of the last highlightedEvent
   };
 }
 

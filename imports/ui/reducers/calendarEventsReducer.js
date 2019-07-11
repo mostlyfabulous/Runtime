@@ -10,7 +10,7 @@ import {
   RUNS_SUBSCRIPTION_READY,
   RUNS_SUBSCRIPTION_CHANGED,
   RUNS_SUB,
-  ADD_EVENT, RENAME_EVENT, DRAG_EVENT
+  ADD_EVENT, RENAME_EVENT, DRAG_EVENT, HIGHLIGHT_EVENT
 } from '../actions/index';
 calendarRef = React.createRef()
 
@@ -74,25 +74,27 @@ export function calendarEventsReducer(state = initialCalendarState, action) {
       calendarEvents: [...state.calendarEvents.concat(newEvent)]
     }
 
-  case RENAME_EVENT:
-  // TODO: delete this as DRAG_EVENT is the succesor
-    console.log("rename event fire");
+  case HIGHLIGHT_EVENT:
+    console.log("highlightClickedEvent fire");
     let e = action.id
-    if (action.newName) {
+    if (action.id) {
       let targetID = state.calendarEvents.findIndex(function (event) {
         return e.id === event.id;
       });
-      return state.calendarEvents.map((event, index) => {
+      let modifiedEvents = state.calendarEvents.map((event, index) => {
         if (index !== targetID) {
           return event
         }
         let updatedEvent = {...event};
         console.log(updatedEvent);
-        updatedEvent.title = action.newName;
+        updatedEvent.color = 'yellow';
         return updatedEvent;
-        });
+      });
+      return {...state,
+        calendarEvents: modifiedEvents}
+
       } else {
-        console.log("Invalid name passed was:" + action.newName);
+        console.log("Could not get event ID");
         return state;
       }
 
