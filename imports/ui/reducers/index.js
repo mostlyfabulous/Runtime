@@ -98,18 +98,11 @@ const getHistoryInfoReducer = (info = [], action) => {
   if (action.type === 'HISTORY_INFO') {
     let runList = historyData;
     let newInfo = [];
-
-    let period = new Date();
-    if (currentChartFormat === 'WEEK') {
-      period.setDate(period.getDate()-6+action.period)
-    }
-
     runList.forEach(function (list) {
-      list.forEach(function (run) {
-        if (run.start.getDate() === period.getDate() && run.start.getMonth() === period.getMonth()){
-          newInfo.push(run);
-        }
-      })
+      run = list[action.period]
+      if (run !== null) {
+        newInfo.push(run);
+      }
     })
     return newInfo;
   } else if (action.type === 'GET_HISTORY')
@@ -136,11 +129,8 @@ const runHistoryDataReducer = (data = {}, action) => {
         day.setDate(day.getDate()+1);
       }
     }
-    // else if (action.format === 'DAY'){
-    //   something
-    // } else if (action.format === 'MONTH') {
-    //   something
-    // }
+    // else if (action.format === 'DAY'){}
+    // else if (action.format === 'MONTH') {}
 
     let datasets = [];
     historyData = action.data;
@@ -148,14 +138,14 @@ const runHistoryDataReducer = (data = {}, action) => {
 
     for (i = 0; i < runList.length; i++){
       let distances = [];
-      runList[i].forEach(function (run) {
-        const difference = Math.abs(run.start.getTime() - currentDate.getTime());
-        let days;
-        if (run.start.getDate() === currentDate.getDate() && run.start.getMonth() === currentDate.getMonth()){
-          days = 0;
-        } else days = Math.ceil(difference / (3600000*24)); 
-        distances[numDays-days] = run.distance;
-      })
+      let list = runList[i]
+      for (let j = 0; j < list.length; j++) {
+        let run = list[j];
+        if (run === null) {
+          distances[j] = 0
+        } else
+          distances[j] = run.distance;
+      }
       datasets[i] = {
         label: 'Run #'+(i+1),
         backgroundColor: barColors[i%barColors.length],
@@ -163,23 +153,9 @@ const runHistoryDataReducer = (data = {}, action) => {
       }
     }
 
-    console.log(datasets)
-
     data = {
       labels: labels,
       datasets: datasets
-      // datasets: [
-      //   {
-      //     label: 'Run #1',
-      //     backgroundColor:'blue',
-      //     data: [3,1,4,0,6,2,3]
-      //   },
-      //   {
-      //     label: 'Run #2',
-      //     backgroundColor:'green',
-      //     data: [3,10,1,null,null,1,2]
-      //   }
-      // ]
     }
   }
   return data;

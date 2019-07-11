@@ -64,34 +64,59 @@ export const toggleEventEditor = (toggle, calendarEvent) => {
   };
 };
 
-const orgainizeData = (data) => {
-  console.log(data);
-  let sorted = [];
-  let runCount;
-
-  let period = new Date();
-  period.setDate(period.getDate()-6)
-
-  for (let i = 0; i <=6; i++){ 
-    runCount = 0;
-    data.forEach(function (run) {
-      if (run.start.getDate() === period.getDate() && run.start.getMonth() === period.getMonth()){
-        if (sorted[runCount])
-          sorted[runCount].push(run);
-        else sorted[runCount] = [run];
-        runCount++;
-      }
-    })
-    period.setDate(period.getDate()+1);
+const getDayCountIndex = (run, format) => {
+  let offset;
+  if (format === 'WEEK') {
+    offset = 6;
   }
+  const start = moment().subtract(offset,'days');
+  const difference = moment(run.start).diff(start, 'days')
+  return difference+1;
+}
+
+const orgainizeData = (data, format) => {
+  let sorted = [];
+  let runCount = 0;
+  let dayCount = 0;
+
+  let date = null;
+  let month = null;
+
+  data.forEach(function (run) {
+    if ((date === null && month === null) || !(date === run.start.getDate() && month === run.start.getMonth())) {
+      console.log('hi')
+      runCount = 0;
+
+      dayCount = getDayCountIndex(run, format)
+
+      date = run.start.getDate();
+      month = run.start.getMonth();
+    }
+    
+    if (!sorted[runCount]){
+      sorted[runCount] = [];
+    }
+
+    sorted[runCount][dayCount] = run;
+    runCount++;
+  })
+
+  console.log(sorted)
+  sorted.forEach(function (runSet) {
+    for (let i = 0; i < sorted[0].length; i++) {
+      if (!runSet[i])
+        runSet[i] = null;
+    }
+  })
   return sorted;
 }
 
 export const getHistoryChartData = (data) => {
+  let format = 'WEEK';
   return {
     type: 'GET_HISTORY',
-    format: 'WEEK',
-    data: orgainizeData(data)
+    format: format,
+    data: orgainizeData(data, format)
   }
 }
 

@@ -10,7 +10,7 @@ pastDate.setDate(pastDate.getDate()-6);
 const HistoryChartContainer = withTracker( () => {
   const runHandle = Meteor.subscribe('week');
   const loadingRuns = !runHandle.ready();
-  const runs = Runs.find({start: {$gte: pastDate, $lt: date}, owner: Meteor.user()._id}, {sort: {start: 1}}).fetch();
+  const runs = Runs.find({start: {$gte: pastDate, $lt: date}, owner: Meteor.userId}, {sort: {start: 1}}).fetch();
   const runsExists = !loadingRuns && !!runs;
   return {
     loadingRuns,
