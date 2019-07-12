@@ -110,11 +110,11 @@ class Info extends Component {
     console.log('handleDropDown')
     console.log('handledropdown: ' + this.state.city)
 
-  if (this.state.city === 'Calgary') {
+  if (e.value === 'Calgary') {
     this.setState({
       precip_url_selected: precip_url[0]
     });
-  } else if (this.state.city === 'Toronto') {
+  } else if (e.value === 'Toronto') {
     this.setState({
       precip_url_selected: precip_url[1]
     });
