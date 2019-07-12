@@ -14,7 +14,7 @@ export const RUNS_SUBSCRIPTION_READY = 'RUNS_SUBSCRIPTION_READY';
 export const RUNS_SUBSCRIPTION_CHANGED = 'RUNS_SUBSCRIPTION_CHANGED';
 export const RUNS_SUB = 'runs';
 export const ADD_EVENT = 'ADD_EVENT'
-export const RENAME_EVENT = 'RENAME_EVENT'
+export const HIGHLIGHT_EVENT = 'HIGHLIGHT_EVENT'
 export const DRAG_EVENT = 'DRAG_EVENT'
 
 export const loadWeatherEvents = () =>
@@ -92,7 +92,7 @@ const orgainizeData = (data, format) => {
       date = run.start.getDate();
       month = run.start.getMonth();
     }
-    
+
     if (!sorted[runCount]){
       sorted[runCount] = [];
     }
@@ -141,11 +141,10 @@ export const addEvent = calendarEvent => {
   };
 }
 
-export const renameEvent = (id, newName) => {
+export const highlightEvent = (event) => {
   return {
-    type: 'RENAME_EVENT',
-    id,
-    newName
+    type: HIGHLIGHT_EVENT,
+    event
   };
 }
 

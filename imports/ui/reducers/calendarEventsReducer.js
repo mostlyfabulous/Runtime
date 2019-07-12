@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import Runs from '../../api/runs.js';
+import { findIndexofEvent, filterOutEvent } from '../../utils/calendarUtils'
 import { STOP_SUBSCRIPTION } from 'meteor-redux-middlewares';
 
 import {
@@ -10,7 +11,7 @@ import {
   RUNS_SUBSCRIPTION_READY,
   RUNS_SUBSCRIPTION_CHANGED,
   RUNS_SUB,
-  ADD_EVENT, RENAME_EVENT, DRAG_EVENT
+  ADD_EVENT, RENAME_EVENT, DRAG_EVENT, HIGHLIGHT_EVENT
 } from '../actions/index';
 calendarRef = React.createRef()
 
@@ -45,6 +46,7 @@ const initialCalendarState = {
   calendarReady: false,
   calendarEvents: [],
   calendarSubscriptionStopped: false,
+  calendarHighlightedEvent: "",
 };
 
 export function calendarEventsReducer(state = initialCalendarState, action) {
@@ -74,25 +76,33 @@ export function calendarEventsReducer(state = initialCalendarState, action) {
       calendarEvents: [...state.calendarEvents.concat(newEvent)]
     }
 
-  case RENAME_EVENT:
-  // TODO: delete this as DRAG_EVENT is the succesor
-    console.log("rename event fire");
-    let e = action.id
-    if (action.newName) {
-      let targetID = state.calendarEvents.findIndex(function (event) {
-        return e.id === event.id;
-      });
-      return state.calendarEvents.map((event, index) => {
-        if (index !== targetID) {
-          return event
-        }
+  case HIGHLIGHT_EVENT:
+    console.log("highlightClickedEvent fire");
+
+    let highlightedEvent = {};
+    if (action.event) { // should recieve an event
+      // console.log(action.event);
+      let modifiedEvents = state.calendarEvents.map((event) => {
+        if (event.id !== action.event.id) return event;
+        highlightedEvent = {...event};
         let updatedEvent = {...event};
-        console.log(updatedEvent);
-        updatedEvent.title = action.newName;
+        updatedEvent.color = 'khaki';
         return updatedEvent;
-        });
+      });
+      // restore previously highlighted event color and update highlightedEvent
+      if (state.calendarHighlightedEvent) {
+          let previouslyHighlighted = {...state.calendarHighlightedEvent};
+          // remove highlightedEvent with khaki color
+          modifiedEvents = filterOutEvent(modifiedEvents, previouslyHighlighted)
+          modifiedEvents = modifiedEvents.concat(previouslyHighlighted);
+      }
+      return {...state,
+        calendarEvents: modifiedEvents,
+        calendarHighlightedEvent: highlightedEvent
+      }
+
       } else {
-        console.log("Invalid name passed was:" + action.newName);
+        console.log("Could not get event ID");
         return state;
       }
 

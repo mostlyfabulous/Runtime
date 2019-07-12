@@ -11,7 +11,7 @@ import '@fullcalendar/timegrid/main.css';
 
 import { withAccount } from '../accounts/connector.js'
 import { connect } from 'react-redux';
-import { addEvent, dragEvent, toggleEventEditor,
+import { addEvent, dragEvent, highlightEvent, toggleEventEditor,
   loadWeatherEvents, WEATHER_SUB, loadRunEvents, RUNS_SUB} from '../../actions/index';
 import {bindActionCreators} from 'redux';
 import PropTypes from 'prop-types';
@@ -94,6 +94,7 @@ class Calendar extends Component {
     // e.jsEvent.cancelBubble=true;
     if (e.event.rendering !== "background") {
       this.props.toggleEventEditor(true, e.event);
+      this.props.highlightEvent(e.event);
          console.log(this.props.calendarEvents);
       }
     }
@@ -132,6 +133,7 @@ const mapDispatchToProps = dispatch => {
     {
       addEvent,
       dragEvent,
+      highlightEvent,
       toggleEventEditor,
       loadWeatherEvents,
       loadRunEvents
