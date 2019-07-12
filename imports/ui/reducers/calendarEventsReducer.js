@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import Runs from '../../api/runs.js';
+import { findIndexofEvent, filterOutEvent } from '../../utils/calendarUtils'
 import { STOP_SUBSCRIPTION } from 'meteor-redux-middlewares';
 
 import {
@@ -45,6 +46,7 @@ const initialCalendarState = {
   calendarReady: false,
   calendarEvents: [],
   calendarSubscriptionStopped: false,
+  calendarHighlightedEvent: "",
 };
 
 export function calendarEventsReducer(state = initialCalendarState, action) {
@@ -76,22 +78,28 @@ export function calendarEventsReducer(state = initialCalendarState, action) {
 
   case HIGHLIGHT_EVENT:
     console.log("highlightClickedEvent fire");
-    let e = action.id
-    if (action.id) {
-      let targetID = state.calendarEvents.findIndex(function (event) {
-        return e.id === event.id;
-      });
-      let modifiedEvents = state.calendarEvents.map((event, index) => {
-        if (index !== targetID) {
-          return event
-        }
+
+    let highlightedEvent = {};
+    if (action.event) { // should recieve an event
+      // console.log(action.event);
+      let modifiedEvents = state.calendarEvents.map((event) => {
+        if (event.id !== action.event.id) return event;
+        highlightedEvent = {...event};
         let updatedEvent = {...event};
-        console.log(updatedEvent);
-        updatedEvent.color = 'yellow';
+        updatedEvent.color = 'khaki';
         return updatedEvent;
       });
+      // restore previously highlighted event color and update highlightedEvent
+      if (state.calendarHighlightedEvent) {
+          let previouslyHighlighted = {...state.calendarHighlightedEvent};
+          // remove highlightedEvent with khaki color
+          modifiedEvents = filterOutEvent(modifiedEvents, previouslyHighlighted)
+          modifiedEvents = modifiedEvents.concat(previouslyHighlighted);
+      }
       return {...state,
-        calendarEvents: modifiedEvents}
+        calendarEvents: modifiedEvents,
+        calendarHighlightedEvent: highlightedEvent
+      }
 
       } else {
         console.log("Could not get event ID");

@@ -116,10 +116,10 @@ export const addEvent = calendarEvent => {
   };
 }
 
-export const highlightEvent = (id) => {
+export const highlightEvent = (event) => {
   return {
     type: HIGHLIGHT_EVENT,
-    id
+    event
     // should  prev_id of the last highlightedEvent
   };
 }
