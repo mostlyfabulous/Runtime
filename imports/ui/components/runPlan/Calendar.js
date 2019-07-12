@@ -45,6 +45,7 @@ class Calendar extends Component {
           dateClick={this.handleDateClick}
           eventClick={this.handleEventClick}
           eventDrop={this.handleEventDrop}
+          eventResize={this.handleEventResize}
           defaultView="timeGridWeek"
           scrollTime={new Date(Date.now()).getHours()+":00"}
           header={{
@@ -108,6 +109,10 @@ class Calendar extends Component {
       this.props.dragEvent(e);
     }
     console.log(this.props.calendarEvents);
+  }
+
+  handleEventResize = (e) => {
+    this.props.dragEvent(e);
   }
 
 }
