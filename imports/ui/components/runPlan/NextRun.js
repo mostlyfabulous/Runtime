@@ -3,6 +3,10 @@ import { connect } from 'react-redux';
 import { getNextRun } from '../../actions/index'
 import {bindActionCreators} from 'redux'
 
+var moment = require("moment");
+var momentDurationFormatSetup = require("moment-duration-format");
+momentDurationFormatSetup(moment);
+
 class NextRun extends Component {
   constructor(props) {
     super(props);
@@ -21,18 +25,19 @@ class NextRun extends Component {
   }
 
   render() {
-    let readable = "";
-    if (this.props.nextRun.duration) {
-      // humanize isn't accurate: use this? https://momentjs.com/docs/#/plugins/preciserange/
-      readable = moment.duration(this.props.nextRun.duration).humanize();
-      console.log(readable);
+    let eventDuration = "";
+    const {title, start, end, extendedProps} = this.props.nextRun;;
+    if (end) {
+      // see duration formatting options here: https://github.com/jsmreese/moment-duration-format
+      eventDuration = moment.duration(moment(end).diff(moment(start))).format("h [hrs], m [min]");
+      // console.log(eventDuration);
     }
       return (
         <div>
           <h2>Your Next Run</h2>
           <form onSubmit={this.handleSubmit} ref='form'>
             <label htmlFor="duration">Duration</label>
-            <input type="text" id="duration" defaultValue={readable} />
+            <input type="text" id="duration" defaultValue={eventDuration} />
             <br/>
             <label htmlFor="start_time">Start Time</label>
             <input type="text" id="start_time" defaultValue={this.props.nextRun.start} />

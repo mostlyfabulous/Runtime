@@ -40,7 +40,7 @@ export class EventEditor extends Component {
 
   handleSubmit(jsEvent) {
     jsEvent.preventDefault();
-    // event is being reserved for being passed into the dragEvent action
+    // 'event' var name is being reserved for being passed into the dragEvent action
     let eventDuration = "";
     if (this.state.end) {
       eventDuration = moment.duration(moment(this.state.end).diff(moment(this.state.start)));

@@ -56,20 +56,6 @@ class Info extends Component {
       // console.log(precip_url.city)
     }
 
-    // if (this.state.city === 'Calgary') {
-    //   this.setState({
-    //     precip_url_selected: precip_url[0]
-    //   });
-    // } else if (this.state.city === 'Toronto') {
-    //   this.setState({
-    //     precip_url_selected: precip_url[1]
-    //   });
-    // } else {
-    //   this.setState({
-    //     precip_url_selected: precip_url[2]
-    //   });
-    // }
-
     //console.log(precip_url)
 
     // let weather_url = 'https://api.openweathermap.org/data/2.5/forecast?q=' + this.state.city + ',ca&appid=' + weatherkey;
@@ -87,8 +73,7 @@ class Info extends Component {
     })
 
      // this.props.addEvent(createUIWeatherEvents(weather.data.list));
-     console.log('handleLoad: ' + weather_url)
-
+     // console.log('handleLoad: ' + weather_url)
 
   })
   .catch(error => {
@@ -133,7 +118,7 @@ class Info extends Component {
     if (this.props.editEventView.editorView) editor =<div key="1"><EventEditor/></div>;
     else editor = undefined;
     if (this.state.city) dropdownValue = this.state.city;
-    console.log("Render:" + this.state.precip_url_selected);
+
     return (
       <div>
         <Dropdown options={city_options} onChange={this.handleDropDown} value={dropdownValue} placeholder="Select an option" />
