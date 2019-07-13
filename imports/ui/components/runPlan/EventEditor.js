@@ -80,7 +80,7 @@ export class EventEditor extends Component {
           <h2>Edit Run: {title}</h2>
           <form onSubmit={this.handleSubmit} ref='form'>
             <label htmlFor="title">Run Name</label>
-            <input type="string" id="title" name="title" defaultValue={title}
+            <input type="string" id="title" name="title" 
               onChange={this.handleChange} placeholder="5km Run" />
             <br/>
             <label htmlFor="start_time">Start Time: {start.toString()}</label>
@@ -92,7 +92,7 @@ export class EventEditor extends Component {
               onChange={this.handleChange}  />
             <br/>
             <label htmlFor="distance">Distance: {extendedProps.distance}</label>
-            <input type="number" id="distance" name="distance" defaultValue={extendedProps.distance}
+            <input type="number" id="distance" name="distance"
               onChange={this.handleChange} step="0.01" placeholder="km/m" />
             <br/>
             <button type="submit">Update Run Information</button>

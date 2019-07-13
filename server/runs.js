@@ -1,6 +1,12 @@
 import { Meteor } from 'meteor/meteor';
 import Runs from '/imports/api/runs';
 
+function insertRun() {
+  let newId = (Date.parse(new Date)).toString(16) + Math.floor(Math.random()*1000);
+  let run = {_id: newId, title: "15km Run", start: new Date(Date.now()+(4*60*60000)), distance: 15, category: "run", owner: "2BcpLKrNy6PcHWn6w", username: "awz"};
+  Runs.insert(run);
+}
+
 Meteor.publish('runs', function() {
  // args publish needs goes in: function(args)
   if (!this.userId) {
@@ -31,3 +37,7 @@ Meteor.publish('week', function() {
 // when passing args is optional and used
 // to pass a parameter to publish
 // https://guide.meteor.com/data-loading.html#fetching
+
+// if (Runs.find().count() < 15) {
+//   insertRun();
+// }
