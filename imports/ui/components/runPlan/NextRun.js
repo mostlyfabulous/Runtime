@@ -21,12 +21,18 @@ class NextRun extends Component {
   }
 
   render() {
+    let readable = "";
+    if (this.props.nextRun.duration) {
+      // humanize isn't accurate: use this? https://momentjs.com/docs/#/plugins/preciserange/
+      readable = moment.duration(this.props.nextRun.duration).humanize();
+      console.log(readable);
+    }
       return (
         <div>
           <h2>Your Next Run</h2>
           <form onSubmit={this.handleSubmit} ref='form'>
             <label htmlFor="duration">Duration</label>
-            <input type="text" id="duration" defaultValue={this.props.nextRun.duration} />
+            <input type="text" id="duration" defaultValue={readable} />
             <br/>
             <label htmlFor="start_time">Start Time</label>
             <input type="text" id="start_time" defaultValue={this.props.nextRun.start} />

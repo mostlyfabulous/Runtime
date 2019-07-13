@@ -77,6 +77,8 @@ class Calendar extends Component {
         _id: unique,
         title: "New Run",
         start: e.date, // TODO: determine how to set timezone if needed
+        end: moment(e.date).add(1, 'hours').format(),
+        duration: moment.duration(1, 'hours'),
         allDay: e.allDay,
         distance: 5,
         category: "run",

@@ -41,6 +41,10 @@ export class EventEditor extends Component {
   handleSubmit(jsEvent) {
     jsEvent.preventDefault();
     // event is being reserved for being passed into the dragEvent action
+    let eventDuration = "";
+    if (this.state.end) {
+      eventDuration = moment.duration(moment(this.state.end).diff(moment(this.state.start)));
+    }
     let e = {
       event: {
         id        : this.props.editEventView.calendarEvent.id,
@@ -50,6 +54,7 @@ export class EventEditor extends Component {
         extendedProps: {
           category  : this.state.category,
           distance  : parseFloat(this.state.distance),
+          duration  : eventDuration,
           owner     : this.state.owner,
           username  : this.state.username
         }
@@ -67,6 +72,8 @@ export class EventEditor extends Component {
     // if condition needed to prevent errors when transitioning out upon submit
     // transitioning out will remove props from being accessible and throw errors
     // when calling start.toString and accessing extendedProps.distance
+    let endTime = "";
+    if (end) endTime = end.toString()
     if (this.props.editEventView.editorView) {
       return (
         <div className="editor">
@@ -80,7 +87,7 @@ export class EventEditor extends Component {
             <input type="datetime-local" id="start_time" name="start"
               onChange={this.handleChange}  />
             <br/>
-            <label htmlFor="end_time">End Time</label>
+            <label htmlFor="end_time">End Time: {endTime}</label>
             <input type="datetime-local" id="end_time" name="end"
               onChange={this.handleChange}  />
             <br/>
