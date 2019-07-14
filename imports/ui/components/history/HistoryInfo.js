@@ -17,6 +17,7 @@ class HistoryInfo extends React.Component {
         let calcSpeedDist = 0;
 
         for (let i = 0; i < info.length; i++){
+            let run = info[i];
             distance += run.distance;
             timeList[i] = "";
 
@@ -25,7 +26,11 @@ class HistoryInfo extends React.Component {
                 let end = new Date(run.end);
                 let duration = moment(end).diff(run.start, 'seconds');
                 time += duration;
-                timeList[i] = ("Time: "+moment.utc(duration*1000).format('HH:mm:ss'));
+                timeList[i] = <span>
+                    Time: {moment.utc(duration*1000).format('HH:mm:ss')}
+                    <br />
+                    Speed: {(run.distance/(duration/3600)).toFixed(2)} km/h
+                </span>;
             }
         };
 
