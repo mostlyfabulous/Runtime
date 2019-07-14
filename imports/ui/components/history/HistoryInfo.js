@@ -9,7 +9,7 @@ class HistoryInfo extends React.Component {
         const dateDayToWeekDay = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
         let date = info[0].start
 
-        let stats = {day: dateDayToWeekDay[date.getDay()]+' '+(date.getMonth()+1)+'/'+date.getDate()};
+        let stats = {day: dateDayToWeekDay[date.getDay()]+', '+(date.getMonth()+1)+'/'+date.getDate()};
 
         let distance = 0;
         let time = 0;
@@ -63,7 +63,6 @@ class HistoryInfo extends React.Component {
                 <h1>{stats.day}</h1>
                 Total distance travelled: {stats.totalDist} km 
                 {timeDependant}
-                <br />
                 {info.map((run, index) => (
                     <div key = {index}>
                         <h3>Run #{index+1}</h3>
