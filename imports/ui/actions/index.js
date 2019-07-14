@@ -84,11 +84,9 @@ const orgainizeData = (data, format) => {
 
   data.forEach(function (run) {
     if ((date === null && month === null) || !(date === run.start.getDate() && month === run.start.getMonth())) {
-      console.log('hi')
       runCount = 0;
 
       dayCount = getDayCountIndex(run, format)
-
       date = run.start.getDate();
       month = run.start.getMonth();
     }
@@ -101,7 +99,6 @@ const orgainizeData = (data, format) => {
     runCount++;
   })
 
-  console.log(sorted)
   sorted.forEach(function (runSet) {
     for (let i = 0; i < sorted[0].length; i++) {
       if (!runSet[i])

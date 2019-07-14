@@ -24,6 +24,7 @@ Meteor.publish('week', function() {
   let date = new Date();
   let pastDate = new Date();
   pastDate.setDate(pastDate.getDate()-6);
+  pastDate.setHours(0,0,0,0);
   return Runs.find({start: {$gte: pastDate, $lt: date}, owner: this.userId}, {sort: {start: 1}})
 })
 

@@ -6,6 +6,7 @@ import HistoryChart from '../components/history/HistoryChart.js'
 let date = new Date();
 let pastDate = new Date();
 pastDate.setDate(pastDate.getDate()-6);
+pastDate.setHours(0,0,0,0);
 
 const HistoryChartContainer = withTracker( () => {
   const runHandle = Meteor.subscribe('week');
