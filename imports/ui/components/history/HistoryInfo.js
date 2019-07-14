@@ -6,31 +6,41 @@ class HistoryInfo extends React.Component {
     overallStats() {
         let info = this.props.info;
 
+        const dateDayToWeekDay = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        let date = info[0].start
+
+        let stats = {day: dateDayToWeekDay[date.getDay()]+' '+(date.getMonth()+1)+'/'+date.getDate()};
+
         let distance = 0;
         let time = 0;
-        let timeUnits = 'min(s)'
+        let timeList = [];
+        let calcSpeedDist = 0;
 
-        info.forEach(function (run) {
+        for (let i = 0; i < info.length; i++){
             distance += run.distance;
-            //time += run.duration;
-        })
+            timeList[i] = "";
 
-        // let average = distance/(time/60)
+            if (run.end) {
+                calcSpeedDist += run.distance;
+                let end = new Date(run.end);
+                let duration = moment(end).diff(run.start, 'seconds');
+                time += duration;
+                timeList[i] = ("Time: "+moment.utc(duration*1000).format('HH:mm:ss'));
+            }
+        };
 
-        // if (time > 60) {
-        //     time = time/60
-        //     timeUnits = 'hour(s)'
-        // }
-        
-        const dateDayToWeekDay = ['Sun', 'Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat'];
-        let date = info[0].start
-        return {
-            day: dateDayToWeekDay[date.getDay()]+' '+(date.getMonth()+1)+'/'+date.getDate(),
-            //avgSpeed: average.toFixed(2),
-            totalDist: distance.toFixed(2),
-            //totalTime: time.toFixed(2),
-            //timeUnits: timeUnits
+        stats.totalDist = distance.toFixed(2);
+        stats.totalTime = null;
+        stats.timeList = timeList;
+
+        if (timeList.length > 0) {
+            let average = calcSpeedDist/(time/3600);
+            let formattedTime = moment.utc(time*1000).format('HH:mm:ss');
+
+            stats.totalTime = formattedTime + " (h:m:s)";
+            stats.avgSpeed = average.toFixed(2);
         }
+        return stats;
     }
 
     render() {
@@ -39,21 +49,27 @@ class HistoryInfo extends React.Component {
         if (this.props.info.length !== 0) {
             let info = this.props.info;
             let stats = this.overallStats();
+
+            let timeDependant = ""
+            if (stats.avgSpeed > 0){
+                timeDependant = <div>
+                    Average speed: {stats.avgSpeed} km/h
+                    <br />
+                    Total time spent: {stats.totalTime}
+                </div>
+            }
             
             details = <div>
                 <h1>{stats.day}</h1>
-                {/* Average speed: {stats.avgSpeed} km/h
-                <br /> */}
-                Total distance travelled: {stats.totalDist} km
-                <br /> {/* 
-                Total time spent: {stats.totalTime} {stats.timeUnits}
-                <br /> */}
+                Total distance travelled: {stats.totalDist} km 
+                {timeDependant}
+                <br />
                 {info.map((run, index) => (
                     <div key = {index}>
                         <h3>Run #{index+1}</h3>
-                        {/* Duration: {run.duration} min
-                        <br /> */}
                         Distance: {run.distance} km
+                        <br />
+                        {stats.timeList[index]}
                     </div>
                 ))}
             </div>;
