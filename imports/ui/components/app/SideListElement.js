@@ -13,7 +13,7 @@ class SideListElement extends React.Component {
             highlight = 'current';
 
         return (
-            <div id={highlight} onClick={this.handleClick}>{this.props.title}</div>
+            <li id={highlight} onClick={this.handleClick}>{this.props.title}</li>
         );
     }
 }
