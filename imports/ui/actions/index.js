@@ -69,9 +69,9 @@ const getDayCountIndex = (run, format) => {
   if (format === 'WEEK') {
     offset = 6;
   }
-  const start = moment().subtract(offset,'days');
+  const start = moment().subtract(offset,'days').startOf('day');
   const difference = moment(run.start).diff(start, 'days')
-  return difference+1;
+  return difference;
 }
 
 const orgainizeData = (data, format) => {
