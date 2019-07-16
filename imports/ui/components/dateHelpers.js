@@ -9,7 +9,8 @@ export const getFormattedTime = (date) => {
     let info = 'am';
     if (hours > 11) {
         info = 'pm';
+        hours = hours-12;
     }
-    let mins = date.getMinutes(); 
-    return hours+":"+mins+" "+info;
+    let mins = "0"+date.getMinutes(); 
+    return hours+":"+mins.slice(-2)+" "+info;
 }
