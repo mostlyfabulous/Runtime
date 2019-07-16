@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
 
+import {getFormattedDate} from '../dateHelpers.js'
+
 class HistoryInfo extends React.Component {
 
     overallStats() {
         let info = this.props.info;
 
-        const dateDayToWeekDay = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
         let date = info[0].start
 
-        let stats = {day: dateDayToWeekDay[date.getDay()]+', '+(date.getMonth()+1)+'/'+date.getDate()};
+        let stats = {day: getFormattedDate(date)};
 
         let distance = 0;
         let time = 0;

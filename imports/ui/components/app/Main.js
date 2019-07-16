@@ -1,5 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
+import Home from '../../pages/Home';
 import RunPlan from '../../pages/RunPlan';
 import History from '../../pages/History';
 import Preferences from '../../pages/Preferences';
@@ -7,13 +8,13 @@ import Preferences from '../../pages/Preferences';
 class Main extends React.Component {
     render() {
         let body = <RunPlan/>;
-        if (this.props.page === 'history') {
+        if (this.props.page === 'home'){
+            body = <Home/>
+        } else if (this.props.page === 'history') {
             body = <History/>;
         } else if (this.props.page === 'preferences') {
           body = <Preferences/>;
         }
-
-
 
         return (
             <div>{body}</div>
