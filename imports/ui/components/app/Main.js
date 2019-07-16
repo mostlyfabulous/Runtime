@@ -4,6 +4,7 @@ import Home from '../../pages/Home';
 import RunPlan from '../../pages/RunPlan';
 import History from '../../pages/History';
 import Preferences from '../../pages/Preferences';
+import ExploreContainer from '../../pages/Explore';
 
 class Main extends React.Component {
     render() {
@@ -14,6 +15,8 @@ class Main extends React.Component {
             body = <History/>;
         } else if (this.props.page === 'preferences') {
           body = <Preferences/>;
+        } else if (this.props.page === 'explore') {
+          body = <ExploreContainer/>;
         }
 
         return (
