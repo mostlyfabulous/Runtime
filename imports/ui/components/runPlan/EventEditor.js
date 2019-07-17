@@ -12,6 +12,7 @@ export class EventEditor extends Component {
     // console.log(this.props.editEventView.calendarEvent);
     const e = this.props.editEventView.calendarEvent;
     this.state = {
+      id        : e.id,
       title     : e.title,
       start     : e.start,
       end       : e.end,
@@ -55,9 +56,10 @@ export class EventEditor extends Component {
     if (this.state.end) {
       eventDuration = moment.duration(moment(this.state.end).diff(moment(this.state.start)));
     }
+    console.log(this.state);
     let e = {
       event: {
-        id        : this.props.editEventView.calendarEvent.id,
+        id        : this.state.id,
         title     : this.state.title,
         start     : this.state.start,
         end       : this.state.end,
@@ -131,16 +133,29 @@ export class EventEditor extends Component {
     )
   }
 
-  // componentWillReceiveProps(nextProps) {
-  //   const {eventTitle, eventStart, eventEnd, eventExtendedProps} = this.props.editEventView.calendarEvent;
-  //   this.state = {
-  //     title     : eventTitle,
-  //     start     : eventStart,
-  //     end       : eventEnd,
-  //     distance  : eventExtendedProps.distance
-  //     // duration  : this.props.duration
-  //   };
-  // }
+  componentDidUpdate(prevProps, prevState) {
+    console.log("Prev props");
+    console.log(prevProps.editEventView);
+    console.log("Current state:");
+    console.log(this.props.editEventView);
+
+    if(prevProps.editEventView.calendarEvent.id !== this.props.editEventView.calendarEvent.id
+      && this.props.editEventView.calendarEvent !== "") {
+      const {id, title, start, end, extendedProps} = this.props.editEventView.calendarEvent;
+      console.log(this.props.editEventView.calendarEvent);
+      this.setState({
+        id        : id,
+        title     : title,
+        start     : start,
+        end       : end,
+        category  : extendedProps.category,
+        distance  : extendedProps.distance,
+        duration  : extendedProps.duration,
+        owner     : extendedProps.owner,
+        username  : extendedProps.username
+      });
+    }
+  }
 }
 
 const mapStateToProps = (state) => {
