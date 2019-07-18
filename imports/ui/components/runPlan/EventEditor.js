@@ -134,10 +134,10 @@ export class EventEditor extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    console.log("Prev props");
-    console.log(prevProps.editEventView);
-    console.log("Current state:");
-    console.log(this.props.editEventView);
+    // console.log("Prev props");
+    // console.log(prevProps.editEventView);
+    // console.log("Current state:");
+    // console.log(this.props.editEventView);
 
     if(prevProps.editEventView.calendarEvent.id !== this.props.editEventView.calendarEvent.id
       && this.props.editEventView.calendarEvent !== "") {
