@@ -1,6 +1,7 @@
 import React from 'react';
 import { combineReducers } from 'redux';
 import { weatherReducerMiddleware, calendarEventsReducer } from './calendarEventsReducer';
+import { preferencesEventsReducer } from './preferencesEventsReducer';
 
   const weatherReducer = (weather, action) => {
     weather = weather || {};
@@ -110,6 +111,13 @@ const getHistoryInfoReducer = (info = [], action) => {
   return info;
 }
 
+// add get pref reducer for 'GET_PREFERENCES'
+const getPreferencesReducer = (info = [], action) => {
+  if (action.type === 'GET_HISTORY')
+    info = [];
+  return info;
+}
+
 const runHistoryDataReducer = (data = {}, action) => {
   if (action.type === 'GET_HISTORY') {
     let barColors = ['blue', 'green', 'red', 'yellow', 'purple', 'orange', 'indigo']
@@ -168,6 +176,7 @@ export default combineReducers({
   weather: weatherReducer,
   weatherMiddleware: weatherReducerMiddleware,
   formData: formDataReducer,
+  preferences: preferencesEventsReducer,
   calendar: calendarEventsReducer,
   nextRun: nextRunReducer,
   pages: pagesReducer,

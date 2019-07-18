@@ -1,12 +1,14 @@
 import { Meteor } from 'meteor/meteor';
 import Runs from '/imports/api/runs';
 import Weather from '/imports/api/weather';
+import Preferences from '/imports/api/preferences';
 
 const axios = require('axios');
 import { config } from '../config';
 import './runs.js'; // user.runs publication
 import { createWeatherEvents } from '../imports/utils/createWeatherEvents.js'
 import './weather.js'; // weather publication
+import './preferences.js'; // preferences publication
 
 Meteor.startup(() => {
 

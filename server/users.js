@@ -1,10 +1,9 @@
 import { Meteor } from 'meteor/meteor';
 import Preferences from '/imports/api/preferences';
 
-Meteor.publish('preferences', function() {
+Meteor.publish('users', function() {
  // args publish needs goes in: function(args)
   if (!this.userId) {
-    console.log("No userId supplied");
     return this.ready();
   }
   // console.log(Runs);
@@ -13,8 +12,29 @@ Meteor.publish('preferences', function() {
   //   console.log(items);
   //   console.log("End of items found");
   // });
-  return Preferences.find({_id: this.userId});
+  console.log('users');
+  console.log(Users);
+  console.log('edit user pref');
+    console.log(Meteor.user().userId);
+    let newPref = {min_temp: 10, max_temp: 20};
+    Meteor.users.update({_id:this.userId}, { $set: {pref: newPref} });
+  return Users.find({_id: this.userId});
 });
+
+// Meteor.publish('preferences', function() {
+//  // args publish needs goes in: function(args)
+//   if (!this.userId) {
+//     console.log("No userId supplied");
+//     return this.ready();
+//   }
+//   // console.log(Runs);
+//   //Runs.find({owner: this.userId}).toArray(function(err, items) {
+//   //   console.log("Returning any items found");
+//   //   console.log(items);
+//   //   console.log("End of items found");
+//   // });
+//   return Preferences.find({_id: this.userId});
+// });
 
 
 // import { Meteor } from 'meteor/meteor';
