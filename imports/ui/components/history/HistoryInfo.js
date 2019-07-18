@@ -24,7 +24,7 @@ class HistoryInfo extends React.Component {
 
             if (run.end) {
                 calcSpeedDist += run.distance;
-                let end = new Date(run.end);
+                let end = new moment(run.end);
                 let duration = moment(end).diff(run.start, 'seconds');
                 time += duration;
                 timeList[i] = <span>

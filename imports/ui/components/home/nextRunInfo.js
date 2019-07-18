@@ -34,7 +34,6 @@ class NextRunInfo extends React.Component {
             </div>
         if (this.props.runs.length > 0) {
             let run = this.props.runs[0];
-            console.log(run);
 
             result = this.getRunInfo(run);
         }

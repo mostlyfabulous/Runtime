@@ -8,6 +8,7 @@ function insertRun() {
 }
 
 Meteor.publish('runs', function() {
+  console.log('test')
  // args publish needs goes in: function(args)
   if (!this.userId) {
     console.log("No userId supplied");
@@ -40,6 +41,15 @@ Meteor.publish('upcoming', function() {
   }
   let date = new Date();
   return Runs.find({start: {$gte: date}, owner: this.userId}, {sort: {start: 1}}, {limit: 1});
+})
+
+Meteor.publish('past', function() {
+  console.log('right');
+  if (!this.userId) {
+    return this.ready();
+  }
+  let date = new Date();
+  return Runs.find({start: {$lte: date}, owner: this.userId});
 })
 
 // const handle = Meteor.subscribe('user.runs', args);
