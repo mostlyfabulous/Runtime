@@ -52,6 +52,13 @@ Meteor.publish('past', function() {
   return Runs.find({start: {$lte: date}, owner: this.userId});
 })
 
+Meteor.methods({
+  'runs.addRun'(event) {
+    console.log(event);
+    Runs.insert(event);
+  }
+});
+
 // const handle = Meteor.subscribe('user.runs', args);
 // when passing args is optional and used
 // to pass a parameter to publish

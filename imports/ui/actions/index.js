@@ -3,8 +3,14 @@ import { Meteor } from 'meteor/meteor';
 import { startSubscription } from 'meteor-redux-middlewares';
 import Weather from '../../api/weather.js'
 import Runs from '../../api/runs.js'
+import Preferences from '../../api/preferences.js'
 
 let mostRecent = {};
+
+export const PREFERENCES_SUBSCRIPTION_READY = 'PREFERENCES_SUBSCRIPTION_READY';
+export const PREFERENCES_SUBSCRIPTION_CHANGED = 'PREFERENCES_SUBSCRIPTION_CHANGED';
+export const PREFERENCES_SUB = 'preferences';
+export const EDIT_PREFERENCES = 'EDIT_PREFERENCES';
 
 export const WEATHER_SUBSCRIPTION_READY = 'WEATHER_SUBSCRIPTION_READY';
 export const WEATHER_SUBSCRIPTION_CHANGED = 'WEATHER_SUBSCRIPTION_CHANGED';
@@ -17,6 +23,21 @@ const PAST_RUNS = 'past';
 export const ADD_EVENT = 'ADD_EVENT'
 export const HIGHLIGHT_EVENT = 'HIGHLIGHT_EVENT'
 export const DRAG_EVENT = 'DRAG_EVENT'
+
+export const loadPreferences = () =>
+// do not put console.log here, it causes a semi-cryptic error
+  startSubscription({
+    key: PREFERENCES_SUB,
+    get: () => Preferences.find().fetch(), // find should recieve a location
+    subscribe: () => Meteor.subscribe(PREFERENCES_SUB),
+  });
+
+  export const editPreferences = preferences => {
+    return {
+      type: EDIT_PREFERENCES,
+      preferences
+    };
+  };
 
 export const loadWeatherEvents = () =>
 // do not put console.log here, it causes a semi-cryptic error
@@ -115,6 +136,13 @@ const orgainizeData = (data, format) => {
     }
   })
   return sorted;
+}
+
+export const getPreferencesData = (data) => {
+  return {
+    type: 'GET_PREFERENCES',
+    data: /*orgainizeData(data)*/ data
+  }
 }
 
 export const getHistoryChartData = (data) => {

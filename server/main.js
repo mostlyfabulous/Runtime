@@ -1,12 +1,14 @@
 import { Meteor } from 'meteor/meteor';
 import Runs from '/imports/api/runs';
 import Weather from '/imports/api/weather';
+import Preferences from '/imports/api/preferences';
 
 const axios = require('axios');
 import { config } from '../config';
 import './runs.js'; // user.runs publication
 import { createWeatherEvents } from '../imports/utils/createWeatherEvents.js'
 import './weather.js'; // weather publication
+import './preferences.js'; // preferences publication
 
 Meteor.startup(() => {
 
@@ -24,9 +26,7 @@ Meteor.startup(() => {
   console.log("End of furthest event: " + moment(sortedEvents[0].end).format());
   console.log("Start of closest event: " + moment(sortedEvents[39].start).format());
   console.log("End of closest event: " + moment(sortedEvents[39].end).format());
-  // if -ve then DB will contain some overlapping events with an weather api call
-  // and we should update those overlapping events with new data whilst adding
-  // new events not in the DB
+
   console.log("Time now: " + moment().format());
   hours = moment().get('h') + (moment().get('s')/60);
   gmt = hours+7
@@ -34,13 +34,18 @@ Meteor.startup(() => {
   // makes sure only the future 3 hour events are removed and not the current one
   gmt3HourBlock = (Math.ceil(gmt/3)*3)%24;
   console.log("GMT 3 Hour Block: " + gmt3HourBlock);
-  date3HourBlock = moment().add(7, 'hours'); // set to correct day—could be a day ahead
+  date3HourBlock = moment().add(7, 'hours'); // set to correct day: could be a day ahead
   date3HourBlock.hour(gmt3HourBlock).minute(0).second(0) // set to correct 3 hour block
   date3HourBlock = date3HourBlock.format();
   if ((elapsedHours) >= 3) {
     console.log("Time point to remove weather events from: " + date3HourBlock);
-    // weather is given at GMT00:00 and so the api only returns
+    /*
+    // DB will contain some overlapping events with a weather api call
+    // and we should update those overlapping events with new data whilst adding
+    // new events not in the DB.
+    // Weather is given at GMT00:00 and so the api only returns
     // 3 hour block events that are 7 hours ahead of us
+    */
     Weather.remove({start: {$gte: date3HourBlock}}, function(err, count) {
       console.log("Removed: " + count + " weather events");
     });

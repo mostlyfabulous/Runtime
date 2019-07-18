@@ -61,20 +61,21 @@ export function calendarEventsReducer(state = initialCalendarState, action) {
         ...state,
         calendarEvents: action.payload,
       };
-    case STOP_SUBSCRIPTION: // currently don't need to stop a sub
+    case STOP_SUBSCRIPTION: // TODO: stop a sub when a user logs out or exits
       return action.payload === RUNS_SUB
         ? { ...state, calendarSubscriptionStopped: true }
         : state;
 
 	case ADD_EVENT:
     let newEvent = action.calendarEvent;
-    console.log(newEvent);
-    Runs.insert(newEvent); // any security needed here?
-    // concat allows an array of events to be added vs [...events, event(s)]
+    const res = Meteor.call('runs.addRun', newEvent);
+    // console.log(res);
     return {
       ...state,
       calendarEvents: [...state.calendarEvents.concat(newEvent)]
     }
+    // Runs.insert(newEvent);
+    // concat allows an array of events to be added vs [...events, event(s)]
 
   case HIGHLIGHT_EVENT:
     console.log("highlightClickedEvent fire");

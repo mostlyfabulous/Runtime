@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
-import { dragEvent, toggleEventEditor } from '../../actions/index'
+import { dragEvent, toggleEventEditor } from '../actions/index'
 import {bindActionCreators} from 'redux';
-import DatePicker from "react-datepicker";
-
-import "react-datepicker/dist/react-datepicker.css";
 
 export class EventEditor extends Component {
   constructor(props) {
@@ -12,7 +9,6 @@ export class EventEditor extends Component {
     // console.log(this.props.editEventView.calendarEvent);
     const e = this.props.editEventView.calendarEvent;
     this.state = {
-      id        : e.id,
       title     : e.title,
       start     : e.start,
       end       : e.end,
@@ -23,50 +19,37 @@ export class EventEditor extends Component {
       username  : e.extendedProps.username
     };
     this.handleChange = this.handleChange.bind(this);
-    this.handleChangeStart = this.handleChangeStart.bind(this);
-    this.handleChangeEnd = this.handleChangeEnd.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleChange(event) {
     const name = event.target.name;
     const value = event.target.value;
+    // const defaultValue = event.target[name];
     if (value)
       this.setState({
         [name]: value
       });
-  }
-
-  handleChangeStart(date) {
-    this.setState({
-      start: date
-    });
-  }
-
-  handleChangeEnd(date) {
-    this.setState({
-      end: date
-    });
+    // else{
+    //   console.log("defaultValue");
+    //   console.log(defaultValue);
+    //   this.setState({
+    //     [name]: defaultValue
+    //   });}
   }
 
   handleSubmit(jsEvent) {
     jsEvent.preventDefault();
-    // 'event' var name is being reserved for being passed into the dragEvent action
-    let eventDuration = "";
-    if (this.state.end) {
-      eventDuration = moment.duration(moment(this.state.end).diff(moment(this.state.start)));
-    }
-    console.log(this.state);
+    // event is being reserved for being passed into the dragEvent action
     let e = {
       event: {
-        id        : this.state.id,
+        id        : this.props.editEventView.calendarEvent.id,
         title     : this.state.title,
         start     : this.state.start,
         end       : this.state.end,
         extendedProps: {
           category  : this.state.category,
           distance  : parseFloat(this.state.distance),
-          duration  : eventDuration,
           owner     : this.state.owner,
           username  : this.state.username
         }
@@ -84,41 +67,25 @@ export class EventEditor extends Component {
     // if condition needed to prevent errors when transitioning out upon submit
     // transitioning out will remove props from being accessible and throw errors
     // when calling start.toString and accessing extendedProps.distance
-    let endTime = "";
-    if (end) endTime = end.toString()
     if (this.props.editEventView.editorView) {
       return (
         <div className="editor">
           <h2>Edit Run: {title}</h2>
           <form onSubmit={this.handleSubmit} ref='form'>
             <label htmlFor="title">Run Name</label>
-            <input type="string" id="title" name="title"
+            <input type="string" id="title" name="title" defaultValue={title}
               onChange={this.handleChange} placeholder="5km Run" />
             <br/>
             <label htmlFor="start_time">Start Time: {start.toString()}</label>
-            <DatePicker
-              selected={this.state.start}
-              onChange={this.handleChangeStart}
-              showTimeSelect
-              timeFormat="HH:mm"
-              timeIntervals={15}
-              dateFormat="MMMM d, yyyy h:mm aa"
-              timeCaption="Start time"
-              />
+            <input type="datetime-local" id="start_time" name="start"
+              onChange={this.handleChange}  />
             <br/>
-            <label htmlFor="end_time">End Time: {endTime}</label>
-            <DatePicker
-              selected={this.state.end}
-              onChange={this.handleChangeEnd}
-              showTimeSelect
-              timeFormat="HH:mm"
-              timeIntervals={15}
-              dateFormat="MMMM d, yyyy h:mm aa"
-              timeCaption="End time"
-              />
+            <label htmlFor="end_time">End Time</label>
+            <input type="datetime-local" id="end_time" name="end"
+              onChange={this.handleChange}  />
             <br/>
             <label htmlFor="distance">Distance: {extendedProps.distance}</label>
-            <input type="number" id="distance" name="distance"
+            <input type="number" id="distance" name="distance" defaultValue={extendedProps.distance}
               onChange={this.handleChange} step="0.01" placeholder="km/m" />
             <br/>
             <button type="submit">Update Run Information</button>
@@ -133,29 +100,16 @@ export class EventEditor extends Component {
     )
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    // console.log("Prev props");
-    // console.log(prevProps.editEventView);
-    // console.log("Current state:");
-    // console.log(this.props.editEventView);
-
-    if(prevProps.editEventView.calendarEvent.id !== this.props.editEventView.calendarEvent.id
-      && this.props.editEventView.calendarEvent !== "") {
-      const {id, title, start, end, extendedProps} = this.props.editEventView.calendarEvent;
-      console.log(this.props.editEventView.calendarEvent);
-      this.setState({
-        id        : id,
-        title     : title,
-        start     : start,
-        end       : end,
-        category  : extendedProps.category,
-        distance  : extendedProps.distance,
-        duration  : extendedProps.duration,
-        owner     : extendedProps.owner,
-        username  : extendedProps.username
-      });
-    }
-  }
+  // componentWillReceiveProps(nextProps) {
+  //   const {eventTitle, eventStart, eventEnd, eventExtendedProps} = this.props.editEventView.calendarEvent;
+  //   this.state = {
+  //     title     : eventTitle,
+  //     start     : eventStart,
+  //     end       : eventEnd,
+  //     distance  : eventExtendedProps.distance
+  //     // duration  : this.props.duration
+  //   };
+  // }
 }
 
 const mapStateToProps = (state) => {
