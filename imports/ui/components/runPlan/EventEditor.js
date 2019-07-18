@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import { dragEvent, toggleEventEditor } from '../../actions/index'
 import {bindActionCreators} from 'redux';
+import DatePicker from "react-datepicker";
+
+import "react-datepicker/dist/react-datepicker.css";
 
 export class EventEditor extends Component {
   constructor(props) {
@@ -9,6 +12,7 @@ export class EventEditor extends Component {
     // console.log(this.props.editEventView.calendarEvent);
     const e = this.props.editEventView.calendarEvent;
     this.state = {
+      id        : e.id,
       title     : e.title,
       start     : e.start,
       end       : e.end,
@@ -19,23 +23,30 @@ export class EventEditor extends Component {
       username  : e.extendedProps.username
     };
     this.handleChange = this.handleChange.bind(this);
+    this.handleChangeStart = this.handleChangeStart.bind(this);
+    this.handleChangeEnd = this.handleChangeEnd.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleChange(event) {
     const name = event.target.name;
     const value = event.target.value;
-    // const defaultValue = event.target[name];
     if (value)
       this.setState({
         [name]: value
       });
-    // else{
-    //   console.log("defaultValue");
-    //   console.log(defaultValue);
-    //   this.setState({
-    //     [name]: defaultValue
-    //   });}
+  }
+
+  handleChangeStart(date) {
+    this.setState({
+      start: date
+    });
+  }
+
+  handleChangeEnd(date) {
+    this.setState({
+      end: date
+    });
   }
 
   handleSubmit(jsEvent) {
@@ -45,9 +56,10 @@ export class EventEditor extends Component {
     if (this.state.end) {
       eventDuration = moment.duration(moment(this.state.end).diff(moment(this.state.start)));
     }
+    console.log(this.state);
     let e = {
       event: {
-        id        : this.props.editEventView.calendarEvent.id,
+        id        : this.state.id,
         title     : this.state.title,
         start     : this.state.start,
         end       : this.state.end,
@@ -80,16 +92,30 @@ export class EventEditor extends Component {
           <h2>Edit Run: {title}</h2>
           <form onSubmit={this.handleSubmit} ref='form'>
             <label htmlFor="title">Run Name</label>
-            <input type="string" id="title" name="title" 
+            <input type="string" id="title" name="title"
               onChange={this.handleChange} placeholder="5km Run" />
             <br/>
             <label htmlFor="start_time">Start Time: {start.toString()}</label>
-            <input type="datetime-local" id="start_time" name="start"
-              onChange={this.handleChange}  />
+            <DatePicker
+              selected={this.state.start}
+              onChange={this.handleChangeStart}
+              showTimeSelect
+              timeFormat="HH:mm"
+              timeIntervals={15}
+              dateFormat="MMMM d, yyyy h:mm aa"
+              timeCaption="Start time"
+              />
             <br/>
             <label htmlFor="end_time">End Time: {endTime}</label>
-            <input type="datetime-local" id="end_time" name="end"
-              onChange={this.handleChange}  />
+            <DatePicker
+              selected={this.state.end}
+              onChange={this.handleChangeEnd}
+              showTimeSelect
+              timeFormat="HH:mm"
+              timeIntervals={15}
+              dateFormat="MMMM d, yyyy h:mm aa"
+              timeCaption="End time"
+              />
             <br/>
             <label htmlFor="distance">Distance: {extendedProps.distance}</label>
             <input type="number" id="distance" name="distance"
@@ -107,16 +133,29 @@ export class EventEditor extends Component {
     )
   }
 
-  // componentWillReceiveProps(nextProps) {
-  //   const {eventTitle, eventStart, eventEnd, eventExtendedProps} = this.props.editEventView.calendarEvent;
-  //   this.state = {
-  //     title     : eventTitle,
-  //     start     : eventStart,
-  //     end       : eventEnd,
-  //     distance  : eventExtendedProps.distance
-  //     // duration  : this.props.duration
-  //   };
-  // }
+  componentDidUpdate(prevProps, prevState) {
+    console.log("Prev props");
+    console.log(prevProps.editEventView);
+    console.log("Current state:");
+    console.log(this.props.editEventView);
+
+    if(prevProps.editEventView.calendarEvent.id !== this.props.editEventView.calendarEvent.id
+      && this.props.editEventView.calendarEvent !== "") {
+      const {id, title, start, end, extendedProps} = this.props.editEventView.calendarEvent;
+      console.log(this.props.editEventView.calendarEvent);
+      this.setState({
+        id        : id,
+        title     : title,
+        start     : start,
+        end       : end,
+        category  : extendedProps.category,
+        distance  : extendedProps.distance,
+        duration  : extendedProps.duration,
+        owner     : extendedProps.owner,
+        username  : extendedProps.username
+      });
+    }
+  }
 }
 
 const mapStateToProps = (state) => {
