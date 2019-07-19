@@ -125,16 +125,8 @@ export function calendarEventsReducer(state = initialCalendarState, action) {
       owner: de.event.extendedProps.owner,
       username: de.event.extendedProps.username,
     }
-    // https://docs.meteor.com/api/collections.html#modifiers
-    // Without using $-operators, a modifier is interpreted as a literal document,
-    // and completely replaces whatever was previously in the database.
-    // Find the document with ID 'de.id' and completely replace it.
-    Runs.update({_id: de.event.id}, modifiedEvent, function (err, docsChanged) {
-      if (err) console.log(err);
-      // console.log("event had id: " + de.event.id);
-      // console.log(docsChanged + " documents were changed");
-    })
 
+    const resUpdate = Meteor.call('runs.updateRun', modifiedEvent);
     // console.log(modifiedEvent);
     return { ...state,
       calendarEvents: [...state.calendarEvents.filter( (event) => {

@@ -44,8 +44,19 @@ Meteor.publish('upcoming', function() {
 
 Meteor.methods({
   'runs.addRun'(event) {
-    console.log(event);
+    // console.log(event);
     Runs.insert(event);
+  },
+  'runs.updateRun'(event) {
+    // https://docs.meteor.com/api/collections.html#modifiers
+    // Without using $-operators, a modifier is interpreted as a literal document,
+    // and completely replaces whatever was previously in the database.
+    // Find the document with ID 'event.id' and completely replace it.
+    Runs.update({_id: event.id}, event, function (err, docsChanged) {
+      if (err) console.log(err);
+      // console.log("event had id: " + event.id);
+      // console.log(docsChanged + " documents were changed");
+      })
   }
 });
 
