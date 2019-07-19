@@ -80,9 +80,9 @@ export class PrefEditor extends Component {
         editedPref.city = e.target.city.value;
         //'Vancouver';
         // e.target.city.value;
-        console.log('city event')
-        console.log(e.target.city.value)
-        console.log(typeof e.target.city.value)
+        // console.log('city event')
+        // console.log(e.target.city.value)
+        // console.log(typeof e.target.city.value)
 
         let inputType = (typeof editedPref.clouds === "number") && (typeof editedPref.min_temp === "number") && (typeof editedPref.max_temp === "number") && (typeof editedPref.precipitation === "number") /*&& (typeof editedPref.city === "string")*/;
         let inputRange = (editedPref.clouds <= 100) && (editedPref.clouds >= 0) && (editedPref.precipitation <= 100) && (editedPref.precipitation >= 0) && (editedPref.city.length > 0);
@@ -99,9 +99,9 @@ export class PrefEditor extends Component {
     render() {
       // console.log(start);
       let currentUser = Meteor.user()._id;
-      console.log('pref editor')
-      console.log(this.props.preferences.preferencesEvents)
-      console.log(this.props.preferences.preferencesEvents[0])
+      // console.log('pref editor')
+      // console.log(this.props.preferences.preferencesEvents)
+      // console.log(this.props.preferences.preferencesEvents[0])
       if (this.props.preferences.preferencesEvents[0] !== undefined) {
         return (
           <div>

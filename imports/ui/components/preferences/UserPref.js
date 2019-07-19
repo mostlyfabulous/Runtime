@@ -10,8 +10,8 @@ import PrefEditor from './PrefEditor';
 class UserPref extends Component {
   component
   render() {
-    console.log('user pref')
-    console.log(this.props.preferences)
+    // console.log('user pref')
+    // console.log(this.props.preferences)
     if (this.props.loadingPreferences === false && this.props.preferencesExists === true) {
         return (
             <PrefEditor preferences={this.props.preferences}/>
