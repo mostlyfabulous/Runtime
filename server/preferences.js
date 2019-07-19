@@ -8,7 +8,7 @@ Meteor.publish('preferences', function() {
     return this.ready();
   }
   if (Preferences.find({_id: this.userId}).fetch().length === 0) {
-  let pref = {_id: this.userId, clouds: 50, min_temp: 10, max_temp: 20, precipitation: 25};
+  let pref = {_id: this.userId, clouds: 50, min_temp: 10, max_temp: 20, precipitation: 25, city: 'Vancouver'};
     Preferences.insert(pref);
   }
   //console.log(this.userId);
@@ -19,6 +19,21 @@ Meteor.publish('preferences', function() {
   return Preferences.find({_id: this.userId});
   //return Preferences.find();
 });
+
+Meteor.methods({
+  'preferences.editPreferences'(pref) {
+    // https://docs.meteor.com/api/collections.html#modifiers
+    // Without using $-operators, a modifier is interpreted as a literal document,
+    // and completely replaces whatever was previously in the database.
+    // Find the document with ID 'event.id' and completely replace it.
+    Preferences.update({_id: Meteor.user()._id}, pref, function (err, docsChanged) {
+      if (err) console.log(err);
+      // console.log("event had id: " + event.id);
+      // console.log(docsChanged + " documents were changed");
+      })
+  }
+});
+
 
 // const handle = Meteor.subscribe('user.runs', args);
 // when passing args is optional and used

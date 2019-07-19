@@ -39,15 +39,20 @@ export function preferencesEventsReducer(state = initialPreferencesState, action
           console.log("edit preferences - reducer");
           let edit = action.preferences;
           console.log(edit);
-          Preferences.update({_id: Meteor.user()._id}, edit, function (err, docsChanged) {
-            if (err) console.log(err);
-          })
-          console.log('state in edit reducer')
-          console.log(state)
-          // preferencesEvents: []
+          const resUpdate = Meteor.call('preferences.editPreferences', edit);
           return { ...state,
             edit
-          };
+          }
+          // Preferences.update({_id: Meteor.user()._id}, edit, function (err, docsChanged) {
+          //   if (err) console.log(err);
+          // })
+          // console.log('state in edit reducer')
+          // console.log(state)
+          // // preferencesEvents: []
+          // return { ...state,
+          //   edit
+          // };
+
     default:
       return state;
   }

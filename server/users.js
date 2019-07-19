@@ -21,6 +21,7 @@ Meteor.publish('users', function() {
   return Users.find({_id: this.userId});
 });
 
+
 // Meteor.publish('preferences', function() {
 //  // args publish needs goes in: function(args)
 //   if (!this.userId) {

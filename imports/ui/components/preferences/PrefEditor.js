@@ -77,8 +77,9 @@ export class PrefEditor extends Component {
         editedPref.min_temp = parseInt(e.target.minTemp.value);
         editedPref.max_temp = parseInt(e.target.maxTemp.value);
         editedPref.precipitation = parseInt(e.target.precipitation.value);
-        let inputType = (typeof editedPref.clouds === "number") && (typeof editedPref.min_temp === "number") && (typeof editedPref.max_temp === "number") && (typeof editedPref.precipitation === "number");
-        let inputRange = (editedPref.clouds <= 100) && (editedPref.clouds >= 0) && (editedPref.precipitation <= 100) && (editedPref.precipitation >= 0);
+        editedPref.city = e.target.city.value;
+        let inputType = (typeof editedPref.clouds === "number") && (typeof editedPref.min_temp === "number") && (typeof editedPref.max_temp === "number") && (typeof editedPref.precipitation === "number") && (typeof editedPref.city === "string");
+        let inputRange = (editedPref.clouds <= 100) && (editedPref.clouds >= 0) && (editedPref.precipitation <= 100) && (editedPref.precipitation >= 0) && (editedPref.city.length > 0);
         console.log(inputType)
         if (inputType && inputRange) {
           console.log("Submitted event:");
@@ -121,6 +122,16 @@ export class PrefEditor extends Component {
               <label htmlFor="precipitation">Max Precipitation % (POP)</label>
               <input type="number" id="precipitation" name="precipitation" defaultValue={this.props.preferences.preferencesEvents[0].precipitation}
                 onChange={this.handleChange} step="1" placeholder="%" />
+              <br/>
+              <label htmlFor="city">Preferred City</label>
+              <label htmlFor="city">Preferred City</label>
+              <input list="city" id="city" name="city" />
+                <datalist id="city">
+                  <option value="Vancouver"/>
+                  <option value="Toronto"/>
+                  <option value="Calgary"/>
+                </datalist>
+
               <br/>
               <button type="submit">Update User Preferences</button>
             </form>
