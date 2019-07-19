@@ -36,9 +36,9 @@ export function preferencesEventsReducer(state = initialPreferencesState, action
         ? { ...state, preferencesSubscriptionStopped: true }
         : state;
     case EDIT_PREFERENCES:
-          console.log("edit preferences - reducer");
           let edit = action.preferences;
-          console.log(edit);
+          // console.log("edit preferences - reducer");
+          // console.log(edit);
           const resUpdate = Meteor.call('preferences.editPreferences', edit);
           return { ...state,
             edit

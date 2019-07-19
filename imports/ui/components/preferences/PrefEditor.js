@@ -78,9 +78,14 @@ export class PrefEditor extends Component {
         editedPref.max_temp = parseInt(e.target.maxTemp.value);
         editedPref.precipitation = parseInt(e.target.precipitation.value);
         editedPref.city = e.target.city.value;
-        let inputType = (typeof editedPref.clouds === "number") && (typeof editedPref.min_temp === "number") && (typeof editedPref.max_temp === "number") && (typeof editedPref.precipitation === "number") && (typeof editedPref.city === "string");
+        //'Vancouver';
+        // e.target.city.value;
+        console.log('city event')
+        console.log(e.target.city.value)
+        console.log(typeof e.target.city.value)
+
+        let inputType = (typeof editedPref.clouds === "number") && (typeof editedPref.min_temp === "number") && (typeof editedPref.max_temp === "number") && (typeof editedPref.precipitation === "number") /*&& (typeof editedPref.city === "string")*/;
         let inputRange = (editedPref.clouds <= 100) && (editedPref.clouds >= 0) && (editedPref.precipitation <= 100) && (editedPref.precipitation >= 0) && (editedPref.city.length > 0);
-        console.log(inputType)
         if (inputType && inputRange) {
           console.log("Submitted event:");
           console.log(e.target.minTemp.value);
@@ -102,9 +107,10 @@ export class PrefEditor extends Component {
           <div>
           <h2> Current Preferences </h2>
           <p> Clouds (%): {this.props.preferences.preferencesEvents[0].clouds}</p>
-          <p> Min Temp (%): {this.props.preferences.preferencesEvents[0].min_temp}</p>
-          <p> Max Temp (%): {this.props.preferences.preferencesEvents[0].max_temp}</p>
+          <p> Min Temp (°C): {this.props.preferences.preferencesEvents[0].min_temp}</p>
+          <p> Max Temp (°C): {this.props.preferences.preferencesEvents[0].max_temp}</p>
           <p> Precipitation (%): {this.props.preferences.preferencesEvents[0].precipitation}</p>
+          <p> Preferred City: {this.props.preferences.preferencesEvents[0].city}</p>
             <h2>Edit Preferences:</h2>
             <form onSubmit={this.handleSubmit} ref='form'>
               <label htmlFor="clouds">Clouds (%)</label>
@@ -124,14 +130,11 @@ export class PrefEditor extends Component {
                 onChange={this.handleChange} step="1" placeholder="%" />
               <br/>
               <label htmlFor="city">Preferred City</label>
-              <label htmlFor="city">Preferred City</label>
-              <input list="city" id="city" name="city" />
-                <datalist id="city">
-                  <option value="Vancouver"/>
-                  <option value="Toronto"/>
-                  <option value="Calgary"/>
-                </datalist>
-
+                <select name="city" id ="city">
+                  <option value="Vancouver"> Vancouver </option>
+                  <option value="Toronto"> Toronto </option>
+                  <option value="Calgary"> Calgary </option>
+                </select>
               <br/>
               <button type="submit">Update User Preferences</button>
             </form>
