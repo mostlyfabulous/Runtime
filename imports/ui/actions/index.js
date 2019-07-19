@@ -38,19 +38,19 @@ export const loadPreferences = () =>
     };
   };
 
-export const loadWeatherEvents = () =>
+export const loadWeatherEvents = (location) =>
 // do not put console.log here, it causes a semi-cryptic error
   startSubscription({
     key: WEATHER_SUB,
-    get: () => Weather.find().fetch(), // find should recieve a location
+    get: () => Weather.find({city: location}).fetch(), // find should recieve a location
     subscribe: () => Meteor.subscribe(WEATHER_SUB),
   });
 
-export const loadRunEvents = () =>
+export const loadRunEvents = (userId) =>
 // do not put console.log here, it causes a semi-cryptic error
   startSubscription({
     key: RUNS_SUB,
-    get: () => Runs.find().fetch(), // find should recieve a user
+    get: () => Runs.find({owner: userId}).fetch(), // find should recieve a user
     subscribe: () => Meteor.subscribe(RUNS_SUB),
   });
 

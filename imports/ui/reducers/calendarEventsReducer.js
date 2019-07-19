@@ -1,6 +1,5 @@
 import { Meteor } from 'meteor/meteor';
 import React from 'react';
-import Runs from '../../api/runs.js';
 import { findIndexofEvent, filterOutEvent } from '../../utils/calendarUtils'
 import { STOP_SUBSCRIPTION } from 'meteor-redux-middlewares';
 
@@ -74,7 +73,6 @@ export function calendarEventsReducer(state = initialCalendarState, action) {
       ...state,
       calendarEvents: [...state.calendarEvents.concat(newEvent)]
     }
-    // Runs.insert(newEvent);
     // concat allows an array of events to be added vs [...events, event(s)]
 
   case HIGHLIGHT_EVENT:

@@ -31,8 +31,8 @@ class Calendar extends Component {
   }
 
   componentDidMount() {
-   this.props.loadWeatherEvents();
-   this.props.loadRunEvents();
+   this.props.loadWeatherEvents("Vancouver"); // TODO: pass city from user prefs
+   this.props.loadRunEvents(this.props.account.userId);
  }
 
   render() {

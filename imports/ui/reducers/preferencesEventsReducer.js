@@ -1,6 +1,5 @@
 import { Meteor } from 'meteor/meteor';
 import React from 'react';
-import Runs from '../../api/runs.js';
 import { findIndexofEvent, filterOutEvent } from '../../utils/calendarUtils'
 import { STOP_SUBSCRIPTION } from 'meteor-redux-middlewares';
 
@@ -10,7 +9,6 @@ import {
   PREFERENCES_SUB,
   EDIT_PREFERENCES
 } from '../actions/index';
-calendarRef = React.createRef()
 
 const initialPreferencesState = {
   preferencesReady: false,
@@ -34,7 +32,7 @@ export function preferencesEventsReducer(state = initialPreferencesState, action
         preferencesEvents: action.payload,
       };
     case STOP_SUBSCRIPTION: // currently don't need to stop a sub
-      return action.payload === WEATHER_SUB
+      return action.payload === PREFERENCES_SUB
         ? { ...state, preferencesSubscriptionStopped: true }
         : state;
     case EDIT_PREFERENCES:
