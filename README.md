@@ -1,5 +1,8 @@
 # CPSC436I—Runtime
 
+### Summary
+Runtime will help users be more active by helping them schedule runs into their schedules. It can show information on previous runs, forcast for future runs and automatically suggest runs based on user preferences.
+
 ![Image of Run Plan view](https://raw.githubusercontent.com/mostlyfabulous/Runtime/master/screenshots/Runtime%20Run%20Plan%20page.png)
 
 
