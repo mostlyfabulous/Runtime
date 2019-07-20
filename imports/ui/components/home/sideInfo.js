@@ -2,7 +2,7 @@ import React from 'react';
 import NextRunInfo from './nextRunInfo.js';
 import HomeStats from './homeStats.js';
 
-class NextRun extends React.Component {
+class SideInfo extends React.Component {
     render() {
         let nextRun = ""
         if (this.props.loadingNext === false && this.props.nextExists === true){
@@ -16,4 +16,4 @@ class NextRun extends React.Component {
     }
 }
 
-export default NextRun;
+export default SideInfo;

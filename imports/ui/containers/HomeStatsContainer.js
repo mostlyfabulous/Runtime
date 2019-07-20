@@ -1,7 +1,6 @@
 import { withTracker } from 'meteor/react-meteor-data';
 import Runs from '/imports/api/runs';
-import HomeStats from '../components/home/homeStats.js';
-import nextRun from '../components/home/nextRun.js'
+import sideInfo from '../components/home/sideInfo.js'
 
 let date = new Date();
 
@@ -15,6 +14,6 @@ const HomeStatsContainer = withTracker( () => {
     runsExists,
     runEvents: runsExists ? runs : [],
   };
-})(nextRun);
+})(sideInfo);
 
 export default HomeStatsContainer;
