@@ -1,6 +1,5 @@
 import { Meteor } from 'meteor/meteor';
 import React from 'react';
-import Runs from '../../api/runs.js';
 import { findIndexofEvent, filterOutEvent } from '../../utils/calendarUtils'
 import { STOP_SUBSCRIPTION } from 'meteor-redux-middlewares';
 
@@ -10,7 +9,6 @@ import {
   PREFERENCES_SUB,
   EDIT_PREFERENCES
 } from '../actions/index';
-calendarRef = React.createRef()
 
 const initialPreferencesState = {
   preferencesReady: false,
@@ -34,22 +32,27 @@ export function preferencesEventsReducer(state = initialPreferencesState, action
         preferencesEvents: action.payload,
       };
     case STOP_SUBSCRIPTION: // currently don't need to stop a sub
-      return action.payload === WEATHER_SUB
+      return action.payload === PREFERENCES_SUB
         ? { ...state, preferencesSubscriptionStopped: true }
         : state;
     case EDIT_PREFERENCES:
-          console.log("edit preferences - reducer");
           let edit = action.preferences;
-          console.log(edit);
-          Preferences.update({_id: Meteor.user()._id}, edit, function (err, docsChanged) {
-            if (err) console.log(err);
-          })
-          console.log('state in edit reducer')
-          console.log(state)
-          // preferencesEvents: []
+          // console.log("edit preferences - reducer");
+          // console.log(edit);
+          const resUpdate = Meteor.call('preferences.editPreferences', edit);
           return { ...state,
             edit
-          };
+          }
+          // Preferences.update({_id: Meteor.user()._id}, edit, function (err, docsChanged) {
+          //   if (err) console.log(err);
+          // })
+          // console.log('state in edit reducer')
+          // console.log(state)
+          // // preferencesEvents: []
+          // return { ...state,
+          //   edit
+          // };
+
     default:
       return state;
   }

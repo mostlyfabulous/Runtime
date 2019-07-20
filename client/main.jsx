@@ -22,12 +22,16 @@ const {
 
   Meteor.startup(() => {
     render(<Provider store={createStore(reducers, compose(
-      applyMiddleware(sources, subscriptions, /*logger*/))
+      applyMiddleware(sources, subscriptions, /*logger*/),
+      window.__REDUX_DEVTOOLS_EXTENSION__
+        ? window.__REDUX_DEVTOOLS_EXTENSION__()
+        : f => f)
+
     )}>
   		<App />
   	</Provider>, document.getElementById('react-target'));
   });
-
+//window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__() )
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA

@@ -10,9 +10,9 @@ const PreferencesContainer = withTracker( () => {
   const preferences = Preferences.find({_id: Meteor.user()._id}).fetch();
   // const runs = Runs.find({owner: this.userId}).fetch();
   const preferencesExists = !loadingPreferences && !!preferences;
-  console.log('ref in container');
-  console.log(preferencesExists)
-  console.log(preferences)
+  // console.log('ref in container');
+  // console.log(preferencesExists)
+  // console.log(preferences)
   return {
     loadingPreferences,
     preferencesExists,
