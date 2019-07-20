@@ -37,6 +37,16 @@ class Calendar extends Component {
 
   render() {
     // console.log(this.props);
+    // console.log('calendarEvents')
+    // console.log(this.props.calendarEvents)
+    // let sorted = this.props.calendarEvents;
+    // sorted.sort(function(a, b) {
+    // // var dateA = new Date(a.start), dateB = new Date(b.start);
+    // var dateA = a.start, dateB = b.start;
+    // return dateA - dateB;
+    // });
+    // console.log('sorted')
+    // console.log(sorted)
     return (
       <div>
         <AccountsUIWrapper />
@@ -65,7 +75,7 @@ class Calendar extends Component {
   }
 
 
-
+  
   handleDateClick = (e) => {
     if (confirm("Would you like to add a run to " + e.dateStr + " ?")) {
         // Date.parse returns the ms elapsed since January 1, 1970, 00:00:00 UTC
