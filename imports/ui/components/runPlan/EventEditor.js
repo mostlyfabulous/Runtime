@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
-import { dragEvent, toggleEventEditor } from '../../actions/index'
+import { deleteEvent, dragEvent, toggleEventEditor } from '../../actions/index'
 import {bindActionCreators} from 'redux';
 import DatePicker from "react-datepicker";
 
@@ -122,6 +122,14 @@ export class EventEditor extends Component {
               onChange={this.handleChange} step="0.01" placeholder="km/m" />
             <br/>
             <button type="submit">Update Run Information</button>
+            <button
+              type="submit"
+              className="delete"
+              onClick={ (e) => {
+              this.props.deleteEvent(this.state.id);
+              this.props.toggleEventEditor(false, "");
+              } }
+              >Delete Run</button>
           </form>
         </div>
       );
@@ -167,7 +175,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
     {
-      dragEvent, toggleEventEditor
+      deleteEvent, dragEvent, toggleEventEditor
     },
     dispatch
   );
