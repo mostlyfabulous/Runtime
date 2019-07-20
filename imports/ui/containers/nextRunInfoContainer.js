@@ -7,13 +7,13 @@ let date = new Date();
 
 const NextRunInfoContainer = withTracker( () => {
   const runHandle = Meteor.subscribe('upcoming');
-  const loadingRuns = !runHandle.ready();
+  const loadingNext = !runHandle.ready();
   const runs = Runs.find({start: {$gte: date}, owner: Meteor.userId()}, {sort: {start: 1}}, {limit:1}).fetch();
-  const runsExists = !loadingRuns && !!runs;
+  const nextExists = !loadingNext && !!runs;
   return {
-    loadingRuns,
-    runsExists,
-    runEvents: runsExists ? runs : []
+    loadingNext,
+    nextExists,
+    nextEvent: nextExists ? runs : []
   };
 })(nextRun);
 
