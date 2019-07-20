@@ -1,60 +1,16 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
 
-import {getFormattedDate} from '../dateHelpers.js'
+import {getFormattedDate, getOverallStats} from '../formatHelpers.js'
 
 class HistoryInfo extends React.Component {
-
-    overallStats() {
-        let info = this.props.info;
-
-        let date = info[0].start
-
-        let stats = {day: getFormattedDate(date)};
-
-        let distance = 0;
-        let time = 0;
-        let timeList = [];
-        let calcSpeedDist = 0;
-
-        for (let i = 0; i < info.length; i++){
-            let run = info[i];
-            distance += run.distance;
-            timeList[i] = "";
-
-            if (run.end) {
-                calcSpeedDist += run.distance;
-                let end = new moment(run.end);
-                let duration = moment(end).diff(run.start, 'seconds');
-                time += duration;
-                timeList[i] = <span>
-                    Time: {moment.utc(duration*1000).format('HH:mm:ss')}
-                    <br />
-                    Speed: {(run.distance/(duration/3600)).toFixed(2)} km/h
-                </span>;
-            }
-        };
-
-        stats.totalDist = distance.toFixed(2);
-        stats.totalTime = null;
-        stats.timeList = timeList;
-
-        if (timeList.length > 0) {
-            let average = calcSpeedDist/(time/3600);
-            let formattedTime = moment.utc(time*1000).format('HH:mm:ss');
-
-            stats.totalTime = formattedTime + " (h:m:s)";
-            stats.avgSpeed = average.toFixed(2);
-        }
-        return stats;
-    }
 
     render() {
         let details = <p>Click on the chart to see more details.</p>;
 
         if (this.props.info.length !== 0) {
             let info = this.props.info;
-            let stats = this.overallStats();
+            let stats = getOverallStats(this.props.info);
 
             let timeDependant = ""
             if (stats.avgSpeed > 0){

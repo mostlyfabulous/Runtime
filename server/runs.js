@@ -8,7 +8,6 @@ function insertRun() {
 }
 
 Meteor.publish('runs', function() {
-  console.log('test')
  // args publish needs goes in: function(args)
   if (!this.userId) {
     console.log("No userId supplied");
@@ -44,7 +43,6 @@ Meteor.publish('upcoming', function() {
 })
 
 Meteor.publish('past', function() {
-  console.log('right');
   if (!this.userId) {
     return this.ready();
   }
