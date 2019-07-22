@@ -12,7 +12,10 @@ import '@fullcalendar/timegrid/main.css';
 import { withAccount } from '../accounts/connector.js'
 import { connect } from 'react-redux';
 import { addEvent, dragEvent, highlightEvent, toggleEventEditor,
-  loadWeatherEvents, WEATHER_SUB, loadRunEvents, RUNS_SUB} from '../../actions/index';
+  loadWeatherEvents, WEATHER_SUB, loadRunEvents, RUNS_SUB,
+  loadPreferences, PREFERENCES_SUB }
+  from '../../actions/index';
+import { stopSubscription } from 'meteor-redux-middlewares';
 import {bindActionCreators} from 'redux';
 import PropTypes from 'prop-types';
 
@@ -28,25 +31,30 @@ class Calendar extends Component {
     calendarReady: PropTypes.bool.isRequired,
     calendarEvents: PropTypes.array.isRequired,
     calendarSubscriptionStopped: PropTypes.bool.isRequired,
+    preferencesReady: PropTypes.bool.isRequired,
+    preferencesEvents: PropTypes.array.isRequired,
   }
 
   componentDidMount() {
-   this.props.loadWeatherEvents("Vancouver"); // TODO: pass city from user prefs
-   this.props.loadRunEvents(this.props.account.userId);
+    this.props.loadPreferences();
+    this.props.loadRunEvents(this.props.account.userId);
+ }
+
+ componentWillUnmount() {
+   this.props.stopSubscription(WEATHER_SUB);
+   this.props.stopSubscription(RUNS_SUB);
+   this.props.stopSubscription(PREFERENCES_SUB);
+ }
+
+ componentDidUpdate(prevProps, prevState) {
+   if (prevProps.preferencesReady !== this.props.preferencesReady) {
+     let {clouds, min_temp, max_temp, precipitation, city} = this.props.preferencesEvents[0];
+     console.log(city);
+     this.props.loadWeatherEvents(city);
+   }
  }
 
   render() {
-    // console.log(this.props);
-    // console.log('calendarEvents')
-    // console.log(this.props.calendarEvents)
-    // let sorted = this.props.calendarEvents;
-    // sorted.sort(function(a, b) {
-    // // var dateA = new Date(a.start), dateB = new Date(b.start);
-    // var dateA = a.start, dateB = b.start;
-    // return dateA - dateB;
-    // });
-    // console.log('sorted')
-    // console.log(sorted)
     return (
       <div>
         <AccountsUIWrapper />
@@ -75,7 +83,7 @@ class Calendar extends Component {
   }
 
 
-  
+
   handleDateClick = (e) => {
     if (confirm("Would you like to add a run to " + e.dateStr + " ?")) {
         // Date.parse returns the ms elapsed since January 1, 1970, 00:00:00 UTC
@@ -141,6 +149,8 @@ const mapStateToProps = (state) => {
     weatherReady: state.weatherMiddleware.weatherReady,
     weatherEvents: state.weatherMiddleware.weatherEvents,
     weatherSubscriptionStopped: state.weatherMiddleware.weatherSubscriptionStopped,
+    preferencesReady: state.preferences.preferencesReady,
+    preferencesEvents: state.preferences.preferencesEvents,
          };
 }
 
@@ -153,7 +163,9 @@ const mapDispatchToProps = dispatch => {
       highlightEvent,
       toggleEventEditor,
       loadWeatherEvents,
-      loadRunEvents
+      loadRunEvents,
+      loadPreferences,
+      stopSubscription
     },
     dispatch
   );

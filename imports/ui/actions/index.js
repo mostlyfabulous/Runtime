@@ -29,7 +29,7 @@ export const loadPreferences = () =>
 // do not put console.log here, it causes a semi-cryptic error
   startSubscription({
     key: PREFERENCES_SUB,
-    get: () => Preferences.find().fetch(), // find should recieve a location
+    get: () => Preferences.find().fetch(),
     subscribe: () => Meteor.subscribe(PREFERENCES_SUB),
   });
 
@@ -45,7 +45,7 @@ export const loadWeatherEvents = (location) =>
   startSubscription({
     key: WEATHER_SUB,
     get: () => Weather.find({city: location}).fetch(), // find should recieve a location
-    subscribe: () => Meteor.subscribe(WEATHER_SUB),
+    subscribe: () => Meteor.subscribe(WEATHER_SUB, location),
   });
 
 export const loadRunEvents = (userId) =>

@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import Weather from '/imports/api/weather';
+import { createWeatherEvents } from '../imports/utils/createWeatherEvents.js'
 
 Meteor.publish('weather', function(location) {
  // args publish needs goes in: function(args)
@@ -7,7 +8,14 @@ Meteor.publish('weather', function(location) {
     console.log("No userId supplied");
     return this.ready();
   }
-  console.log(this.userId);
+  console.log("Getting weather for: " + location);
+  console.log("There are: " + Weather.find({city: location}).count() +
+    " weather events for " + location);
+  if (Weather.find({city: location}).count() === 0) {
+    // make API call to get weather for city
+    console.log("Getting weather for: " + location);
+    createWeatherEvents(location);
+  }
 
   return Weather.find({city: location});
 });
