@@ -10,9 +10,9 @@ class HomeStats extends React.Component {
 
   render() {
     let statInfo = "";
+    let runs = this.props.runs;
 
-    if (this.props.runs) {
-      let runs = this.props.runs;
+    if (runs.length > 0) {
       let stats = getOverallStats(runs);
       let random = this.chooseRandomStat(stats.bests);
       statInfo = <div>
