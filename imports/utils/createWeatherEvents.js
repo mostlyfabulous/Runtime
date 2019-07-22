@@ -4,7 +4,7 @@ import { config } from '../../config.js';
 export function createWeatherEvents() {
 
   // Returns 3 hour intervals background events with color according to temp
-  let weatherkey = config().openweatherapi
+  let weatherkey = process.env.OPENWEATHER_API_TOKEN;
   axios.get('https://api.openweathermap.org/data/2.5/forecast?q=Vancouver,ca&appid=' + weatherkey)
     .then(response => {
       let weatherEvents = response.data.list.map( (threeHourEvent) =>

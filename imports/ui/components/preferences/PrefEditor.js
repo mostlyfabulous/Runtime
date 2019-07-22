@@ -87,9 +87,9 @@ export class PrefEditor extends Component {
         let inputType = (typeof editedPref.clouds === "number") && (typeof editedPref.min_temp === "number") && (typeof editedPref.max_temp === "number") && (typeof editedPref.precipitation === "number") /*&& (typeof editedPref.city === "string")*/;
         let inputRange = (editedPref.clouds <= 100) && (editedPref.clouds >= 0) && (editedPref.precipitation <= 100) && (editedPref.precipitation >= 0) && (editedPref.city.length > 0);
         if (inputType && inputRange) {
-          console.log("Submitted event:");
-          console.log(e.target.minTemp.value);
-          console.log(editedPref)
+          // console.log("Submitted event:");
+          // console.log(e.target.minTemp.value);
+          // console.log(editedPref)
           this.props.editPreferences(editedPref);
         } else {
           alert('invalid input(s)');

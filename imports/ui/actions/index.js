@@ -21,8 +21,9 @@ export const RUNS_SUBSCRIPTION_CHANGED = 'RUNS_SUBSCRIPTION_CHANGED';
 export const RUNS_SUB = 'runs';
 const PAST_RUNS = 'past';
 export const ADD_EVENT = 'ADD_EVENT'
-export const HIGHLIGHT_EVENT = 'HIGHLIGHT_EVENT'
+export const DELETE_EVENT = 'DELETE_EVENT'
 export const DRAG_EVENT = 'DRAG_EVENT'
+export const HIGHLIGHT_EVENT = 'HIGHLIGHT_EVENT'
 
 export const loadPreferences = () =>
 // do not put console.log here, it causes a semi-cryptic error
@@ -172,6 +173,13 @@ export const addEvent = calendarEvent => {
   return {
     type: ADD_EVENT,
     calendarEvent
+  };
+}
+
+export const deleteEvent = calendarEventId => {
+  return {
+    type: DELETE_EVENT,
+    calendarEventId
   };
 }
 

@@ -65,6 +65,12 @@ Meteor.methods({
       // console.log("event had id: " + event.id);
       // console.log(docsChanged + " documents were changed");
       })
+  },
+  'runs.deleteRun'(eventId) {
+    Runs.remove(eventId, function (err, res) {
+      if (err) console.log(err);
+      else console.log("Deleted: " + res + " event");
+    })
   }
 });
 

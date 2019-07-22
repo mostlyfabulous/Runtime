@@ -10,7 +10,7 @@ import {
   RUNS_SUBSCRIPTION_READY,
   RUNS_SUBSCRIPTION_CHANGED,
   RUNS_SUB,
-  ADD_EVENT, RENAME_EVENT, DRAG_EVENT, HIGHLIGHT_EVENT
+  ADD_EVENT, DELETE_EVENT, DRAG_EVENT, HIGHLIGHT_EVENT
 } from '../actions/index';
 calendarRef = React.createRef()
 
@@ -74,6 +74,14 @@ export function calendarEventsReducer(state = initialCalendarState, action) {
       calendarEvents: [...state.calendarEvents.concat(newEvent)]
     }
     // concat allows an array of events to be added vs [...events, event(s)]
+
+  case DELETE_EVENT:
+    const resDelete = Meteor.call('runs.deleteRun', action.calendarEventId);
+    const e = {id: action.calendarEventId};
+    return {
+      ...state,
+      calendarEvents: filterOutEvent(state.calendarEvents, e)
+    }
 
   case HIGHLIGHT_EVENT:
     console.log("highlightClickedEvent fire");

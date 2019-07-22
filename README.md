@@ -1,7 +1,7 @@
 # CPSC436I—Runtime
 
 ### Summary
-Runtime will help users be more active by helping them schedule runs into their schedules. It can show information on previous runs, forcast for future runs and automatically suggest runs based on user preferences.
+Runtime will help users be more active by helping them fit runs into their schedules. It can show information on previous runs, forcast for future runs and automatically suggest runs based on user preferences.
 
 ![Image of Run Plan view](https://raw.githubusercontent.com/mostlyfabulous/Runtime/master/screenshots/Runtime%20Run%20Plan%20page.png)
 
@@ -20,7 +20,7 @@ Our project will encourage users to be more physically active by suggesting runs
   - [ ] Scheduling runs according to user's schedule on top of other constraints - users manually add their own schedule
   - [x] Allow users to schedule runs in advance and save them. 
   - [x] Display user's scheduled runs.
-  - [ ] Users can store and edit their preferences (some like running in the rain, or when it's below 10 degrees) - used to rate weather conditions in the scheduler.
+  - [x] Users can store and edit their preferences (some like running in the rain, or when it's below 10 degrees) - used to rate weather conditions in the scheduler.
   - [x] Display user history as a calendar [example](https://fullcalendar.io/).
   
 2-3 stretch requirements (hope to complete 1!):
