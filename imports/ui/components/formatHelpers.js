@@ -68,9 +68,9 @@ export const getOverallStats = (runs) => {
     let calcSpeedDist = 0;
     let topDist = null;
     let topTime = 0;
-    let topTimeRun;
+    let topTimeRun = null;
     let topSpeed = 0;
-    let topSpeedRun;
+    let topSpeedRun = null;
 
     for (let i = 0; i < runs.length; i++){
         let run = runs[i];
@@ -106,7 +106,7 @@ export const getOverallStats = (runs) => {
     };
 
     stats.totalDist = distance.toFixed(2);
-    stats.totalTime = null;
+    stats.totalTime = 0;
     stats.timeList = timeList;
 
     if (timeList.length > 0) {
@@ -117,22 +117,29 @@ export const getOverallStats = (runs) => {
         stats.avgSpeed = average.toFixed(2);
     }
 
-    let bests = {topDist: {
-        desc: "Most distance travelled: ",
-        run: topDist
-    }};
-    if (topTimeRun) {
-        bests.topTime = {
-            desc: "Longest Time Spent: ",
-            run: topTimeRun
+    let bests;
+    if (runs.length > 0) {
+        bests = {topDist: {
+            desc: "Most distance travelled: ",
+            run: topDist
+        }};
+        if (topTimeRun) {
+            bests.topTime = {
+                desc: "Longest Time Spent: ",
+                run: topTimeRun
+            }
         }
-    }
-    if (topSpeedRun) {
-        bests.topSpeed = {
-            desc: "Highest average speed: ",
-            run: topSpeedRun
+        if (topSpeedRun) {
+            bests.topSpeed = {
+                desc: "Highest average speed: ",
+                run: topSpeedRun
+            }
         }
+    } else bests = {
+        desc: "",
+        run: null
     }
+    
     stats.bests = bests;
 
     return stats;

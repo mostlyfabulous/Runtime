@@ -1,8 +1,4 @@
 import React from 'react';
-
-import { connect } from 'react-redux';
-import {bindActionCreators} from 'redux';
-import { loadPastRunEvents } from '../../actions/index';
 import { getRunInfo, getOverallStats } from '../formatHelpers.js';
 
 class HomeStats extends React.Component {
@@ -11,20 +7,15 @@ class HomeStats extends React.Component {
     let key = Math.floor((Math.random()*keyArray.length))
     return stats[keyArray[key]];
   }
-  componentDidMount() {
-      let date = new Date();
-      this.props.loadPastRunEvents(date);
-  }
 
   render() {
-    console.log(this.props.runEvents)
+    let statInfo = "";
 
-    let runs = this.props.runEvents;
-    let stats = getOverallStats(runs);
-    let random = this.chooseRandomStat(stats.bests)
-    return (
-      <div>
-        <h1>Lifetime Statistics:</h1>
+    if (this.props.runs) {
+      let runs = this.props.runs;
+      let stats = getOverallStats(runs);
+      let random = this.chooseRandomStat(stats.bests);
+      statInfo = <div>
         Total Distance: {stats.totalDist} km
         <br />
         Total Time: {stats.totalTime}
@@ -34,23 +25,14 @@ class HomeStats extends React.Component {
         <br />
         {random.desc} {getRunInfo(random.run)}
       </div>
+    }
+    return (
+      <div>
+        <h1>Lifetime Statistics:</h1>
+        {statInfo}
+      </div>
     )
   }
 }
 
-const mapStateToProps = (state) => {
-    return {
-    runEvents: state.calendar.calendarEvents,
-    };
-}
-
-const mapDispatchToProps = dispatch => {
-    return bindActionCreators(
-      {
-        loadPastRunEvents
-      },
-      dispatch
-    );
-  };
-
-export default connect (mapStateToProps, mapDispatchToProps)(HomeStats);
+export default HomeStats;
