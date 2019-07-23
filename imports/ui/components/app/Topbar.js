@@ -53,10 +53,15 @@ class Topbar extends React.Component {
         <p><b>Cloud Coverage:</b> {clouds}</p>
       </div>;
     } else this.loadWeather();
+
+    let login = <AccountsUIWrapper/>;
+    if (this.props.page === 'preferences'){
+      login = <div><strike>{this.props.account.user.username}</strike></div>;
+    }
     return <div>
         <div className = 'topbarCity'>{city}</div>
         <div className = 'topbarWeather'>{weatherInfo}</div>
-        <div className = 'topbarLogin'><AccountsUIWrapper/></div>
+        <div className = 'topbarLogin'>{login}</div>
       </div> 
   }
 
@@ -103,6 +108,7 @@ class Topbar extends React.Component {
 const mapStateToProps = (state) => {
   return {
     weather: state.weather,
+    page: state.pages,
     preferences: state.preferences,
     preferencesReady: state.preferences.preferencesReady,
     preferencesEvents: state.preferences.preferencesEvents,
