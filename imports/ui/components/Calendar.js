@@ -16,8 +16,6 @@ import { addEvent, dragEvent, toggleEventEditor,
 import {bindActionCreators} from 'redux';
 import PropTypes from 'prop-types';
 
-import AccountsUIWrapper from '../components/AccountsUIWrapper.js';
-
 // Calendar component -
 class Calendar extends Component {
 
@@ -39,7 +37,6 @@ class Calendar extends Component {
     // console.log(this.props);
     return (
       <div>
-        <AccountsUIWrapper />
         { (this.props.account.user !== {}) ?
           <FullCalendar
           dateClick={this.handleDateClick}
