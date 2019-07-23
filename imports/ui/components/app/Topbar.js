@@ -2,12 +2,37 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { withAccount } from '../accounts/connector.js'
 import AccountsUIWrapper from '../accounts/AccountsUIWrapper.js';
+import { addWeatherData } from '../../actions/index'
+import {bindActionCreators} from 'redux'
+const axios = require('axios');
+import { config } from '../../../../config.js';
 
 class Topbar extends React.Component {
+  componentDidMount() {
+    if (!this.props.weather){
+      this.loadWeather();
+    }
+  }
+
+  loadWeather() {
+    let weatherkey = config().openweatherapi
+    let weather_url = 'https://api.openweathermap.org/data/2.5/forecast?q=Vancouver,ca&appid=' + weatherkey;
+    if (this.props.preferences[0].city !== ''){
+      weather_url = 'https://api.openweathermap.org/data/2.5/forecast?q=' + this.props.preferences[0].city + ',ca&appid=' + weatherkey;
+    }
+    axios.get(weather_url)
+    .then(response => {
+      this.props.addWeatherData(response)
+    })
+    .catch(error => {
+      console.log(error);
+    });
+  }
+
   topbarInfo() {
     let weatherInfo = ""
     let city = "";
-    if (this.props.weather.data){
+    if (this.props.weather){
       let data = this.props.weather.data;
       console.log(data)
 
@@ -77,6 +102,15 @@ const mapStateToProps = (state) => {
   }
 }
 
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators(
+    {
+      addWeatherData
+    },
+    dispatch
+  );
+};
+
 // passes Meteor data reactively to component by wrapping it using withTracker()
 // note we export TopbarContainer, however App component is still rendering the
 // Topbar component—should this be changed?
@@ -84,4 +118,4 @@ const TopbarContainer = withAccount(Topbar);
 // https://forums.meteor.com/t/react-context-withtracker-is-awesome/43811/18
 
 
-export default connect(mapStateToProps)(TopbarContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(TopbarContainer);

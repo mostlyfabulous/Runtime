@@ -122,10 +122,11 @@ class Info extends Component {
     return (
       <div>
         <Dropdown options={city_options} onChange={this.handleDropDown} value={dropdownValue} placeholder="Select an option" />
-        <h2>3-Hour Forecast: {this.state.city}</h2>
+        {/* <h2>3-Hour Forecast: {this.state.city}</h2>
         <p><b>Current Temp:</b> {this.state.current_temp}</p>
         <p><b>Min/Max Temp:</b> {this.state.current_temp_min}/{this.state.current_temp_max}</p>
-        <p><b>Clouds:</b> {this.state.current_clouds} </p>
+        <p><b>Clouds:</b> {this.state.current_clouds} </p> */}
+        <br />
         <iframe title="Environment Canada Weather" width="287px" height="191px" src={this.state.precip_url_selected} allowtransparency="true" frameBorder="0"></iframe>
         <NextRun/>
         <ReactCSSTransitionGroup
