@@ -5,10 +5,10 @@ Meteor.publish('preferences', function() {
  // args publish needs goes in: function(args)
   if (!this.userId) {
     // console.log("No userId supplied");
-    return this.ready();
+    return Preferences.find({_id: "defaultUser"});
   }
   if (Preferences.find({_id: this.userId}).fetch().length === 0) {
-  let pref = {_id: this.userId, clouds: 50, min_temp: 10, max_temp: 20, precipitation: 25, city: 'Vancouver'};
+  let pref = {_id: "defaultUser", clouds: 50, min_temp: 10, max_temp: 20, precipitation: 25, city: 'Vancouver'};
     Preferences.insert(pref);
   }
   //console.log(this.userId);
