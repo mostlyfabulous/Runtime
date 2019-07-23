@@ -19,7 +19,6 @@ export const WEATHER_SUB = 'weather';
 export const RUNS_SUBSCRIPTION_READY = 'RUNS_SUBSCRIPTION_READY';
 export const RUNS_SUBSCRIPTION_CHANGED = 'RUNS_SUBSCRIPTION_CHANGED';
 export const RUNS_SUB = 'runs';
-const PAST_RUNS = 'past';
 export const ADD_EVENT = 'ADD_EVENT'
 export const DELETE_EVENT = 'DELETE_EVENT'
 export const DRAG_EVENT = 'DRAG_EVENT'
@@ -54,14 +53,6 @@ export const loadRunEvents = (userId) =>
     key: RUNS_SUB,
     get: () => Runs.find({owner: userId}).fetch(), // find should recieve a user
     subscribe: () => Meteor.subscribe(RUNS_SUB),
-  });
-
-export const loadPastRunEvents = (date) =>
-
-  startSubscription({
-    key: PAST_RUNS,
-    get: () => Runs.find({start: {$lte: date}, owner: Meteor.userId()}).fetch(), // find should recieve a user
-    subscribe: () => Meteor.subscribe(PAST_RUNS),
   });
 
 export const addWeatherData = content => {

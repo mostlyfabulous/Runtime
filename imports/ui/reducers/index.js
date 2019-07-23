@@ -69,7 +69,7 @@ const runDataReducer = (currentRuns, action) => {
 };
 */
 
-const pagesReducer = (currentPage = 'plan', action) => {
+const pagesReducer = (currentPage = 'home', action) => {
 	if (action.type === 'CHANGE_PAGE') {
     currentPage = action.pageName;
 	}

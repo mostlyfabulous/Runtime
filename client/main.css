@@ -50,6 +50,31 @@ body {
   box-shadow: 0 2px
 }
 
+.topbarWeather {
+  font-size: 12pt;
+  position: absolute;
+  left: 45%;
+  top: 1em;
+}
+
+.topbarLogin {
+  font-size: 12pt;
+  position: absolute;
+  left: 80%;
+  top: 1em;
+}
+
+.topbarWeather p, h3 {
+  margin: 0%;
+}
+
+.topbarCity {
+  font-size: 12pt;
+  position: absolute;
+  left: 35%;
+  top: 2em;
+}
+
 .body {
   margin-left: 15%;
   margin-top: 1em;
@@ -66,6 +91,7 @@ body {
   width: 60%;
   float: right;
   padding: 1em;
+  padding-top: 0;
 }
 
 .warm {

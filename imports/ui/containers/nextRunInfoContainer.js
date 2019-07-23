@@ -1,6 +1,6 @@
 import { withTracker } from 'meteor/react-meteor-data';
 import Runs from '/imports/api/runs';
-import nextRun from '../components/home/nextRun.js'
+import sideInfo from '../components/home/sideInfo'
 
 
 let date = new Date();
@@ -15,6 +15,6 @@ const NextRunInfoContainer = withTracker( () => {
     nextExists,
     nextEvent: nextExists ? runs : []
   };
-})(nextRun);
+})(sideInfo);
 
 export default NextRunInfoContainer;
