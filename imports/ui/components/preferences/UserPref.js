@@ -30,7 +30,7 @@ class UserPref extends Component {
 //     if (Meteor.user() !== null) {
 //       this.setState({
 //               userPref: {
-//                 // _id: Meteor.user()._id,
+//                 // _id: Meteor.userId(),
 //                 // username: Meteor.user().username
 //               }
 //           });

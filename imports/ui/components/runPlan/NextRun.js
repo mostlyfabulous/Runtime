@@ -64,7 +64,7 @@ class NextRun extends Component {
         allDay: false, //e.allDay,
         distance: 5,
         category: "run",
-        owner: Meteor.user()._id,//this.props.account.userId,
+        owner: Meteor.userId(),//this.props.account.userId,
         username: Meteor.user().username,//this.props.account.user.username,
       }
       console.log('newEvent in plan a run')
@@ -87,7 +87,7 @@ class NextRun extends Component {
         allDay: false, //e.allDay,
         distance: 5,
         category: "run",
-        owner: Meteor.user()._id,//this.props.account.userId,
+        owner: Meteor.userId(),//this.props.account.userId,
         username: Meteor.user().username,//this.props.account.user.username,
       }
       console.log('newEvent in plan a run')

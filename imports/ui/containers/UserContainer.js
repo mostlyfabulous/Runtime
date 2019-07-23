@@ -7,7 +7,7 @@ const PreferencesContainer = withTracker( () => {
   // const UserRuns = new Mongo.Collection('user');
   const preferencesHandle = Meteor.subscribe('preferences');
   const loadingPreferences = !preferencesHandle.ready();
-  const preferences = Preferences.find({_id: Meteor.user()._id}).fetch();
+  const preferences = Preferences.find({_id: Meteor.userId()}).fetch();
   // const runs = Runs.find({owner: this.userId}).fetch();
   const preferencesExists = !loadingPreferences && !!preferences;
   // console.log('ref in container');

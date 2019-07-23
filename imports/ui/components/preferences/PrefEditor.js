@@ -44,7 +44,7 @@ export class PrefEditor extends Component {
     handleChange(event) {
       const name = event.target.name;
       const value = event.target.value;
-      let currentUser = Meteor.user()._id;
+      let currentUser = Meteor.userId();
       // console.log(name)
       // console.log(value)
 
@@ -98,7 +98,7 @@ export class PrefEditor extends Component {
       }
     render() {
       // console.log(start);
-      let currentUser = Meteor.user()._id;
+      let currentUser = Meteor.userId();
       // console.log('pref editor')
       // console.log(this.props.preferences.preferencesEvents)
       // console.log(this.props.preferences.preferencesEvents[0])
@@ -218,7 +218,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(PrefEditor);
 //   handleChange(event) {
 //     const name = event.target.name;
 //     const value = event.target.value;
-//     let currentUser = Meteor.user()._id;
+//     let currentUser = Meteor.userId();
 //     // const defaultValue = event.target[name];
 //     // console.log('edit user pref')
 //     // console.log(this.props.userPref.currentUser)
@@ -260,7 +260,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(PrefEditor);
 //   render() {
 //     const {title, start, end, extendedProps} = this.props.editEventView.calendarEvent;
 //     // console.log(start);
-//     let currentUser = Meteor.user()._id;
+//     let currentUser = Meteor.userId();
 //     // const defaultValue = event.target[name];
 //     // console.log('edit user pref')
 //     // console.log(userPref.currentUser)

@@ -5,8 +5,7 @@ import {changePage} from '../../actions/index';
 
 class SideListElement extends React.Component {
     handleClick = () => {
-        if (this.props.account.user || this.props.page !== 'preferences')
-            this.props.changePage(this.props.page);
+        this.props.changePage(this.props.page);
     }
 
     render() {

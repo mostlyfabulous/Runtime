@@ -54,14 +54,10 @@ class Topbar extends React.Component {
       </div>;
     } else this.loadWeather();
 
-    let login = <AccountsUIWrapper/>;
-    if (this.props.page === 'preferences'){
-      login = <div><strike>{this.props.account.user.username}</strike></div>;
-    }
     return <div>
         <div className = 'topbarCity'>{city}</div>
         <div className = 'topbarWeather'>{weatherInfo}</div>
-        <div className = 'topbarLogin'>{login}</div>
+        <div className = 'topbarLogin'><AccountsUIWrapper/></div>
       </div> 
   }
 
