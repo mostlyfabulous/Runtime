@@ -27,6 +27,7 @@ class Main extends React.Component {
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.preferencesReady !== this.props.preferencesReady) {
       if (this.props.preferencesEvents) {
+        console.log(this.props.preferencesEvents);
       let {clouds, min_temp, max_temp,
         precipitation, city} = this.props.preferencesEvents[0];
         console.log(city);
