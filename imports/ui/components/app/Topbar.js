@@ -16,7 +16,6 @@ class Topbar extends React.Component {
     let weatherkey = config().openweatherapi
     let weather_url = 'https://api.openweathermap.org/data/2.5/forecast?q=Vancouver,ca&appid=' + weatherkey;
     let preferences = this.props.preferences.preferencesEvents;
-      console.log(preferences)
     if (preferences.length > 0) {
       if (preferences[0].city !== ''){
         weather_url = 'https://api.openweathermap.org/data/2.5/forecast?q=' + this.props.preferences.preferencesEvents[0].city + ',ca&appid=' + weatherkey;
@@ -34,11 +33,10 @@ class Topbar extends React.Component {
   topbarInfo() {
     let weatherInfo = ""
     let city = "";
-    console.log(this.props)
     if (this.props.weather.data){
       let data = this.props.weather.data;
       
-      let prefs = this.props.preferences.preferencesEvents
+      let prefs = this.props.preferences.preferencesEvents;
       if (prefs.length > 0 && this.props.weather.data.city.name !== prefs[0].city){
         this.loadWeather();
       }
@@ -54,7 +52,7 @@ class Topbar extends React.Component {
         <p><b>Low </b> {temp_min}, <b>High </b>{temp_max}</p>
         <p><b>Cloud Coverage:</b> {clouds}</p>
       </div>;
-    }
+    } else this.loadWeather();
     return <div>
         <div className = 'topbarCity'>{city}</div>
         <div className = 'topbarWeather'>{weatherInfo}</div>
@@ -63,7 +61,6 @@ class Topbar extends React.Component {
   }
 
   render() {
-    // console.log(this.props);
     let user = "...logging in...";
     let baseUrl = 'https://robohash.org/';
     if (this.props.account.user) user = this.props.account.user.username;

@@ -32,10 +32,10 @@ class Info extends Component {
       runData: {},
       weather: {},
       nextRun: {},
-      current_temp: '',
-      current_temp_min: '',
-      current_temp_max: '',
-      current_clouds: '',
+      // current_temp: '',
+      // current_temp_min: '',
+      // current_temp_max: '',
+      // current_clouds: '',
       city: '',
       precip_url_selected: precip_url[2]
     };
@@ -65,12 +65,12 @@ class Info extends Component {
     this.props.addWeatherData(response);
     console.log(this.props.weather);
     const {weather} = this.props;
-    this.setState({
-            current_temp: Math.round(weather.data.list[0].main.temp-273.15) + '°C',
-            current_temp_min: Math.round(weather.data.list[0].main.temp_min-273.15) + '°C',
-            current_temp_max: Math.round(weather.data.list[0].main.temp_max-273.15) + '°C',
-            current_clouds: weather.data.list[0].clouds.all + '%'
-    })
+    // this.setState({
+    //         current_temp: Math.round(weather.data.list[0].main.temp-273.15) + '°C',
+    //         current_temp_min: Math.round(weather.data.list[0].main.temp_min-273.15) + '°C',
+    //         current_temp_max: Math.round(weather.data.list[0].main.temp_max-273.15) + '°C',
+    //         current_clouds: weather.data.list[0].clouds.all + '%'
+    // })
 
      // this.props.addEvent(createUIWeatherEvents(weather.data.list));
      // console.log('handleLoad: ' + weather_url)
