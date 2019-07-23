@@ -2,39 +2,46 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { withAccount } from '../accounts/connector.js'
 import AccountsUIWrapper from '../accounts/AccountsUIWrapper.js';
-import { addWeatherData } from '../../actions/index'
+import { addWeatherData, loadPreferences } from '../../actions/index'
 import {bindActionCreators} from 'redux'
 const axios = require('axios');
 import { config } from '../../../../config.js';
 
 class Topbar extends React.Component {
   componentDidMount() {
-    if (!this.props.weather){
-      this.loadWeather();
-    }
+    this.props.loadPreferences();
   }
-
+  
   loadWeather() {
     let weatherkey = config().openweatherapi
     let weather_url = 'https://api.openweathermap.org/data/2.5/forecast?q=Vancouver,ca&appid=' + weatherkey;
-    if (this.props.preferences[0].city !== ''){
-      weather_url = 'https://api.openweathermap.org/data/2.5/forecast?q=' + this.props.preferences[0].city + ',ca&appid=' + weatherkey;
+    let preferences = this.props.preferences.preferencesEvents;
+      console.log(preferences)
+    if (preferences.length > 0) {
+      if (preferences[0].city !== ''){
+        weather_url = 'https://api.openweathermap.org/data/2.5/forecast?q=' + this.props.preferences.preferencesEvents[0].city + ',ca&appid=' + weatherkey;
+      }
+      axios.get(weather_url)
+      .then(response => {
+        this.props.addWeatherData(response)
+      })
+      .catch(error => {
+        console.log(error);
+      });
     }
-    axios.get(weather_url)
-    .then(response => {
-      this.props.addWeatherData(response)
-    })
-    .catch(error => {
-      console.log(error);
-    });
   }
 
   topbarInfo() {
     let weatherInfo = ""
     let city = "";
-    if (this.props.weather){
+    console.log(this.props)
+    if (this.props.weather.data){
       let data = this.props.weather.data;
-      console.log(data)
+      
+      let prefs = this.props.preferences.preferencesEvents
+      if (prefs.length > 0 && this.props.weather.data.city.name !== prefs[0].city){
+        this.loadWeather();
+      }
 
       let temp = Math.round(data.list[0].main.temp-273.15) + '°C';
       let temp_min = Math.round(data.list[0].main.temp_min-273.15) + '°C';
@@ -99,13 +106,18 @@ class Topbar extends React.Component {
 const mapStateToProps = (state) => {
   return {
     weather: state.weather,
+    preferences: state.preferences,
+    preferencesReady: state.preferences.preferencesReady,
+    preferencesEvents: state.preferences.preferencesEvents,
+    preferencesSubscriptionStopped: state.preferences.preferencesSubscriptionStopped,
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
     {
-      addWeatherData
+      addWeatherData,
+      loadPreferences
     },
     dispatch
   );
