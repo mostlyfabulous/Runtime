@@ -47,7 +47,8 @@ body {
   padding: 1em;
   padding-left: 17%;
   font-size: 18pt;
-  box-shadow: 0 2px
+  box-shadow: 0 2px;
+  height: 2.3em;
 }
 
 .topbarWeather {

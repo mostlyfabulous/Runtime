@@ -19,8 +19,6 @@ import { stopSubscription } from 'meteor-redux-middlewares';
 import {bindActionCreators} from 'redux';
 import PropTypes from 'prop-types';
 
-import AccountsUIWrapper from '../accounts/AccountsUIWrapper.js';
-
 // Calendar component -
 class Calendar extends Component {
 
@@ -57,7 +55,6 @@ class Calendar extends Component {
   render() {
     return (
       <div>
-        <AccountsUIWrapper />
         { (this.props.account.user !== {}) ?
           <FullCalendar
           dateClick={this.handleDateClick}
