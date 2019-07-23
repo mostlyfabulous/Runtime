@@ -1,10 +1,12 @@
 import React from 'react';
 import {connect} from 'react-redux';
+import { withAccount } from '../accounts/connector.js'
 import {changePage} from '../../actions/index';
 
 class SideListElement extends React.Component {
     handleClick = () => {
-        this.props.changePage(this.props.page);
+        if (this.props.account.user || this.props.page !== 'preferences')
+            this.props.changePage(this.props.page);
     }
 
     render() {
@@ -24,4 +26,6 @@ const mapStateToProps = (state) => {
     };
 }
 
-export default connect(mapStateToProps, {changePage})(SideListElement);
+const SideListContainer = withAccount(SideListElement);
+
+export default connect(mapStateToProps, {changePage})(SideListContainer);
