@@ -33,17 +33,6 @@ class Calendar extends Component {
     preferencesEvents: PropTypes.array.isRequired,
   }
 
-// componentDidMount() {
-//     this.props.loadPreferences();
-//     this.props.loadRunEvents(this.props.account.userId);
-//  }
-//
-//  componentWillUnmount() {
-//    this.props.stopSubscription(WEATHER_SUB);
-//    this.props.stopSubscription(RUNS_SUB);
-//    this.props.stopSubscription(PREFERENCES_SUB);
-//  }
-//
 //  componentDidUpdate(prevProps, prevState) {
 //    if (prevProps.preferencesReady !== this.props.preferencesReady) {
 //      let {clouds, min_temp, max_temp, precipitation, city} = this.props.preferencesEvents[0];
@@ -91,8 +80,8 @@ class Calendar extends Component {
         id: unique,
         _id: unique,
         title: "New Run",
-        start: e.date, // TODO: determine how to set timezone if needed
-        end: moment(e.date).add(1, 'hours').format(),
+        start: e.date, // TODO: client's timezone set's the date's timezone
+        end: moment(e.date).add(1, 'hours').toDate(),
         duration: moment.duration(1, 'hours'),
         allDay: e.allDay,
         distance: 5,
