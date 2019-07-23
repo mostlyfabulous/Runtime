@@ -26,7 +26,7 @@ Meteor.methods({
     // Without using $-operators, a modifier is interpreted as a literal document,
     // and completely replaces whatever was previously in the database.
     // Find the document with ID 'event.id' and completely replace it.
-    Preferences.update({_id: Meteor.user()._id}, pref, function (err, docsChanged) {
+    Preferences.update({_id: Meteor.userId()}, pref, function (err, docsChanged) {
       if (err) console.log(err);
       // console.log("event had id: " + event.id);
       // console.log(docsChanged + " documents were changed");
