@@ -35,24 +35,24 @@ class Calendar extends Component {
     preferencesEvents: PropTypes.array.isRequired,
   }
 
-  componentDidMount() {
-    this.props.loadPreferences();
-    this.props.loadRunEvents(this.props.account.userId);
- }
-
- componentWillUnmount() {
-   this.props.stopSubscription(WEATHER_SUB);
-   this.props.stopSubscription(RUNS_SUB);
-   this.props.stopSubscription(PREFERENCES_SUB);
- }
-
- componentDidUpdate(prevProps, prevState) {
-   if (prevProps.preferencesReady !== this.props.preferencesReady) {
-     let {clouds, min_temp, max_temp, precipitation, city} = this.props.preferencesEvents[0];
-     console.log(city);
-     this.props.loadWeatherEvents(city);
-   }
- }
+// componentDidMount() {
+//     this.props.loadPreferences();
+//     this.props.loadRunEvents(this.props.account.userId);
+//  }
+//
+//  componentWillUnmount() {
+//    this.props.stopSubscription(WEATHER_SUB);
+//    this.props.stopSubscription(RUNS_SUB);
+//    this.props.stopSubscription(PREFERENCES_SUB);
+//  }
+//
+//  componentDidUpdate(prevProps, prevState) {
+//    if (prevProps.preferencesReady !== this.props.preferencesReady) {
+//      let {clouds, min_temp, max_temp, precipitation, city} = this.props.preferencesEvents[0];
+//      console.log(city);
+//      this.props.loadWeatherEvents(city);
+//    }
+//  }
 
   render() {
     return (
@@ -137,12 +137,9 @@ class Calendar extends Component {
 
 }
 
-
 const mapStateToProps = (state) => {
 
   return {
-    // calendarEvents: state.calendarEvents,
-    // weather: state.weather,
     calendarReady: state.calendar.calendarReady,
     calendarEvents: state.calendar.calendarEvents,
     calendarSubscriptionStopped: state.calendar.calendarSubscriptionStopped,
@@ -153,7 +150,6 @@ const mapStateToProps = (state) => {
     preferencesEvents: state.preferences.preferencesEvents,
          };
 }
-
 
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
@@ -174,10 +170,3 @@ const mapDispatchToProps = dispatch => {
 const CalendarContainer = withAccount(Calendar);
 
 export default connect(mapStateToProps, mapDispatchToProps)(CalendarContainer);
-
-// Calendar.propTypes = {
-//   loadingRuns: React.PropTypes.object,
-//   runs: React.PropTypes.object,
-//   runsExists: React.PropTypes.bool,
-//   runEvents: React.PropTypes.object,
-// };

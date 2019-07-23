@@ -5,9 +5,6 @@ import Calendar from '../components/runPlan/Calendar.js';
 // import CalendarContainer from '../containers/CalendarContainer.js';
 import {connect} from 'react-redux';
 
-// import AccountsUIWrapper from '../components/AccountsUIWrapper.js';
-// import { Meteor } from 'meteor/meteor';
-
 class RunPlan extends React.Component {
   constructor(props) {
     super(props);
