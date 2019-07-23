@@ -91,6 +91,7 @@ body {
   width: 60%;
   float: right;
   padding: 1em;
+  padding-top: 0;
 }
 
 .warm {
