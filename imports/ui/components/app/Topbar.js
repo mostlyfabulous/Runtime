@@ -70,34 +70,25 @@ class Topbar extends React.Component {
     let result;
     if (this.props.weather.data) t = this.props.weather.data.list[0].main.temp;
 
+    let picture = "";
     if (user !== "...logging in...") {
-      let picture = baseUrl + this.props.account.user._id;
-      // warm
-      if (t > 298.15) 
-        result = <div className="topbar warm">Hello {user}! <img src={picture} alt="Profile Icon" width="60" height="60"/> {this.topbarInfo()} </div>
-      
-      // fair
-      else if (t > 295.15 && t <= 298.15)
-          result = <div className="topbar fair">Hello {user}! <img src={picture} alt="Profile Icon" width="60" height="60"/>{this.topbarInfo()} </div>
-      // cool
-      else if (t <= 295.15) 
-          result = <div className="topbar cold">Hello {user}! <img src={picture} alt="Profile Icon" width="60" height="60"/>{this.topbarInfo()} </div>
-      else 
-          result = <div className="topbar">Hello {user}! <img src={picture} alt="Profile Icon" width="60" height="60"/>{this.topbarInfo()} </div>
-    } else {
-      // warm
-      if (t > 298.15) 
-          result = <div className="topbar warm">Hello {user}!{this.topbarInfo()} </div>
-      // fair
-      else if (t > 295.15 && t <= 298.15) 
-          result = <div className="topbar fair">Hello {user}!{this.topbarInfo()} </div>
-      // cool
-      else if (t <= 295.15) 
-          result = <div className="topbar cold">Hello {user}!{this.topbarInfo()} </div>
-      else
-          result = <div className="topbar">Hello {user}!{this.topbarInfo()} </div>
+      picture = <img src={baseUrl + this.props.account.user._id} alt="Profile Icon" width="60" height="60"/>;
     }
-    return result;
+    // warm
+    if (t > 298.15) 
+      result = "topbar warm";
+    
+    // fair
+    else if (t > 295.15 && t <= 298.15)
+      result = "topbar fair";
+    // cool
+    else if (t <= 295.15) 
+      result = "topbar cold";
+    else 
+      result = "topbar";
+      
+    let content = <div className = {result}>Hello {user}! {picture} {this.topbarInfo()}</div>
+    return content;
   }
 }
 
