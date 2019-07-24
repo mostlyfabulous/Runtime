@@ -43,7 +43,7 @@ class Calendar extends Component {
 
   render() {
     return (
-      <div>
+      <div className = 'calendar'>
         { (this.props.account.user !== {}) ?
           <FullCalendar
           dateClick={this.handleDateClick}

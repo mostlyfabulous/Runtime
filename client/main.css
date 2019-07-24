@@ -95,6 +95,10 @@ body {
   padding-top: 0;
 }
 
+.calendar {
+  background-color: white;
+}
+
 .warm {
   background-color: orange;
 }
