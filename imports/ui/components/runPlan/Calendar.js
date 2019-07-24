@@ -33,14 +33,6 @@ class Calendar extends Component {
     preferencesEvents: PropTypes.array.isRequired,
   }
 
-//  componentDidUpdate(prevProps, prevState) {
-//    if (prevProps.preferencesReady !== this.props.preferencesReady) {
-//      let {clouds, min_temp, max_temp, precipitation, city} = this.props.preferencesEvents[0];
-//      console.log(city);
-//      this.props.loadWeatherEvents(city);
-//    }
-//  }
-
   render() {
     return (
       <div className = 'calendar'>

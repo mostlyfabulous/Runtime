@@ -35,6 +35,7 @@ class Main extends React.Component {
     //     }
     //   }
     if (this.props.account.userId && prevProps.account.userId !== this.props.account.userId) {
+      // on log in, start subscriptions
       if (this.props.preferencesEvents.length > 0) {
         console.log(this.props.preferencesEvents);
       let {clouds, min_temp, max_temp,
@@ -42,14 +43,16 @@ class Main extends React.Component {
         console.log(city);
         this.props.loadPreferences();
         this.props.loadRunEvents(this.props.account.userId);
-        this.props.loadWeatherEvents(city);
+        this.props.loadWeatherEvents(city); // city may not be available
         }
       } else if (!this.props.account.userId && prevProps.account.userId !== this.props.account.userId) {
+        // on logout, stop subscriptions
         this.props.stopSubscription(WEATHER_SUB);
         this.props.stopSubscription(RUNS_SUB);
         this.props.stopSubscription(PREFERENCES_SUB);
       }
     if (prevProps.preferencesReady !== this.props.preferencesReady) {
+      // once preferences are loaded, load weather events
       let {clouds, min_temp, max_temp,
         precipitation, city} = this.props.preferencesEvents[0];
         console.log(city);
