@@ -25,17 +25,10 @@ export class EventEditor extends Component {
   handleChange(event) {
     const name = event.target.name;
     const value = event.target.value;
-    // const defaultValue = event.target[name];
     if (value)
       this.setState({
         [name]: value
       });
-    // else{
-    //   console.log("defaultValue");
-    //   console.log(defaultValue);
-    //   this.setState({
-    //     [name]: defaultValue
-    //   });}
   }
 
   handleSubmit(jsEvent) {
@@ -99,17 +92,6 @@ export class EventEditor extends Component {
       </div>
     )
   }
-
-  // componentWillReceiveProps(nextProps) {
-  //   const {eventTitle, eventStart, eventEnd, eventExtendedProps} = this.props.editEventView.calendarEvent;
-  //   this.state = {
-  //     title     : eventTitle,
-  //     start     : eventStart,
-  //     end       : eventEnd,
-  //     distance  : eventExtendedProps.distance
-  //     // duration  : this.props.duration
-  //   };
-  // }
 }
 
 const mapStateToProps = (state) => {

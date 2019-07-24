@@ -14,14 +14,9 @@ const city_options = ['Calgary', 'Toronto', 'Vancouver'];
 import Dropdown from 'react-dropdown';
 import 'react-dropdown/style.css';
 const defaultOption = city_options[2];
-// let precip_url = "https://weather.gc.ca/wxlink/wxlink.html?cityCode=bc-74&amp;lang=e";
 let precip_url = ["https://weather.gc.ca/wxlink/wxlink.html?cityCode=ab-52&amp;lang=e",
   "https://weather.gc.ca/wxlink/wxlink.html?cityCode=on-143&amp;lang=e",
   "https://weather.gc.ca/wxlink/wxlink.html?cityCode=bc-74&amp;lang=e"]
-// let precip_url = {};
-// precip_url.Calgary = "https://weather.gc.ca/wxlink/wxlink.html?cityCode=ab-52&amp;lang=e";
-// precip_url.Toronto = "https://weather.gc.ca/wxlink/wxlink.html?cityCode=on-143&amp;lang=e";
-// precip_url.Vancouver = "https://weather.gc.ca/wxlink/wxlink.html?cityCode=bc-74&amp;lang=e";
 
 let precip_url_selected = "https://weather.gc.ca/wxlink/wxlink.html?cityCode=bc-74&amp;lang=e";
 
@@ -32,10 +27,6 @@ class Info extends Component {
       runData: {},
       weather: {},
       nextRun: {},
-      // current_temp: '',
-      // current_temp_min: '',
-      // current_temp_max: '',
-      // current_clouds: '',
       city: '',
       precip_url_selected: precip_url[2]
     };
@@ -50,30 +41,12 @@ class Info extends Component {
     //precip_url_selected = precip_url.Vancouver;
     if (this.state.city !== ''){
       weather_url = 'https://api.openweathermap.org/data/2.5/forecast?q=' + this.state.city + ',ca&appid=' + weatherkey;
-      // let city = this.state.city;
-      // precip_url_selected = precip_url.city;
-      // console.log('handleLoad: ' + city);
-      // console.log(precip_url.city)
     }
-
-    //console.log(precip_url)
-
-    // let weather_url = 'https://api.openweathermap.org/data/2.5/forecast?q=' + this.state.city + ',ca&appid=' + weatherkey;
-    // axios.get('https://api.openweathermap.org/data/2.5/forecast?q=Vancouver,ca&appid=' + weatherkey)
     axios.get(weather_url)
   .then(response => {
     this.props.addWeatherData(response);
     console.log(this.props.weather);
     const {weather} = this.props;
-    // this.setState({
-    //         current_temp: Math.round(weather.data.list[0].main.temp-273.15) + '°C',
-    //         current_temp_min: Math.round(weather.data.list[0].main.temp_min-273.15) + '°C',
-    //         current_temp_max: Math.round(weather.data.list[0].main.temp_max-273.15) + '°C',
-    //         current_clouds: weather.data.list[0].clouds.all + '%'
-    // })
-
-     // this.props.addEvent(createUIWeatherEvents(weather.data.list));
-     // console.log('handleLoad: ' + weather_url)
 
   })
   .catch(error => {
@@ -122,10 +95,6 @@ class Info extends Component {
     return (
       <div>
         <Dropdown options={city_options} onChange={this.handleDropDown} value={dropdownValue} placeholder="Select an option" />
-        {/* <h2>3-Hour Forecast: {this.state.city}</h2>
-        <p><b>Current Temp:</b> {this.state.current_temp}</p>
-        <p><b>Min/Max Temp:</b> {this.state.current_temp_min}/{this.state.current_temp_max}</p>
-        <p><b>Clouds:</b> {this.state.current_clouds} </p> */}
         <br />
         <iframe title="Environment Canada Weather" width="287px" height="191px" src={this.state.precip_url_selected} allowtransparency="true" frameBorder="0"></iframe>
         <NextRun/>
@@ -146,10 +115,7 @@ class Info extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    // console.log("change in prop—getting next run");
-    // console.log(nextProps);
     this.props.getNextRun(nextProps.calendarEvents)
-    // this.setState({runEditor: nextProps.editEventView.editorView})
   }
 }
 
