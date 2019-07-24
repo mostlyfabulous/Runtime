@@ -102,71 +102,49 @@ export class PrefEditor extends Component {
       // console.log('pref editor')
       // console.log(this.props.preferences.preferencesEvents)
       // console.log(this.props.preferences.preferencesEvents[0])
+      let currentPrefs = "";
       if (this.props.preferences.preferencesEvents[0] !== undefined) {
-        return (
-          <div>
+        currentPrefs = <div>
           <h2> Current Preferences </h2>
           <p> Clouds (%): {this.props.preferences.preferencesEvents[0].clouds}</p>
           <p> Min Temp (°C): {this.props.preferences.preferencesEvents[0].min_temp}</p>
           <p> Max Temp (°C): {this.props.preferences.preferencesEvents[0].max_temp}</p>
           <p> Precipitation (%): {this.props.preferences.preferencesEvents[0].precipitation}</p>
           <p> Preferred City: {this.props.preferences.preferencesEvents[0].city}</p>
-            <h2>Edit Preferences:</h2>
-            <form onSubmit={this.handleSubmit} ref='form'>
-              <label htmlFor="clouds">Clouds (%)</label>
-              <input type="number" id="clouds" name="clouds" defaultValue={this.props.preferences.preferencesEvents[0].clouds}
-                onChange={this.handleChange} step="1" placeholder="%" />
-              <br/>
-              <label htmlFor="minTemp">Min Temp (°C)</label>
-              <input type="number" id="minTemp" name="minTemp" defaultValue={this.props.preferences.preferencesEvents[0].min_temp}
-                onChange={this.handleChange}  step="1" placeholder="°C"/>
-              <br/>
-              <label htmlFor="maxTemp">Max Temp (°C)</label>
-              <input type="number" id="maxTemp" name="maxTemp" defaultValue={this.props.preferences.preferencesEvents[0].max_temp}
-                onChange={this.handleChange}  step="1" placeholder="°C" />
-              <br/>
-              <label htmlFor="precipitation">Max Precipitation % (POP)</label>
-              <input type="number" id="precipitation" name="precipitation" defaultValue={this.props.preferences.preferencesEvents[0].precipitation}
-                onChange={this.handleChange} step="1" placeholder="%" />
-              <br/>
-              <label htmlFor="city">Preferred City</label>
-                <select name="city" id ="city">
-                  <option value="Vancouver"> Vancouver </option>
-                  <option value="Toronto"> Toronto </option>
-                  <option value="Calgary"> Calgary </option>
-                </select>
-              <br/>
-              <button type="submit">Update User Preferences</button>
-            </form>
-          </div>
-        );
-      } else {
-        return (
-          <div>
-
-            <h2>Edit Preferences:</h2>
-            <form onSubmit={this.handleSubmit} ref='form'>
-              <label htmlFor="clouds">Clouds</label>
-              <input type="number" id="clouds" name="clouds" defaultValue={1||this.props.preferences.preferencesEvents[0].clouds}
-                onChange={this.handleChange} step="1" placeholder="°C" />
-              <br/>
-              <label htmlFor="minTemp">Min Temp</label>
-              <input type="number" id="minTemp" name="minTemp" defaultValue={1||this.props.preferences.preferencesEvents[0].min_temp}
-                onChange={this.handleChange}  step="1" placeholder="°C"/>
-              <br/>
-              <label htmlFor="maxTemp">End Time</label>
-              <input type="number" id="maxTemp" name="maxTemp" defaultValue={1||this.props.preferences.preferencesEvents[0].max_temp}
-                onChange={this.handleChange}  step="1" placeholder="°C" />
-              <br/>
-              <label htmlFor="precipitation">Precipitation (POP)</label>
-              <input type="number" id="precipitation" name="precipitation" defaultValue={1||this.props.preferences[0].precipitation}
-                onChange={this.handleChange} step="1" placeholder="%" />
-              <br/>
-              <button type="submit">Update User Preferences</button>
-            </form>
-          </div>
-        );
+        </div>
       }
+      return (
+        <div>
+          {currentPrefs}
+          <h2>Edit Preferences:</h2>
+          <form onSubmit={this.handleSubmit} ref='form'>
+            <label htmlFor="clouds">Clouds (%)</label>
+            <input type="number" id="clouds" name="clouds" defaultValue={this.props.preferences.preferencesEvents[0].clouds}
+              onChange={this.handleChange} step="1" placeholder="%" />
+            <br/>
+            <label htmlFor="minTemp">Min Temp (°C)</label>
+            <input type="number" id="minTemp" name="minTemp" defaultValue={this.props.preferences.preferencesEvents[0].min_temp}
+              onChange={this.handleChange}  step="1" placeholder="°C"/>
+            <br/>
+            <label htmlFor="maxTemp">Max Temp (°C)</label>
+            <input type="number" id="maxTemp" name="maxTemp" defaultValue={this.props.preferences.preferencesEvents[0].max_temp}
+              onChange={this.handleChange}  step="1" placeholder="°C" />
+            <br/>
+            <label htmlFor="precipitation">Max Precipitation % (POP)</label>
+            <input type="number" id="precipitation" name="precipitation" defaultValue={this.props.preferences.preferencesEvents[0].precipitation}
+              onChange={this.handleChange} step="1" placeholder="%" />
+            <br/>
+            <label htmlFor="city">Preferred City</label>
+              <select name="city" id ="city">
+                <option value="Vancouver"> Vancouver </option>
+                <option value="Toronto"> Toronto </option>
+                <option value="Calgary"> Calgary </option>
+              </select>
+            <br/>
+            <button type="submit">Update User Preferences</button>
+          </form>
+        </div>
+      )
       // const defaultValue = event.target[name];
       // console.log('edit user pref')
       // console.log(userPref.currentUser)
