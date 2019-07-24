@@ -62,16 +62,16 @@ class Topbar extends React.Component {
   }
 
   render() {
-    let user = "...logging in...";
-    let baseUrl = 'https://robohash.org/';
-    if (this.props.account.user) user = this.props.account.user.username;
+    let user = "";
+    if (this.props.account.user) user = ' '+this.props.account.user.username;
 
     let t = null;
     let result;
     if (this.props.weather.data) t = this.props.weather.data.list[0].main.temp;
 
     let picture = "";
-    if (user !== "...logging in...") {
+    if (user !== "") {
+      let baseUrl = 'https://robohash.org/';
       picture = <img src={baseUrl + this.props.account.user._id} alt="Profile Icon" width="60" height="60"/>;
     }
     // warm
@@ -86,8 +86,8 @@ class Topbar extends React.Component {
       result = "topbar cold";
     else 
       result = "topbar";
-      
-    let content = <div className = {result}>Hello {user}! {picture} {this.topbarInfo()}</div>
+
+    let content = <div className = {result}>Hello{user}! {picture} {this.topbarInfo()}</div>
     return content;
   }
 }
