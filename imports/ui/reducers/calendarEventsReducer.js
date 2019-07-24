@@ -67,24 +67,39 @@ export function calendarEventsReducer(state = initialCalendarState, action) {
 
 	case ADD_EVENT:
     let newEvent = action.calendarEvent;
-    const res = Meteor.call('runs.addRun', newEvent);
-    // console.log(res);
-    return {
-      ...state,
-      calendarEvents: [...state.calendarEvents.concat(newEvent)]
-    }
-    // concat allows an array of events to be added vs [...events, event(s)]
+    Meteor.call('runs.addRun', newEvent, (error, result) => {
+      if (error) {
+        prompt("Could not add new event, please try again");
+        return state;
+      }
+      return {
+        ...state,
+        calendarEvents: [...state.calendarEvents.concat(newEvent)] }
+        // concat allows an array of events to be added vs [...events, event(s)]
+      });
+    return state;
+
 
   case DELETE_EVENT:
-    const resDelete = Meteor.call('runs.deleteRun', action.calendarEventId);
-    const e = {id: action.calendarEventId};
-    return {
-      ...state,
-      calendarEvents: filterOutEvent(state.calendarEvents, e)
-    }
+  console.log("deleting");
+    Meteor.call('runs.deleteRun', action.calendarEventId, (error, result) => {
+      const e = {id: action.calendarEventId};
+      if (error) {
+        prompt("Could not delete event, please try again");
+        return state;
+      }
+      return {
+        ...state, // on successful database delete, update state finally
+        calendarEvents: filterOutEvent(state.calendarEvents, e)
+      }
+    });
+    // delete event does not wait on callback, returns original state first
+    return state;
+    break;
 
   case HIGHLIGHT_EVENT:
     console.log("highlightClickedEvent fire");
+    return state;
 
     let highlightedEvent = {};
     if (action.event) { // should recieve an event
