@@ -25,16 +25,37 @@ class Main extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevProps.preferencesReady !== this.props.preferencesReady) {
-      if (this.props.preferencesEvents) {
+    // if (prevProps.preferencesReady !== this.props.preferencesReady && this.props.account.userId) {
+    //   if (this.props.preferencesEvents.length > 0) {
+    //     console.log(this.props.preferencesEvents);
+    //   let {clouds, min_temp, max_temp,
+    //     precipitation, city} = this.props.preferencesEvents[0];
+    //     console.log(city);
+    //     this.props.loadWeatherEvents(city);
+    //     }
+    //   }
+    if (this.props.account.userId && prevProps.account.userId !== this.props.account.userId) {
+      if (this.props.preferencesEvents.length > 0) {
         console.log(this.props.preferencesEvents);
       let {clouds, min_temp, max_temp,
         precipitation, city} = this.props.preferencesEvents[0];
         console.log(city);
+        this.props.loadPreferences();
+        this.props.loadRunEvents(this.props.account.userId);
         this.props.loadWeatherEvents(city);
         }
+      } else if (!this.props.account.userId && prevProps.account.userId !== this.props.account.userId) {
+        this.props.stopSubscription(WEATHER_SUB);
+        this.props.stopSubscription(RUNS_SUB);
+        this.props.stopSubscription(PREFERENCES_SUB);
       }
+    if (prevProps.preferencesReady !== this.props.preferencesReady) {
+      let {clouds, min_temp, max_temp,
+        precipitation, city} = this.props.preferencesEvents[0];
+        console.log(city);
+      this.props.loadWeatherEvents(city);
     }
+  }
 
   render() {
     let body =<RunPlan/>;
@@ -56,6 +77,10 @@ class Main extends React.Component {
 const mapStateToProps = (state) => {
     return {
         page: state.pages,
+        calendarReady: state.calendar.calendarReady,
+        calendarSubscriptionStopped: state.calendar.calendarSubscriptionStopped,
+        weatherReady: state.weatherMiddleware.weatherReady,
+        weatherSubscriptionStopped: state.weatherMiddleware.weatherSubscriptionStopped,
         preferencesReady: state.preferences.preferencesReady,
         preferencesEvents: state.preferences.preferencesEvents,
     };
