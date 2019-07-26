@@ -16,8 +16,8 @@ export function createWeatherEvents(location) {
            else if (t <= 295.15) c = 'yellow'; // cool
            else (console.log(t))
            let e =  ({
-             start: moment(threeHourEvent.dt_txt).format(), // takes local time zone
-             end: moment(threeHourEvent.dt_txt).add(3, 'hours').format(),
+             start: moment(threeHourEvent.dt_txt).toDate(), // takes local time zone
+             end: moment(threeHourEvent.dt_txt).add(3, 'hours').toDate(),
              city: cityData.name,
              countryCode: cityData.country,
              rendering: 'background',
@@ -52,8 +52,8 @@ export function createUIWeatherEvents(weatherDataList) {
        let e =  ({
          // start: moment(threeHourEvent.dt_txt+" GMT"),
          // end: moment(threeHourEvent.dt_txt+" GMT-0300"),
-         start: moment(threeHourEvent.dt_txt).format(),
-         end: moment(threeHourEvent.dt_txt).add(3, 'hours').format(),
+         start: moment(threeHourEvent.dt_txt).toDate(),
+         end: moment(threeHourEvent.dt_txt).add(3, 'hours').toDate(),
          rendering: 'background',
          color: c,
          editable: false // prevent users from modifying weather events
