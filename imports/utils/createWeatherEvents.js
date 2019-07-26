@@ -1,5 +1,4 @@
 const axios = require('axios');
-import { config } from '../../config.js';
 
 export function createWeatherEvents(location) {
 
@@ -29,7 +28,7 @@ export function createWeatherEvents(location) {
            return e;
          });
          weatherEvents.map( (event) => Weather.insert(event));
-         console.log(weatherEvents);
+         // console.log(weatherEvents);
       return weatherEvents;
     })
     .catch(error => {
