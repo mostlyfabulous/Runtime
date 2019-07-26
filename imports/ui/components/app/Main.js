@@ -25,39 +25,38 @@ class Main extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    // if (prevProps.preferencesReady !== this.props.preferencesReady && this.props.account.userId) {
-    //   if (this.props.preferencesEvents.length > 0) {
-    //     console.log(this.props.preferencesEvents);
-    //   let {clouds, min_temp, max_temp,
-    //     precipitation, city} = this.props.preferencesEvents[0];
-    //     console.log(city);
-    //     this.props.loadWeatherEvents(city);
-    //     }
-    //   }
-    if (this.props.account.userId && prevProps.account.userId !== this.props.account.userId) {
-      // on log in, start subscriptions
-      if (this.props.preferencesEvents.length > 0) {
-        console.log(this.props.preferencesEvents);
+
+    if (this.props.preferencesEvents.length > 0) {
+      if (this.props.account.userId && prevProps.account.userId !== this.props.account.userId) {
+        // on log in, start subscriptions
       let {clouds, min_temp, max_temp,
         precipitation, city} = this.props.preferencesEvents[0];
-        console.log(city);
         this.props.loadPreferences();
         this.props.loadRunEvents(this.props.account.userId);
         this.props.loadWeatherEvents(city); // city may not be available
         }
+        if (prevProps.preferencesEvents.length > 0) {
+          if (this.props.preferencesEvents[0].city !== prevProps.preferencesEvents[0].city) {
+           // if location changes through prefs, stop old sub and start a new one
+           this.props.stopSubscription(WEATHER_SUB);
+           let {clouds, min_temp, max_temp,
+             precipitation, city} = this.props.preferencesEvents[0];
+             this.props.loadWeatherEvents(city);
+           }
+         }
       } else if (!this.props.account.userId && prevProps.account.userId !== this.props.account.userId) {
         // on logout, stop subscriptions
         this.props.stopSubscription(WEATHER_SUB);
         this.props.stopSubscription(RUNS_SUB);
         this.props.stopSubscription(PREFERENCES_SUB);
       }
+    // once preferences are loaded, load weather events
     if (prevProps.preferencesReady !== this.props.preferencesReady) {
-      // once preferences are loaded, load weather events
       let {clouds, min_temp, max_temp,
         precipitation, city} = this.props.preferencesEvents[0];
-        console.log(city);
       this.props.loadWeatherEvents(city);
     }
+
   }
 
   render() {
