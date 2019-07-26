@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { loadPreferences, PREFERENCES_SUB, editPreferences } from '../../actions/index'
 import {bindActionCreators} from 'redux';
 import PropTypes from 'prop-types';
+import Button from '@material-ui/core/Button';
 
 export class PrefEditor extends Component {
   constructor(props) {
