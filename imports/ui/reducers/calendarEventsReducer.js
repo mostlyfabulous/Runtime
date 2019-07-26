@@ -10,7 +10,8 @@ import {
   RUNS_SUBSCRIPTION_READY,
   RUNS_SUBSCRIPTION_CHANGED,
   RUNS_SUB,
-  ADD_EVENT, DELETE_EVENT, DRAG_EVENT, HIGHLIGHT_EVENT
+  ADD_EVENT, DELETE_EVENT, DRAG_EVENT, HIGHLIGHT_EVENT,
+  ADD_GOOGLE_EVENT
 } from '../actions/index';
 calendarRef = React.createRef()
 
@@ -44,6 +45,7 @@ export function weatherReducerMiddleware(state = initialWeatherState, action) {
 const initialCalendarState = {
   calendarReady: false,
   calendarEvents: [],
+  googleEvents: [],
   calendarSubscriptionStopped: false,
   calendarHighlightedEvent: "",
 };
@@ -78,6 +80,12 @@ export function calendarEventsReducer(state = initialCalendarState, action) {
         // concat allows an array of events to be added vs [...events, event(s)]
       });
     return state;
+
+  case ADD_GOOGLE_EVENT:
+    let googleEvent = action.calendarEvent;
+    return {
+      ...state,
+      googleEvents: [...state.googleEvents.concat(googleEvent)] };
 
 
   case DELETE_EVENT:

@@ -18,6 +18,7 @@ import { addEvent, dragEvent, highlightEvent, toggleEventEditor,
 import { stopSubscription } from 'meteor-redux-middlewares';
 import {bindActionCreators} from 'redux';
 import PropTypes from 'prop-types';
+import GoogleCalendarHandler from './GoogleCalendarHandler';
 
 // Calendar component -
 class Calendar extends Component {
@@ -32,11 +33,16 @@ class Calendar extends Component {
     preferencesReady: PropTypes.bool.isRequired,
     preferencesEvents: PropTypes.array.isRequired,
   }
+  // { (this.props.account.user !== {}) ?
+  // <GoogleCalendarHandler/> : ''
+  // }
 
   render() {
     return (
       <div className = 'calendar'>
         { (this.props.account.user !== {}) ?
+        <>
+          <GoogleCalendarHandler/>
           <FullCalendar
           dateClick={this.handleDateClick}
           eventClick={this.handleEventClick}
@@ -49,11 +55,14 @@ class Calendar extends Component {
                 center: "title",
                 right: "dayGridMonth,timeGridWeek,timeGridDay,listWeek"
               }}
-          events={this.props.calendarEvents.concat(this.props.weatherEvents)}
+          events={(this.props.calendarEvents.concat(this.props.weatherEvents))
+            .concat(this.props.googleEvents)}
           editable={true}
           nowIndicator= {true}
           plugins={[ dayGridPlugin, timeGridPlugin, interactionPlugin]}
-          />: ''
+          />
+        </>
+        : ''
         }
 
       </div>
@@ -91,7 +100,7 @@ class Calendar extends Component {
   // Will send action to render <EventEditor/> in <Info/>
   handleEventClick = (e) => {
     // e.jsEvent.cancelBubble=true;
-    if (e.event.rendering !== "background") {
+    if (e.event.rendering === "run") {
       this.props.toggleEventEditor(true, e.event);
       this.props.highlightEvent(e.event);
          console.log(this.props.calendarEvents);
@@ -100,19 +109,23 @@ class Calendar extends Component {
 
   handleEventDrop = (e) => {
     // e.jsEvent.cancelBubble=true;
-    alert(e.event.title + " was dropped on " + e.event.start.toISOString());
-    if (!confirm("Are you sure about this change?")) {
-      e.revert();
-    } else {
-      this.props.dragEvent(e);
+    if (e.event.rendering === "run") {
+      alert(e.event.title + " was dropped on " + e.event.start.toISOString());
+      if (!confirm("Are you sure about this change?")) {
+        e.revert();
+      } else {
+        this.props.dragEvent(e);
+      }
+      console.log(this.props.calendarEvents);
     }
-    console.log(this.props.calendarEvents);
   }
 
   handleEventResize = (e) => {
-    this.props.dragEvent(e);
+    if (e.event.rendering === "run") {
+      this.props.dragEvent(e);
+    }
   }
-
+  
 }
 
 const mapStateToProps = (state) => {
@@ -121,6 +134,7 @@ const mapStateToProps = (state) => {
     calendarReady: state.calendar.calendarReady,
     calendarEvents: state.calendar.calendarEvents,
     calendarSubscriptionStopped: state.calendar.calendarSubscriptionStopped,
+    googleEvents: state.calendar.googleEvents,
     weatherReady: state.weatherMiddleware.weatherReady,
     weatherEvents: state.weatherMiddleware.weatherEvents,
     weatherSubscriptionStopped: state.weatherMiddleware.weatherSubscriptionStopped,

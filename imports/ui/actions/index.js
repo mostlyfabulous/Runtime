@@ -19,10 +19,11 @@ export const WEATHER_SUB = 'weather';
 export const RUNS_SUBSCRIPTION_READY = 'RUNS_SUBSCRIPTION_READY';
 export const RUNS_SUBSCRIPTION_CHANGED = 'RUNS_SUBSCRIPTION_CHANGED';
 export const RUNS_SUB = 'runs';
-export const ADD_EVENT = 'ADD_EVENT'
-export const DELETE_EVENT = 'DELETE_EVENT'
-export const DRAG_EVENT = 'DRAG_EVENT'
-export const HIGHLIGHT_EVENT = 'HIGHLIGHT_EVENT'
+export const ADD_EVENT = 'ADD_EVENT';
+export const DELETE_EVENT = 'DELETE_EVENT';
+export const DRAG_EVENT = 'DRAG_EVENT';
+export const HIGHLIGHT_EVENT = 'HIGHLIGHT_EVENT';
+export const ADD_GOOGLE_EVENT = 'ADD_GOOGLE_EVENT';
 
 export const loadPreferences = () =>
 // do not put console.log here, it causes a semi-cryptic error
@@ -178,6 +179,13 @@ export const highlightEvent = (event) => {
   return {
     type: HIGHLIGHT_EVENT,
     event
+  };
+}
+
+export const addGoogleEvent = calendarEvent => {
+  return {
+    type: ADD_GOOGLE_EVENT,
+    calendarEvent
   };
 }
 
