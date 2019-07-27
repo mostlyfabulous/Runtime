@@ -11,7 +11,7 @@ import {
   RUNS_SUBSCRIPTION_CHANGED,
   RUNS_SUB,
   ADD_EVENT, DELETE_EVENT, DRAG_EVENT, HIGHLIGHT_EVENT,
-  ADD_GOOGLE_EVENT
+  ADD_GOOGLE_EVENT, CLEAR_GOOGLE_EVENTS
 } from '../actions/index';
 calendarRef = React.createRef()
 
@@ -86,6 +86,11 @@ export function calendarEventsReducer(state = initialCalendarState, action) {
     return {
       ...state,
       googleEvents: [...state.googleEvents.concat(googleEvent)] };
+
+  case CLEAR_GOOGLE_EVENTS:
+    return {
+      ...state,
+      googleEvents: [] };
 
 
   case DELETE_EVENT:

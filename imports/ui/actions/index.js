@@ -24,6 +24,7 @@ export const DELETE_EVENT = 'DELETE_EVENT';
 export const DRAG_EVENT = 'DRAG_EVENT';
 export const HIGHLIGHT_EVENT = 'HIGHLIGHT_EVENT';
 export const ADD_GOOGLE_EVENT = 'ADD_GOOGLE_EVENT';
+export const CLEAR_GOOGLE_EVENTS = 'CLEAR_GOOGLE_EVENTS';
 
 export const loadPreferences = () =>
 // do not put console.log here, it causes a semi-cryptic error
@@ -186,6 +187,12 @@ export const addGoogleEvent = calendarEvent => {
   return {
     type: ADD_GOOGLE_EVENT,
     calendarEvent
+  };
+}
+
+export const clearGoogleEvents = () => {
+  return {
+    type: CLEAR_GOOGLE_EVENTS,
   };
 }
 
