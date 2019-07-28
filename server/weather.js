@@ -20,7 +20,7 @@ function updateWeatherForLocations(locations) {
         console.log("Getting weather for: " + location);
         createWeatherEvents(location);
       }
-      const query = { $and: [ {city: {$eq: location}}, {start: {$gt: moment().format() }} ] };
+      const query = { $and: [ {city: {$eq: location}}, {start: {$gt: moment().toDate() }} ] };
       const options = { sort: { start: -1 } };
       const sortedEvents = Weather.find(query, options).fetch();
       // get number of elapsed hours since last weatherEvent in DB
@@ -42,27 +42,25 @@ function updateWeatherForLocations(locations) {
       console.log("UTC 3 Hour Block: " + utc3HourBlock);
       date3HourBlock = moment().add(-timeDifference, 'hours'); // set to correct day: could be a day ahead
       date3HourBlock.hour(utc3HourBlock).minute(0).second(0); // set to correct 3 hour block
-      date3HourBlock = date3HourBlock.format();
+      date3HourBlock = date3HourBlock.toDate();
       const removeQuery = ({$and: [{city: {$eq: location}}, {start: {$gte: date3HourBlock}} ] } );
-      /**
-       * DB will contain some overlapping events with a weather API call
-       * and we should update those overlapping events with new data whilst adding
-       * new events not in the DB.
-       * Weather is given at UTC and so the API only returns
-       * 3 hour block events that are 7 hours ahead of us (PST)
-      **/
-      if ((elapsedHours) >= 3) {
-        console.log("Time point to remove weather events from: " + date3HourBlock);
-        Weather.remove(removeQuery, function(err, count) {
-            console.log("Removed: " + count + " weather events for " + location);
-          });
-        }
       // if 0 then we are at the latest event in the DB and could add new events
       // if >3 hours then DB should be sent new weather events via API call
       console.log("There are: " + Weather.find(removeQuery).count()
         + " events after " + date3HourBlock + " for " + location);
       if (Weather.find(query).count() === 0
             || (elapsedHours) >= 3) {
+              /**
+              * DB will contain some overlapping events with a weather API call
+              * and we should update those overlapping events with new data whilst adding
+              * new events not in the DB.
+              * Weather is given at UTC and so the API only returns
+              * 3 hour block events that are 7 hours ahead of us (PST)
+              **/
+          console.log("Time point to remove weather events from: " + date3HourBlock);
+          Weather.remove(removeQuery, function(err, count) {
+            console.log("Removed: " + count + " weather events for " + location);
+          });
           console.log("Adding weather events for " + location);
           createWeatherEvents(location);
       }
