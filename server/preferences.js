@@ -25,5 +25,15 @@ Meteor.methods({
       // console.log("event had id: " + event.id);
       // console.log(docsChanged + " documents were changed");
       })
+  },
+  // Change a user's username. Use this instead of updating the database
+  // directly. The operation will fail if there is an existing user with a
+  // username only differing in case.
+  'updateUsername'(newUsername) {
+    try {
+      Accounts.setUsername(Meteor.userId(), newUsername);
+    } catch (e) {
+      return e;
+    }
   }
 });

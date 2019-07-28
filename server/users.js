@@ -6,12 +6,7 @@ Meteor.publish('users', function() {
   if (!this.userId) {
     return this.ready();
   }
-  // console.log(Runs);
-  //Runs.find({owner: this.userId}).toArray(function(err, items) {
-  //   console.log("Returning any items found");
-  //   console.log(items);
-  //   console.log("End of items found");
-  // });
+
   console.log('users');
   console.log(Users);
   console.log('edit user pref');
@@ -20,23 +15,6 @@ Meteor.publish('users', function() {
     Meteor.users.update({_id:this.userId}, { $set: {pref: newPref} });
   return Users.find({_id: this.userId});
 });
-
-
-// Meteor.publish('preferences', function() {
-//  // args publish needs goes in: function(args)
-//   if (!this.userId) {
-//     console.log("No userId supplied");
-//     return this.ready();
-//   }
-//   // console.log(Runs);
-//   //Runs.find({owner: this.userId}).toArray(function(err, items) {
-//   //   console.log("Returning any items found");
-//   //   console.log(items);
-//   //   console.log("End of items found");
-//   // });
-//   return Preferences.find({_id: this.userId});
-// });
-
 
 // import { Meteor } from 'meteor/meteor';
 //
