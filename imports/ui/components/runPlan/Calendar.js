@@ -100,7 +100,7 @@ class Calendar extends Component {
   // Will send action to render <EventEditor/> in <Info/>
   handleEventClick = (e) => {
     // e.jsEvent.cancelBubble=true;
-    if (e.event.rendering === "run") {
+    if (e.event.extendedProps.category === "run") {
       this.props.toggleEventEditor(true, e.event);
       this.props.highlightEvent(e.event);
          console.log(this.props.calendarEvents);
@@ -109,7 +109,7 @@ class Calendar extends Component {
 
   handleEventDrop = (e) => {
     // e.jsEvent.cancelBubble=true;
-    if (e.event.rendering === "run") {
+    if (e.event.extendedProps.category === "run") {
       alert(e.event.title + " was dropped on " + e.event.start.toISOString());
       if (!confirm("Are you sure about this change?")) {
         e.revert();
@@ -121,11 +121,11 @@ class Calendar extends Component {
   }
 
   handleEventResize = (e) => {
-    if (e.event.rendering === "run") {
+    if (e.event.extendedProps.category === "run") {
       this.props.dragEvent(e);
     }
   }
-  
+
 }
 
 const mapStateToProps = (state) => {
