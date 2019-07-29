@@ -8,6 +8,17 @@ var momentDurationFormatSetup = require("moment-duration-format");
 momentDurationFormatSetup(moment);
 
 class NextRun extends Component {
+  // static propTypes = {
+  //   weatherReady: PropTypes.bool.isRequired,
+  //   weatherEvents: PropTypes.array.isRequired,
+  //   //weatherSubscriptionStopped: PropTypes.bool.isRequired,
+  //   //calendarReady: PropTypes.bool.isRequired,
+  //   calendarEvents: PropTypes.array.isRequired,
+  //   //calendarSubscriptionStopped: PropTypes.bool.isRequired,
+  //   preferencesReady: PropTypes.bool.isRequired,
+  //   preferencesEvents: PropTypes.array.isRequired,
+  // }
+
   constructor(props) {
     super(props);
     this.state = {
@@ -22,44 +33,142 @@ class NextRun extends Component {
 
   handleSubmit(e) {
     event.preventDefault();
-    //let duration = {};
     let duration = parseInt(e.target.duration.value);
     let eventDuration = moment.duration(duration, "minutes").format("mm:ss:SS");
-
-    // let eventDuration = moment.duration(duration, "minutes").format("h [hrs], m [min]");
-    // let eventDuration = moment.duration(duration).format("h [hrs], m [min]");
-    console.log('calendarEvents in next run')
-    // console.log(this.props.calendarEvents);
-    // console.log(duration);
-    // console.log(eventDuration);
-    // console.log(this.props.calendarEvents[0].start)
-    //var time1 = this.props.calendarEvents[1].start;
-    //var time0 = this.props.calendarEvents[0].start;
-    // console.log(time1-time0);
-    // let duration1 = time1-time0;
-    // let eventDuration1 = moment.duration(duration1, "milliseconds").format("mm:ss:SS");
-    // console.log(eventDuration1)
     let i = 0;
     let suggestions = [];
-    while ((i < (this.props.calendarEvents.length-1)) && (suggestions.length < 1)) {
-      var diff = this.props.calendarEvents[i+1].start - this.props.calendarEvents[i].end;
-      if ((diff >= duration) && (this.props.calendarEvents[i].end !== null)) {
-        console.log(this.props.calendarEvents[i].end)
-        suggestions.push(this.props.calendarEvents[i].end);
+    let now = new Date();
+    let futureEvents = this.props.calendarEvents.filter(run => run.start >= now);
+    let freeEvents = [];
+
+      let firstFreeEvent = {};
+      firstFreeEvent.start = now;
+      firstFreeEvent.end = futureEvents[0].start;
+      freeEvents.push(firstFreeEvent);
+
+    for (let i = 0; i < futureEvents.length-1; i++){
+      if (futureEvents[i].end.getTime() !== futureEvents[i+1].start.getTime()){
+        let freeEvent = {};
+        freeEvent.start = futureEvents[i].end;
+        freeEvent.end = futureEvents[i+1].start;
+        freeEvents.push(freeEvent)
       }
-      i++;
     }
+
+    let freeEventsDurationFilter = freeEvents.filter(function(free) {
+      let freeDuration = (free.end-free.start)/60000;
+      return freeDuration > duration;
+    });
+    console.log('free events duration filter')
+    console.log(freeEventsDurationFilter);
+
+    // let sortedWeather = this.props.weatherEvents.sort(function (a, b) {
+    //   var key1 = a.start;
+    //   var key2 = b.start;
+    //
+    //   if (key1 < key2) {
+    //     return -1;
+    //   } else if (key1 == key2) {
+    //     return 0;
+    //   } else {
+    //     return 1;
+    //   }
+    // });
+    let sortedWeather = this.props.weatherEvents.filter(weather => weather.start >= now);
+    sortedWeather.sort(function (a, b) {
+      var key1 = a.start;
+      var key2 = b.start;
+
+      if (key1 < key2) {
+        return -1;
+      } else if (key1 == key2) {
+        return 0;
+      } else {
+        return 1;
+      }
+    });
+
+    let freeEventsWeatherFilter = [];
+    let freeEventsWeatherFilterTemp = [];
+    for (let entry of freeEventsDurationFilter) {
+      for (let i = 0; i < sortedWeather.length; i++) {
+        if ((entry.start >= sortedWeather[i].start) && (entry.start <= sortedWeather[i+1].start)){
+          console.log('comparing');
+          console.log(entry);
+          console.log(sortedWeather[i]);
+          console.log(sortedWeather[i+1])
+          //let avg = (this.props.preferencesEvents[0].max_temp - this.props.preferencesEvents[0].min_temp)/2;
+          let maxCond = this.props.preferencesEvents[0].max_temp >= (sortedWeather[i].temp -273.15);
+          let minCond = this.props.preferencesEvents[0].min_temp <= (sortedWeather[i].temp -273.15);
+          if (maxCond && minCond) {
+            freeEventsWeatherFilterTemp.push(entry);
+          }
+          // if ( (diffMax <= avg) && (diffMin <= avg)) {
+          //   freeEventsWeatherFilterTemp.push(entry);
+          // }
+          console.log(maxCond)
+          console.log(minCond)
+        }
+      }
+      // for (let i = 0; i < sortedWeather.length-1; i++) {
+      //   if ((entry.start >= sortedWeather[i].start) && (entry.start <= sortedWeather[i+1].start)){
+      //     console.log('comparing');
+      //     console.log(entry);
+      //     console.log(sortedWeather[i]);
+      //     console.log(sortedWeather[i+1])
+      //     //let avg = (this.props.preferencesEvents[0].max_temp - this.props.preferencesEvents[0].min_temp)/2;
+      //     let diffMax = Math.abs((sortedWeather[i].temp - 273.15) - this.props.preferencesEvents[0].max_temp);
+      //     let diffMin = Math.abs((sortedWeather[i].temp - 273.15) - this.props.preferencesEvents[0].min_temp);
+      //
+      //     // if ( (diffMax <= avg) && (diffMin <= avg)) {
+      //     //   freeEventsWeatherFilterTemp.push(entry);
+      //     // }
+      //     console.log(avg)
+      //     console.log(diffMax)
+      //     console.log(diffMin)
+      //   }
+      // }
+    }
+
+    if (freeEventsWeatherFilterTemp.length < 3){
+      freeEventsWeatherFilter = freeEventsDurationFilter;
+    } else {
+      freeEventsWeatherFilter = [...new Set(freeEventsWeatherFilterTemp)];
+    }
+
+    console.log('filtered weather')
+    console.log(freeEventsWeatherFilter);
+
+    console.log('weather in next run: ')
+    console.log(this.props.weatherEvents);
+    console.log(this.props.calendarEvents)
+    console.log(this.props.preferencesEvents)
+
+    suggestions = freeEventsWeatherFilter;
+    console.log('suggestions');
+    console.log(suggestions);
+
+    // while ((i < (this.props.calendarEvents.length-1)) && (suggestions.length < 1)) {
+    //   var diff = this.props.calendarEvents[i+1].start - this.props.calendarEvents[i].end;
+    //   if ((diff >= duration) && (this.props.calendarEvents[i].end !== null) && (this.props.calendarEvents[i].end >= now)) {
+    //     console.log(this.props.calendarEvents[i].end)
+    //     suggestions.push(this.props.calendarEvents[i].end);
+    //   }
+    //   i++;
+    // }
     if (suggestions.length > 0) {
+      console.log('s[0] true')
+      console.log(suggestions[0])
       let unique = (Date.parse(new Date)).toString(16) + Math.floor(Math.random()*1000);
-      let endTime = moment(suggestions[0]).add(duration, 'minutes').format();
+      let endTime = moment(suggestions[0].start).add(duration, 'minutes').format();
       let endTimeUNIX = Date.parse(endTime);
       let endTimeFormatted = new Date(endTimeUNIX);
       let newEvent = {
         id: unique,
         _id: unique,
         title: "Suggested Run",
-        start: suggestions[0],//e.date, // TODO: determine how to set timezone if needed
-        end: endTimeFormatted,// moment(suggestions[0]).add(duration, 'minutes').format(),
+        start: suggestions[0].start,//e.date, // TODO: determine how to set timezone if needed
+        end: endTimeFormatted,
         duration: moment.duration(duration, 'minutes'),
         allDay: false, //e.allDay,
         distance: 5,
@@ -94,30 +203,11 @@ class NextRun extends Component {
       console.log(newEvent)
       this.props.addEvent(newEvent);
     }
-    //let eventDuration = moment.duration(moment(this.props.calendarEvents[1].start).diff(moment(this.props.calendarEvents[0].start))).format("h [hrs], m [min]");
-    // let try = parseInt(this.props.calendarEvents[1].start) - (this.props.calendarEvents[0].start);
-    // console.log(try)
-    // let tryDuration = moment.duration(try), "milliseconds").format("mm:ss:SS");
-    // console.log(tryDuration)
-    //'Vancouver';
-    // e.target.city.value;
-    // console.log('city event')
-    // console.log(e.target.city.value)
-    // console.log(typeof e.target.city.value)
-
-    // let inputType = (typeof editedPref.clouds === "number") && (typeof editedPref.min_temp === "number") && (typeof editedPref.max_temp === "number") && (typeof editedPref.precipitation === "number") /*&& (typeof editedPref.city === "string")*/;
-    // let inputRange = (editedPref.clouds <= 100) && (editedPref.clouds >= 0) && (editedPref.precipitation <= 100) && (editedPref.precipitation >= 0) && (editedPref.city.length > 0);
-    // if (inputType && inputRange) {
-    //   // console.log("Submitted event:");
-    //   // console.log(e.target.minTemp.value);
-    //   // console.log(editedPref)
-    //   this.props.editPreferences(editedPref);
-    // } else {
-    //   alert('invalid input(s)');
-    // }
   }
 
   render() {
+
+
     let eventDuration = "";
     const {title, start, end, extendedProps} = this.props.nextRun;;
     if (end) {
@@ -138,26 +228,6 @@ class NextRun extends Component {
               </form>
             </div>
       )
-    //   return (
-    //     <div>
-    //       <h2>Your Next Run</h2>
-    //       <form onSubmit={this.handleSubmit} ref='form'>
-    //         <label htmlFor="duration">Duration</label>
-    //         <input type="text" id="duration" defaultValue={eventDuration} />
-    //         <br/>
-    //         <label htmlFor="start_time">Start Time</label>
-    //         <input type="text" id="start_time" defaultValue={this.props.nextRun.start} />
-    //         <br/>
-    //         <label htmlFor="end_time">End Time</label>
-    //         <input type="text" id="end_time" defaultValue={this.props.nextRun.end} />
-    //         <br/>
-    //         <label htmlFor="distance">Distance</label>
-    //         <input type="text" id="distance" defaultValue={this.props.nextRun.distance} />
-    //         <br/>
-    //         <button type="submit">Find a Run!</button>
-    //       </form>
-    //     </div>
-    // )
   }
 
   componentWillReceiveProps(nextProps) {
@@ -168,7 +238,10 @@ class NextRun extends Component {
 const mapStateToProps = (state) => {
   return {
             nextRun: state.nextRun,
-            calendarEvents: state.calendar.calendarEvents
+            calendarEvents: state.calendar.calendarEvents,
+            weatherEvents: state.weatherMiddleware.weatherEvents,
+            weatherReady: state.weatherMiddleware.weatherReady,
+            preferencesEvents: state.preferences.preferencesEvents,
          };
 }
 
