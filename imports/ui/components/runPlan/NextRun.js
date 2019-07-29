@@ -110,24 +110,7 @@ class NextRun extends Component {
           console.log(minCond)
         }
       }
-      // for (let i = 0; i < sortedWeather.length-1; i++) {
-      //   if ((entry.start >= sortedWeather[i].start) && (entry.start <= sortedWeather[i+1].start)){
-      //     console.log('comparing');
-      //     console.log(entry);
-      //     console.log(sortedWeather[i]);
-      //     console.log(sortedWeather[i+1])
-      //     //let avg = (this.props.preferencesEvents[0].max_temp - this.props.preferencesEvents[0].min_temp)/2;
-      //     let diffMax = Math.abs((sortedWeather[i].temp - 273.15) - this.props.preferencesEvents[0].max_temp);
-      //     let diffMin = Math.abs((sortedWeather[i].temp - 273.15) - this.props.preferencesEvents[0].min_temp);
-      //
-      //     // if ( (diffMax <= avg) && (diffMin <= avg)) {
-      //     //   freeEventsWeatherFilterTemp.push(entry);
-      //     // }
-      //     console.log(avg)
-      //     console.log(diffMax)
-      //     console.log(diffMin)
-      //   }
-      // }
+
     }
 
     if (freeEventsWeatherFilterTemp.length < 3){
@@ -136,16 +119,45 @@ class NextRun extends Component {
       freeEventsWeatherFilter = [...new Set(freeEventsWeatherFilterTemp)];
     }
 
-    console.log('filtered weather')
-    console.log(freeEventsWeatherFilter);
+    //let freeEventsGapFilter = freeEventsWeatherFilter.filter(run => run.start-run.end >= now);
+    //console.log('filtered weather')
+    //console.log(freeEventsWeatherFilter);
+    let totalDuration = (this.props.preferencesEvents[0].min_duration)*2 + duration/60;
+    let freeEventsGapFilterTemp = [];
 
-    console.log('weather in next run: ')
-    console.log(this.props.weatherEvents);
-    console.log(this.props.calendarEvents)
-    console.log(this.props.preferencesEvents)
+    for (let entry of freeEventsWeatherFilter){
+      let freeRange = (entry.end - entry.start)/3600000; // in Hours
+      if (freeRange >= totalDuration){
+        let newGap = {};
+        let newStart = moment(entry.start).add(this.props.preferencesEvents[0].min_duration, 'hours').format();
+        let newStartUNIX = Date.parse(newStart);
+        newGap.start = new Date(newStartUNIX);
 
-    suggestions = freeEventsWeatherFilter;
-    console.log('suggestions');
+        let newEnd = moment(entry.end).subtract(this.props.preferencesEvents[0].min_duration, 'hours').format();
+        let newEndUNIX = Date.parse(newEnd);
+        newGap.end = new Date(newEndUNIX);
+        freeEventsGapFilterTemp.push(newGap);
+      }
+    }
+    //
+    // console.log('FINAL FILTER')
+    // console.log(freeEventsGapFilterTemp)
+
+    let freeEventsGapFilter = [];
+
+    if (freeEventsGapFilterTemp.length < 1) {
+      freeEventsGapFilter = freeEventsWeatherFilter;
+    } else {
+      freeEventsGapFilter = freeEventsGapFilterTemp;
+    }
+    // console.log('weather in next run: ')
+    // console.log(this.props.weatherEvents);
+    // console.log(this.props.calendarEvents)
+    // console.log(this.props.preferencesEvents)
+
+
+    suggestions = freeEventsGapFilter;
+    console.log('run suggestions');
     console.log(suggestions);
 
     // while ((i < (this.props.calendarEvents.length-1)) && (suggestions.length < 1)) {
@@ -181,7 +193,7 @@ class NextRun extends Component {
       this.props.addEvent(newEvent);
     } else {
       let unique = (Date.parse(new Date)).toString(16) + Math.floor(Math.random()*1000);
-      let length = this.props.calendarEvents.lengthl
+      let length = this.props.calendarEvents.length;
       let end = this.props.calendarEvents[length-1].end;
       let endTime = moment(end).add(duration, 'minutes').format();
       let endTimeUNIX = Date.parse(endTime);

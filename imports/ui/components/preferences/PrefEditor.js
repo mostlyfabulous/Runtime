@@ -36,6 +36,7 @@ export class PrefEditor extends Component {
     editedPref.min_temp = parseInt(e.target.minTemp.value);
     editedPref.max_temp = parseInt(e.target.maxTemp.value);
     editedPref.precipitation = parseInt(e.target.precipitation.value);
+    editedPref.min_duration = parseInt(e.target.min_duration.value)
     editedPref.city = e.target.city.value;
     let newUsername = e.target.username.value;
     if (newUsername) Meteor.call('updateUsername', newUsername, (err, res) => {
@@ -70,6 +71,7 @@ export class PrefEditor extends Component {
         <p> Max Temp (°C): {this.props.preferences.preferencesEvents[0].max_temp}</p>
         <p> Precipitation (%): {this.props.preferences.preferencesEvents[0].precipitation}</p>
         <p> Preferred City: {this.props.preferences.preferencesEvents[0].city}</p>
+        <p> Minimum time between runs (in hours): {this.props.preferences.preferencesEvents[0].min_duration}</p>
       </div>
     }
     return (
@@ -96,6 +98,10 @@ export class PrefEditor extends Component {
           <label htmlFor="precipitation">Max Precipitation % (POP)</label>
           <input type="number" id="precipitation" name="precipitation" defaultValue={this.props.preferences.preferencesEvents[0].precipitation}
             onChange={this.handleChange} step="1" placeholder="%" />
+          <br/>
+          <label htmlFor="min_duration">Min Duration (between runs, in hours)</label>
+          <input type="number" id="min_duration" name="min duration" defaultValue={this.props.preferences.preferencesEvents[0].min_duration}
+            onChange={this.handleChange} step="1" placeholder="e.g. 24" />
           <br/>
           <label htmlFor="city">Preferred City</label>
             <select name="city" id ="city">
