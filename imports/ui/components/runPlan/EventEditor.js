@@ -148,7 +148,7 @@ export class EventEditor extends Component {
             <br/>
             <label htmlFor="difficulty">Difficulty:</label>
             <Slider
-              min={1} max={10} step={1}
+              min={0} max={10} step={1}
               defaultValue={5}
               aria-label='Difficulty'
               aria-labelledby="difficulty"
