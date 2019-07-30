@@ -155,6 +155,8 @@ export function calendarEventsReducer(state = initialCalendarState, action) {
       allDay: de.allDay,
       distance: de.event.extendedProps.distance,
       duration: de.event.extendedProps.duration,
+      durationActual  : de.event.extendedProps.durationActual,
+      difficulty: de.event.extendedProps.difficulty,
       category: de.event.extendedProps.category,
       owner: de.event.extendedProps.owner,
       username: de.event.extendedProps.username,

@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
-import { deleteEvent, dragEvent, toggleEventEditor } from '../../actions/index'
 import {bindActionCreators} from 'redux';
+import { deleteEvent, dragEvent, toggleEventEditor } from '../../actions/index'
+import { Slider } from '@material-ui/core';
+import Typography from '@material-ui/core/Typography';
+import {difficultyMarks, valuetext} from '../../../utils/slider.js'
 import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
@@ -9,7 +12,7 @@ import "react-datepicker/dist/react-datepicker.css";
 export class EventEditor extends Component {
   constructor(props) {
     super(props);
-    
+
     const e = this.props.editEventView.calendarEvent;
     this.state = {
       id        : e.id,
@@ -19,12 +22,15 @@ export class EventEditor extends Component {
       category  : e.extendedProps.category,
       distance  : e.extendedProps.distance,
       duration  : e.extendedProps.duration,
+      durationActual  : e.extendedProps.durationActual,
+      difficulty: e.extendedProps.difficulty,
       owner     : e.extendedProps.owner,
-      username  : e.extendedProps.username
+      username  : e.extendedProps.username,
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleChangeStart = this.handleChangeStart.bind(this);
     this.handleChangeEnd = this.handleChangeEnd.bind(this);
+    this.handleChangeDifficulty = this.handleChangeDifficulty.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
@@ -49,6 +55,12 @@ export class EventEditor extends Component {
     });
   }
 
+  handleChangeDifficulty(event, value) {
+    this.setState({
+      difficulty: value
+    });
+  }
+
   handleSubmit(jsEvent) {
     jsEvent.preventDefault();
     // 'event' var name is being reserved for being passed into the dragEvent action
@@ -57,6 +69,11 @@ export class EventEditor extends Component {
       eventDuration = moment.duration(moment(this.state.end).diff(moment(this.state.start)));
     }
     console.log(this.state);
+    let durationAdjuster = moment().set({'hour': 0, 'seconds': 0, 'ms': 0});
+    let parsedDuration = moment(this.state.durationActual).diff(durationAdjuster);
+    console.log("ms:" +parsedDuration);
+    parsedDuration = moment.duration(parsedDuration);
+    console.log(parsedDuration);
     let e = {
       event: {
         id        : this.state.id,
@@ -67,6 +84,8 @@ export class EventEditor extends Component {
           category  : this.state.category,
           distance  : parseFloat(this.state.distance),
           duration  : eventDuration,
+          durationActual  : parsedDuration,
+          difficulty: this.state.difficulty,
           owner     : this.state.owner,
           username  : this.state.username
         }
@@ -80,7 +99,7 @@ export class EventEditor extends Component {
   }
 
   render() {
-    const {title, start, end, extendedProps} = this.props.editEventView.calendarEvent;
+    let {title, start, end, extendedProps} = this.props.editEventView.calendarEvent;
     // if condition needed to prevent errors when transitioning out upon submit
     // transitioning out will remove props from being accessible and throw errors
     // when calling start.toString and accessing extendedProps.distance
@@ -93,43 +112,62 @@ export class EventEditor extends Component {
           <form onSubmit={this.handleSubmit} ref='form'>
             <label htmlFor="title">Run Name</label>
             <input type="string" id="title" name="title"
-              onChange={this.handleChange} placeholder="5km Run" />
+              onChange={this.handleChange} placeholder={title} />
             <br/>
-            <label htmlFor="start_time">Start Time: {start.toString()}</label>
+            <label htmlFor="distance">Distance (km)</label>
+            <input type="number" id="distance" name="distance"
+              onChange={this.handleChange} step="0.01"
+              placeholder={extendedProps.distance + "km"} />
+            <br/>
+            <label htmlFor="start_time">Start Time</label>
             <DatePicker
               selected={this.state.start}
               onChange={this.handleChangeStart}
               showTimeSelect
               timeFormat="HH:mm"
-              timeIntervals={15}
+              timeIntervals={5}
               dateFormat="MMMM d, yyyy h:mm aa"
               timeCaption="Start time"
-              />
+            />
             <br/>
-            <label htmlFor="end_time">End Time: {endTime}</label>
+            <label htmlFor="end_time">End Time</label>
             <DatePicker
               selected={this.state.end}
               onChange={this.handleChangeEnd}
               showTimeSelect
               timeFormat="HH:mm"
-              timeIntervals={15}
+              timeIntervals={5}
               dateFormat="MMMM d, yyyy h:mm aa"
               timeCaption="End time"
-              />
+            />
             <br/>
-            <label htmlFor="distance">Distance: {extendedProps.distance}</label>
-            <input type="number" id="distance" name="distance"
-              onChange={this.handleChange} step="0.01" placeholder="km/m" />
+            <label htmlFor="durationActual">Actual Duration</label>
+              <input type="number" id="durationActualH" name="durationActualH"
+                min="0" max="24" step="1"
+                placeholder={extendedProps.actualDuration}/>
+            <br/>
+            <label htmlFor="difficulty">Difficulty:</label>
+            <Slider
+              min={1} max={10} step={1}
+              defaultValue={5}
+              aria-label='Difficulty'
+              aria-labelledby="difficulty"
+              valueLabelDisplay="auto"
+              getAriaValueText={valuetext}
+              value={this.state.difficulty}
+              marks={difficultyMarks}
+              onChange={this.handleChangeDifficulty}
+              />
             <br/>
             <button type="submit">Update Run Information</button>
             <button
               type="submit"
               className="delete"
               onClick={ (e) => {
-              this.props.deleteEvent(this.state.id);
-              this.props.toggleEventEditor(false, "");
-              } }
-              >Delete Run</button>
+                this.props.deleteEvent(this.state.id);
+                this.props.toggleEventEditor(false, "");
+                }
+              }>Delete Run</button>
           </form>
         </div>
       );
@@ -155,6 +193,8 @@ export class EventEditor extends Component {
         category  : extendedProps.category,
         distance  : extendedProps.distance,
         duration  : extendedProps.duration,
+        durationActual  : extendedProps.durationActual,
+        difficulty: extendedProps.difficulty,
         owner     : extendedProps.owner,
         username  : extendedProps.username
       });

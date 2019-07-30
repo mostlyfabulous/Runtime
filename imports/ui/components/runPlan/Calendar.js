@@ -84,6 +84,8 @@ class Calendar extends Component {
         start: e.date, // TODO: client's timezone set's the date's timezone
         end: moment(e.date).add(1, 'hours').toDate(),
         duration: moment.duration(1, 'hours'),
+        durationActual: moment.duration(1, 'hours'),
+        difficulty: "",
         allDay: e.allDay,
         distance: 5,
         category: "run",

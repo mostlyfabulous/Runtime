@@ -71,8 +71,7 @@ function updateWeatherForLocations(locations) {
 }
 
 // refetch weather for all cities every 3 hours
-// TODO: commenting out for local
-//Meteor.setInterval(updateWeatherForLocations(locations), 3*60*60*1000) // delay in ms before function re-run
+Meteor.setInterval(updateWeatherForLocations(locations), 3*60*60*1000) // delay in ms before function re-run
 
 Meteor.publish('weather', function(location) {
   if (!this.userId || !location) {
