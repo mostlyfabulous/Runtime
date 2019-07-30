@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import './main.css';
 import App from '/imports/ui/components/App'
 import '../imports/startup/accounts-config.js';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 import { Tracker } from 'meteor/tracker';
 import createReactiveMiddlewares from 'meteor-redux-middlewares';

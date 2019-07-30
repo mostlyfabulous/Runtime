@@ -8,6 +8,7 @@ import {difficultyMarks, valuetext} from '../../../utils/slider.js'
 import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
+import { Button } from 'reactstrap';
 
 export class EventEditor extends Component {
   constructor(props) {

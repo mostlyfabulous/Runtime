@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { dragEvent, toggleEventEditor } from '../actions/index'
 import {bindActionCreators} from 'redux';
 
-import Button from '@material-ui/core/Button';
+import { Button } from 'reactstrap';
 
 export class EventEditor extends Component {
   constructor(props) {
@@ -83,7 +83,7 @@ export class EventEditor extends Component {
             <input type="number" id="distance" name="distance" defaultValue={extendedProps.distance}
               onChange={this.handleChange} step="0.01" placeholder="km/m" />
             <br/>
-            <Button variant="contained" color="primary" type="submit">Update Run Information</Button>
+            <Button color="primary" type="submit">Update Run Information</Button>
           </form>
         </div>
       );

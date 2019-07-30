@@ -4,7 +4,9 @@ import { loadPreferences, PREFERENCES_SUB, editPreferences } from '../../actions
 import {bindActionCreators} from 'redux';
 import { withAccount } from '../accounts/connector.js'
 import PropTypes from 'prop-types';
-import Button from '@material-ui/core/Button';
+import { Button } from 'reactstrap';
+import { Form, FormGroup, Label, Input, FormFeedback, FormText } from 'reactstrap';
+import { Container, Row, Col } from 'reactstrap';
 
 export class PrefEditor extends Component {
   constructor(props) {
@@ -65,53 +67,94 @@ export class PrefEditor extends Component {
     if (this.props.preferences.preferencesEvents[0] !== undefined) {
       currentPrefs = <div>
         <h2> Current Preferences </h2>
-        <p> Username: {userName}</p>
-        <p> Clouds (%): {this.props.preferences.preferencesEvents[0].clouds}</p>
-        <p> Min Temp (°C): {this.props.preferences.preferencesEvents[0].min_temp}</p>
-        <p> Max Temp (°C): {this.props.preferences.preferencesEvents[0].max_temp}</p>
-        <p> Precipitation (%): {this.props.preferences.preferencesEvents[0].precipitation}</p>
-        <p> Preferred City: {this.props.preferences.preferencesEvents[0].city}</p>
-        <p> Minimum time between runs (in hours): {this.props.preferences.preferencesEvents[0].min_duration}</p>
+        <p> <b>Username: </b> {userName}</p>
+        <p> <b>Clouds (%): </b> {this.props.preferences.preferencesEvents[0].clouds}</p>
+        <p> <b>Min Temp (°C): </b> {this.props.preferences.preferencesEvents[0].min_temp}</p>
+        <p> <b>Max Temp (°C): </b> {this.props.preferences.preferencesEvents[0].max_temp}</p>
+        <p> <b>Precipitation (%): </b> {this.props.preferences.preferencesEvents[0].precipitation}</p>
+        <p> <b>Preferred City: </b> {this.props.preferences.preferencesEvents[0].city}</p>
+        <p> <b>Minimum time between runs (in hours): </b> {this.props.preferences.preferencesEvents[0].min_duration}</p>
       </div>
     }
     return (
       <div>
+      <Container>
+      <Row>
+      <Col>
         {currentPrefs}
+      </Col>
+      <Col>
         <h2>Edit Preferences:</h2>
-        <form onSubmit={this.handleSubmit} ref='form'>
-          <label htmlFor="username">Username</label>
-          <input type="string" id="username" name="username" placeholder={userName}
+        <Form onSubmit={this.handleSubmit} ref='form'>
+          <FormGroup row>
+
+          <Label htmlFor="username" sm={4} >Username</Label>
+          <Col sm={8}>
+          <Input type="string" id="username" name="username" placeholder={userName}
             onChange={this.handleChange} />
-          <br/>
-          <label htmlFor="clouds">Clouds (%)</label>
-          <input type="number" id="clouds" name="clouds" defaultValue={this.props.preferences.preferencesEvents[0].clouds}
-            onChange={this.handleChange} step="1" placeholder="%" />
-          <br/>
-          <label htmlFor="minTemp">Min Temp (°C)</label>
-          <input type="number" id="minTemp" name="minTemp" defaultValue={this.props.preferences.preferencesEvents[0].min_temp}
+          </Col>
+          </FormGroup>
+
+
+
+          <Row>
+          <Col md={6}>
+          <FormGroup>
+          <Label htmlFor="minTemp">Min Temp (°C)</Label>
+          <Input type="number" id="minTemp" name="minTemp" defaultValue={this.props.preferences.preferencesEvents[0].min_temp}
             onChange={this.handleChange}  step="1" placeholder="°C"/>
-          <br/>
-          <label htmlFor="maxTemp">Max Temp (°C)</label>
-          <input type="number" id="maxTemp" name="maxTemp" defaultValue={this.props.preferences.preferencesEvents[0].max_temp}
+</FormGroup>
+</Col>
+          <Col md={6}>
+          <FormGroup>
+          <Label htmlFor="maxTemp">Max Temp (°C)</Label>
+          <Input type="number" id="maxTemp" name="maxTemp" defaultValue={this.props.preferences.preferencesEvents[0].max_temp}
             onChange={this.handleChange}  step="1" placeholder="°C" />
-          <br/>
-          <label htmlFor="precipitation">Max Precipitation % (POP)</label>
-          <input type="number" id="precipitation" name="precipitation" defaultValue={this.props.preferences.preferencesEvents[0].precipitation}
+</FormGroup>
+</Col>
+</Row>
+
+<Row>
+<Col md={6}>
+<FormGroup>
+<Label htmlFor="clouds">Clouds (%)</Label>
+<Input type="number" id="clouds" name="clouds" defaultValue={this.props.preferences.preferencesEvents[0].clouds}
+  onChange={this.handleChange} step="1" placeholder="%" />
+  </FormGroup>
+</Col>
+
+<Col md={6}>
+<FormGroup>
+          <Label htmlFor="precipitation">Max Precip %</Label>
+          <Input type="number" id="precipitation" name="precipitation" defaultValue={this.props.preferences.preferencesEvents[0].precipitation}
             onChange={this.handleChange} step="1" placeholder="%" />
-          <br/>
-          <label htmlFor="min_duration">Min Duration (between runs, in hours)</label>
-          <input type="number" id="min_duration" name="min duration" defaultValue={this.props.preferences.preferencesEvents[0].min_duration}
+            </FormGroup>
+</Col>
+</Row>
+
+<FormGroup>
+          <Label htmlFor="min_duration">Min Duration (between runs, hours)</Label>
+          <Input type="number" id="min_duration" name="min duration" defaultValue={this.props.preferences.preferencesEvents[0].min_duration}
             onChange={this.handleChange} step="1" placeholder="e.g. 24" />
-          <br/>
-          <label htmlFor="city">Preferred City</label>
-            <select name="city" id ="city">
+</FormGroup>
+
+
+<FormGroup row>
+          <Label htmlFor="city"  sm={4}>Preferred City</Label>
+          <Col sm={8}>
+            <Input type="select" name="city" id ="city">
               <option value="Vancouver"> Vancouver </option>
               <option value="Toronto"> Toronto </option>
               <option value="Calgary"> Calgary </option>
-            </select>
-          <br/>
-          <button type="submit">Update User Preferences</button>
-        </form>
+            </Input>
+            </Col>
+</FormGroup>
+
+          <Button color="primary" type="submit">Update User Preferences</Button>
+        </Form>
+        </Col>
+        </Row>
+        </Container>
       </div>
     )
   }

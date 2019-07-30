@@ -93,10 +93,10 @@ class NextRun extends Component {
     for (let entry of freeEventsDurationFilter) {
       for (let i = 0; i < sortedWeather.length; i++) {
         if ((entry.start >= sortedWeather[i].start) && (entry.start <= sortedWeather[i+1].start)){
-          console.log('comparing');
-          console.log(entry);
-          console.log(sortedWeather[i]);
-          console.log(sortedWeather[i+1])
+          // console.log('comparing');
+          // console.log(entry);
+          // console.log(sortedWeather[i]);
+          // console.log(sortedWeather[i+1])
           //let avg = (this.props.preferencesEvents[0].max_temp - this.props.preferencesEvents[0].min_temp)/2;
           let maxCond = this.props.preferencesEvents[0].max_temp >= (sortedWeather[i].temp -273.15);
           let minCond = this.props.preferencesEvents[0].min_temp <= (sortedWeather[i].temp -273.15);
@@ -106,8 +106,8 @@ class NextRun extends Component {
           // if ( (diffMax <= avg) && (diffMin <= avg)) {
           //   freeEventsWeatherFilterTemp.push(entry);
           // }
-          console.log(maxCond)
-          console.log(minCond)
+          // console.log(maxCond)
+          // console.log(minCond)
         }
       }
 
