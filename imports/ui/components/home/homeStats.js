@@ -16,14 +16,14 @@ class HomeStats extends React.Component {
       let stats = getOverallStats(runs);
       let random = this.chooseRandomStat(stats.bests);
       statInfo = <div>
-        Total Distance: {stats.totalDist} km
+        <b> Total Distance: </b> {stats.totalDist} km
         <br />
-        Total Time: {stats.totalTime}
+        <b> Total Time: </b> {stats.totalTime}
         <br />
-        Average Speed: {stats.avgSpeed} km/h
+        <b> Average Speed:  </b>{stats.avgSpeed} km/h
         <br />
         <br />
-        {random.desc} {getRunInfo(random.run)}
+        <b> {random.desc} </b> {getRunInfo(random.run)}
       </div>
     }
     return (

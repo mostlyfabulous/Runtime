@@ -7,7 +7,7 @@ import History from '../../pages/History';
 import Preferences from '../../pages/Preferences';
 
 import { loadWeatherEvents, WEATHER_SUB, loadRunEvents, RUNS_SUB,
-  loadPreferences, PREFERENCES_SUB } from '../../actions/index';
+  loadPreferences, PREFERENCES_SUB, clearGoogleEvents } from '../../actions/index';
 import { stopSubscription } from 'meteor-redux-middlewares';
 import {bindActionCreators} from 'redux';
 
@@ -29,8 +29,9 @@ class Main extends React.Component {
     if (this.props.preferencesEvents.length > 0) {
       if (this.props.account.userId && prevProps.account.userId !== this.props.account.userId) {
         // on log in, start subscriptions
-      let {clouds, min_temp, max_temp,
-        precipitation, city} = this.props.preferencesEvents[0];
+        console.log("logging in");
+        let {clouds, min_temp, max_temp,
+          precipitation, city} = this.props.preferencesEvents[0];
         this.props.loadPreferences();
         this.props.loadRunEvents(this.props.account.userId);
         this.props.loadWeatherEvents(city); // city may not be available
@@ -38,24 +39,27 @@ class Main extends React.Component {
         if (prevProps.preferencesEvents.length > 0) {
           if (this.props.preferencesEvents[0].city !== prevProps.preferencesEvents[0].city) {
            // if location changes through prefs, stop old sub and start a new one
+           console.log("Location changing");
            this.props.stopSubscription(WEATHER_SUB);
            let {clouds, min_temp, max_temp,
              precipitation, city} = this.props.preferencesEvents[0];
              this.props.loadWeatherEvents(city);
            }
          }
-      } else if (!this.props.account.userId && prevProps.account.userId !== this.props.account.userId) {
-        // on logout, stop subscriptions
-        this.props.stopSubscription(WEATHER_SUB);
-        this.props.stopSubscription(RUNS_SUB);
-        this.props.stopSubscription(PREFERENCES_SUB);
-      }
+      } 
     // once preferences are loaded, load weather events
     if (prevProps.preferencesReady !== this.props.preferencesReady) {
       let {clouds, min_temp, max_temp,
         precipitation, city} = this.props.preferencesEvents[0];
       this.props.loadWeatherEvents(city);
     }
+    if (!this.props.account.userId && prevProps.account.userId !== this.props.account.userId) {
+      // on logout, stop subscriptions
+      console.log("User logged out");
+      this.props.stopSubscription(WEATHER_SUB);
+      this.props.stopSubscription(RUNS_SUB);
+      this.props.stopSubscription(PREFERENCES_SUB);
+      this.props.clearGoogleEvents();}
 
   }
 
@@ -94,7 +98,8 @@ const mapDispatchToProps = dispatch => {
       loadWeatherEvents,
       loadRunEvents,
       loadPreferences,
-      stopSubscription
+      stopSubscription,
+      clearGoogleEvents
     },
     dispatch
   );

@@ -13,7 +13,7 @@ export const useStyles = makeStyles(theme => ({
 
 export const difficultyMarks = [
   {
-    value: 1,
+    value: 0,
     label: 'Easy',
   },
   {

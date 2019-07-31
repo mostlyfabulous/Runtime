@@ -13,7 +13,7 @@ const getFormattedTime = (date) => {
         info = 'pm';
         hours = hours-12;
     }
-    let mins = "0"+date.getMinutes(); 
+    let mins = "0"+date.getMinutes();
     return hours+":"+mins.slice(-2)+" "+info;
 }
 
@@ -44,17 +44,18 @@ export const getRunInfo = (run) => {
         end = ' to '+getFormattedTime(date);
 
         let duration = moment(run.end).diff(run.start, 'seconds');
-        speed = "Speed: "+ (dist/(duration/3600)).toFixed(2) +" km/h";
+        // speed = "Speed: "+ (dist/(duration/3600)).toFixed(2) +" km/h";
+        speed = (dist/(duration/3600)).toFixed(2) +" km/h";
     }
     return <div>
         <h4>{run.title}</h4>
-        Date: {day}
+          <b> Date: </b> {day}
         <br />
-        Distance: {dist} km
+          <b> Distance: </b> {dist} km
         <br />
-        Time: {start} {end}
+          <b> Time: </b> {start} {end}
         <br />
-        {speed}
+          <b> Speed: </b> {speed}
     </div>
 }
 
@@ -96,7 +97,7 @@ export const getOverallStats = (runs) => {
                 topSpeed = speed;
                 topSpeedRun = run;
             }
-            
+
             timeList[i] = <span>
                 Time: {moment.utc(duration*1000).format('HH:mm:ss')}
                 <br />
@@ -139,7 +140,7 @@ export const getOverallStats = (runs) => {
         desc: "",
         run: null
     }
-    
+
     stats.bests = bests;
 
     return stats;

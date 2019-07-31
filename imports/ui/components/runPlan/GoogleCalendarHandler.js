@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import {bindActionCreators} from 'redux';
 import ApiCalendar from '../../../utils/ApiCalendar.js';
-import { addGoogleEvent } from '../../actions/index';
+import { addGoogleEvent, clearGoogleEvents } from '../../actions/index';
 
 class GoogleCalendarHandler extends React.Component {
       constructor(props) {
@@ -23,15 +23,17 @@ class GoogleCalendarHandler extends React.Component {
         }
 
       loadGoogleEvents(events) {
+        console.log(events);
         let gEvents = events.map( (event) => {
           // console.log(event);
           let e = {
             id: event.id,
             title: event.summary,
-            start: event.start.dateTime,
-            end: event.end.dateTime,
+            start: new Date(event.start.dateTime),
+            end: new Date(event.end.dateTime),
             color: 'purple',
             category: 'GoogleCalendar',
+            editable: false,
           }
           return e;
         });
@@ -47,6 +49,7 @@ class GoogleCalendarHandler extends React.Component {
         } else if (name === 'sign-out') {
           ApiCalendar.handleSignoutClick();
           ApiCalendar.listenSign(this.signUpdate);
+          rootThis.props.clearGoogleEvents();
         } else if (name === 'fetch Google Calendar Events') {
           // manual fetch button if state change not detected
           ApiCalendar.listUpcomingEvents(10)
@@ -98,6 +101,7 @@ const mapDispatchToProps = dispatch => {
   return bindActionCreators(
     {
       addGoogleEvent,
+      clearGoogleEvents,
     },
     dispatch
   );

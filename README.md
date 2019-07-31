@@ -1,7 +1,8 @@
 # CPSC436I—Runtime
 
 ### Summary
-Runtime helps users be more active by helping them fit runs into their schedules. It can show information on past runs, forcast for future planning and algorithmically schedule runs based on user preferences.
+
+Runtime helps users be more active by algorithmically scheduling runs, based on their preferences and Google Calendar events. It can show information on past runs and weather forecasts for future planning.
 
 ![Image of Run Plan view](https://raw.githubusercontent.com/mostlyfabulous/Runtime/master/screenshots/Runtime%20Run%20Plan%20page.png)
 
@@ -24,8 +25,8 @@ Our project will encourage users to be more physically active by suggesting runs
   - [x] Display user history as a calendar [example](https://fullcalendar.io/).
   
 2-3 stretch requirements (hope to complete 1!):
-  - [ ] Integrate calendar with ical and/or Google Calendar
-  - [ ] Interval scheduling! We suggest optimal times to run - user give duration.
+  - [x] Integrate calendar with ical and/or Google Calendar
+  - [ ] Interval scheduling! We suggest optimal times to run - user gives duration.
   - [ ] Explore: show weather in different areas (e.g. it's raining in UBC but not downtown).
   
 ### Pick 2 of your minimal requirements and break each of them down into ~2-5 smaller tasks!

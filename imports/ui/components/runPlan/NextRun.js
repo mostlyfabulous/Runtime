@@ -38,7 +38,8 @@ class NextRun extends Component {
     let i = 0;
     let suggestions = [];
     let now = new Date();
-    let futureEvents = this.props.calendarEvents.filter(run => run.start >= now);
+    let combinedEvents = this.props.calendarEvents.concat(this.props.googleEvents);
+    let futureEvents = combinedEvents.filter(run => run.start >= now);
     let freeEvents = [];
 
       let firstFreeEvent = {};
@@ -96,10 +97,10 @@ class NextRun extends Component {
     for (let entry of freeEventsDurationFilter) {
       for (let i = 0; i < sortedWeather.length-1; i++) {
         if ((entry.start >= sortedWeather[i].start) && (entry.start <= sortedWeather[i+1].start)){
-          console.log('comparing');
-          console.log(entry);
-          console.log(sortedWeather[i]);
-          console.log(sortedWeather[i+1])
+          // console.log('comparing');
+          // console.log(entry);
+          // console.log(sortedWeather[i]);
+          // console.log(sortedWeather[i+1])
           //let avg = (this.props.preferencesEvents[0].max_temp - this.props.preferencesEvents[0].min_temp)/2;
           let maxCond = this.props.preferencesEvents[0].max_temp >= (sortedWeather[i].temp -273.15);
           let minCond = this.props.preferencesEvents[0].min_temp <= (sortedWeather[i].temp -273.15);
@@ -109,8 +110,8 @@ class NextRun extends Component {
           // if ( (diffMax <= avg) && (diffMin <= avg)) {
           //   freeEventsWeatherFilterTemp.push(entry);
           // }
-          console.log(maxCond)
-          console.log(minCond)
+          // console.log(maxCond)
+          // console.log(minCond)
         }
       }
 
@@ -269,6 +270,7 @@ const mapStateToProps = (state) => {
   return {
             nextRun: state.nextRun,
             calendarEvents: state.calendar.calendarEvents,
+            googleEvents: state.calendar.googleEvents,
             weatherEvents: state.weatherMiddleware.weatherEvents,
             weatherReady: state.weatherMiddleware.weatherReady,
             preferencesEvents: state.preferences.preferencesEvents,

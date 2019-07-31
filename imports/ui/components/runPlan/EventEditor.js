@@ -8,6 +8,7 @@ import {difficultyMarks, valuetext} from '../../../utils/slider.js'
 import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
+import { Button } from 'reactstrap';
 
 export class EventEditor extends Component {
   constructor(props) {
@@ -148,7 +149,7 @@ export class EventEditor extends Component {
             <br/>
             <label htmlFor="difficulty">Difficulty:</label>
             <Slider
-              min={1} max={10} step={1}
+              min={0} max={10} step={1}
               defaultValue={5}
               aria-label='Difficulty'
               aria-labelledby="difficulty"
