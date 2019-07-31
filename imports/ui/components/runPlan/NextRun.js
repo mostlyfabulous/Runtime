@@ -46,6 +46,9 @@ class NextRun extends Component {
       firstFreeEvent.end = futureEvents[0].start;
       freeEvents.push(firstFreeEvent);
 
+    // console.log('check');
+    // console.log(this.props.calendarEvents);
+    
     for (let i = 0; i < futureEvents.length-1; i++){
       if (futureEvents[i].end.getTime() !== futureEvents[i+1].start.getTime()){
         let freeEvent = {};
@@ -91,7 +94,7 @@ class NextRun extends Component {
     let freeEventsWeatherFilter = [];
     let freeEventsWeatherFilterTemp = [];
     for (let entry of freeEventsDurationFilter) {
-      for (let i = 0; i < sortedWeather.length; i++) {
+      for (let i = 0; i < sortedWeather.length-1; i++) {
         if ((entry.start >= sortedWeather[i].start) && (entry.start <= sortedWeather[i+1].start)){
           console.log('comparing');
           console.log(entry);
@@ -155,8 +158,18 @@ class NextRun extends Component {
     // console.log(this.props.calendarEvents)
     // console.log(this.props.preferencesEvents)
 
+    let timeFilter = [];
+    freeEventsGapFilter.forEach(function (gap) {
+      let gapStart = gap.start.getHours();
+      let gapEnd = gap.end.getHours();
+      let invalidStart = 21;
+      let invalidEnd = 8;
+      if ((gapStart < invalidStart && gapStart > invalidEnd) || (gapEnd < invalidStart && gapEnd > invalidEnd)){
+        timeFilter.push(gap);
+      }
+    })
 
-    suggestions = freeEventsGapFilter;
+    suggestions = timeFilter;
     console.log('run suggestions');
     console.log(suggestions);
 
@@ -194,7 +207,12 @@ class NextRun extends Component {
     } else {
       let unique = (Date.parse(new Date)).toString(16) + Math.floor(Math.random()*1000);
       let length = this.props.calendarEvents.length;
-      let end = this.props.calendarEvents[length-1].end;
+      let start = this.props.calendarEvents[length-1].end;
+      let startOffset = moment(start).add(this.props.preferencesEvents[0].min_duration, 'hours').format();
+      let startTime = moment(startOffset).format();
+      let startUNIX = Date.parse(startTime);
+      let startFormatted = new Date(startUNIX);
+      let end = startOffset;
       let endTime = moment(end).add(duration, 'minutes').format();
       let endTimeUNIX = Date.parse(endTime);
       let endTimeFormatted = new Date(endTimeUNIX);
@@ -202,7 +220,7 @@ class NextRun extends Component {
         id: unique,
         _id: unique,
         title: "Suggested Run",
-        start: suggestions[0],//e.date, // TODO: determine how to set timezone if needed
+        start: startFormatted,//e.date, // TODO: determine how to set timezone if needed
         end: endTimeFormatted,// moment(suggestions[0]).add(duration, 'minutes').format(),
         duration: moment.duration(duration, 'minutes'),
         allDay: false, //e.allDay,
