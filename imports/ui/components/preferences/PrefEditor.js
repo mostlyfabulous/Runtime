@@ -60,7 +60,10 @@ export class PrefEditor extends Component {
 
   }
   render() {
-    let userName = (this.props.account.user.username) ? this.props.account.user.username : "No username chosen";
+    let userName = "No username chosen";
+    if (this.props.account.user) {
+      userName = this.props.account.user.username;
+    }
     let currentPrefs = "";
     if (this.props.preferences.preferencesEvents[0] !== undefined) {
       currentPrefs = <div>
