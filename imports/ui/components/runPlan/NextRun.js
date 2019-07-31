@@ -38,7 +38,8 @@ class NextRun extends Component {
     let i = 0;
     let suggestions = [];
     let now = new Date();
-    let futureEvents = this.props.calendarEvents.filter(run => run.start >= now);
+    let combinedEvents = this.props.calendarEvents.concat(this.props.googleEvents);
+    let futureEvents = combinedEvents.filter(run => run.start >= now);
     let freeEvents = [];
 
       let firstFreeEvent = {};
@@ -91,7 +92,7 @@ class NextRun extends Component {
     let freeEventsWeatherFilter = [];
     let freeEventsWeatherFilterTemp = [];
     for (let entry of freeEventsDurationFilter) {
-      for (let i = 0; i < sortedWeather.length; i++) {
+      for (let i = 0; i < sortedWeather.length-1; i++) {
         if ((entry.start >= sortedWeather[i].start) && (entry.start <= sortedWeather[i+1].start)){
           // console.log('comparing');
           // console.log(entry);
@@ -251,6 +252,7 @@ const mapStateToProps = (state) => {
   return {
             nextRun: state.nextRun,
             calendarEvents: state.calendar.calendarEvents,
+            googleEvents: state.calendar.googleEvents,
             weatherEvents: state.weatherMiddleware.weatherEvents,
             weatherReady: state.weatherMiddleware.weatherReady,
             preferencesEvents: state.preferences.preferencesEvents,

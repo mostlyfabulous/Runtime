@@ -85,7 +85,7 @@ class Calendar extends Component {
         end: moment(e.date).add(1, 'hours').toDate(),
         duration: moment.duration(1, 'hours'),
         durationActual: moment.duration(1, 'hours'),
-        difficulty: "",
+        difficulty: 5,
         allDay: e.allDay,
         distance: 5,
         category: "run",
