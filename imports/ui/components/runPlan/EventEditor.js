@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import {bindActionCreators} from 'redux';
-import { deleteEvent, dragEvent, toggleEventEditor } from '../../actions/index'
+import { deleteEvent, dragEvent, toggleEventEditor, highlightEvent } from '../../actions/index'
 import { Slider } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 import {difficultyMarks, valuetext} from '../../../utils/slider.js'
@@ -94,6 +94,7 @@ export class EventEditor extends Component {
     }
     this.props.dragEvent(e);
     this.props.toggleEventEditor(false, "");
+    this.props.highlightEvent("");
     console.log("Submitted event:");
     console.log(e);
 
@@ -160,15 +161,28 @@ export class EventEditor extends Component {
               onChange={this.handleChangeDifficulty}
               />
             <br/>
-            <button type="submit">Update Run Information</button>
+            <button
+              type="submit">
+              Update Run Information
+            </button>
+            <button
+              type="submit"
+              onSubmit={ (e) => {
+                this.props.highlightEvent("");
+                this.props.toggleEventEditor(false, "");
+                }
+              }>Cancel
+            </button>
             <button
               type="submit"
               className="delete"
               onClick={ (e) => {
+                this.props.highlightEvent("");
                 this.props.deleteEvent(this.state.id);
                 this.props.toggleEventEditor(false, "");
                 }
-              }>Delete Run</button>
+              }>Delete Run
+            </button>
           </form>
         </div>
       );
@@ -212,7 +226,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
     {
-      deleteEvent, dragEvent, toggleEventEditor
+      deleteEvent, dragEvent, toggleEventEditor, highlightEvent
     },
     dispatch
   );

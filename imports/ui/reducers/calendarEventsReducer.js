@@ -103,30 +103,52 @@ export function calendarEventsReducer(state = initialCalendarState, action) {
       }
       return {
         ...state, // on successful database delete, update state finally
-        calendarEvents: filterOutEvent(state.calendarEvents, e)
+        calendarEvents: filterOutEvent(state.calendarEvents, e),
+        calendarHighlightedEvent: ""
       }
     });
+    if (calendarHighlightedEvent.id === e.id) {
+      console.log("Clearing highlightedEvent based on id");
+      // clear highlightedEvent from Store as well
+      return {
+        ...state, // on successful database delete, update state finally
+        calendarHighlightedEvent: ""
+      }
+    }
     // delete event does not wait on callback, returns original state first
-    return state;
+    return {
+      ...state,
+      calendarHighlightedEvent: ""
+    }
     break;
 
   case HIGHLIGHT_EVENT:
     console.log("highlightClickedEvent fire");
-    return state;
-
     let highlightedEvent = {};
+    // if action.event is "" then clear the highlightedEvent (Event deleted or editing canceled)
+    if (action.event === "") return {...state,
+      calendarHighlightedEvent: ""
+    }
     if (action.event) { // should recieve an event
-      // console.log(action.event);
+      // if user clicks on the same event, do nothing
+      if (state.calendarHighlightedEvent && state.calendarHighlightedEvent.id === action.event.id) {
+        return state;
+      }
       let modifiedEvents = state.calendarEvents.map((event) => {
         if (event.id !== action.event.id) return event;
+        // when event is found
         highlightedEvent = {...event};
+        console.log(highlightedEvent);
         let updatedEvent = {...event};
         updatedEvent.color = 'khaki';
         return updatedEvent;
       });
       // restore previously highlighted event color and update highlightedEvent
       if (state.calendarHighlightedEvent) {
+        console.log(state.calendarHighlightedEvent);
+        console.log("Prev event highlighted:");
           let previouslyHighlighted = {...state.calendarHighlightedEvent};
+          console.log(previouslyHighlighted);
           // remove highlightedEvent with khaki color
           modifiedEvents = filterOutEvent(modifiedEvents, previouslyHighlighted)
           modifiedEvents = modifiedEvents.concat(previouslyHighlighted);
@@ -136,10 +158,10 @@ export function calendarEventsReducer(state = initialCalendarState, action) {
         calendarHighlightedEvent: highlightedEvent
       }
 
-      } else {
-        console.log("Could not get event ID");
-        return state;
-      }
+    } else {
+      console.log("Could not get event ID");
+      return state;
+    }
 
 
   case DRAG_EVENT:
