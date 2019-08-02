@@ -31,6 +31,25 @@ class NextRun extends Component {
     this.setState({duration: event.target.duration});
   }
 
+  sortByStart(eventList) {
+    let sortedList = eventList;
+    sortedList.sort(function (a, b) {
+      if (a.start && b.start) {
+        var key1 = a.start;
+        var key2 = b.start;
+
+        if (key1 < key2) {
+          return -1;
+        } else if (key1 == key2) {
+          return 0;
+        } else {
+          return 1;
+        }
+      }
+    });
+    return sortedList;
+  }
+
   handleSubmit(e) {
     event.preventDefault();
     let duration = parseInt(e.target.duration.value);
@@ -41,13 +60,12 @@ class NextRun extends Component {
     let futureEvents = this.props.calendarEvents.filter(run => run.start >= now);
     let freeEvents = [];
 
-      let firstFreeEvent = {};
-      firstFreeEvent.start = now;
-      firstFreeEvent.end = futureEvents[0].start;
-      freeEvents.push(firstFreeEvent);
+    this.sortByStart(futureEvents);
 
-    // console.log('check');
-    // console.log(this.props.calendarEvents);
+    let firstFreeEvent = {};
+    firstFreeEvent.start = now;
+    firstFreeEvent.end = futureEvents[0].start;
+    freeEvents.push(firstFreeEvent);
     
     for (let i = 0; i < futureEvents.length-1; i++){
       if (futureEvents[i].end.getTime() !== futureEvents[i+1].start.getTime()){
@@ -57,6 +75,14 @@ class NextRun extends Component {
         freeEvents.push(freeEvent)
       }
     }
+    let sortedWeather = this.props.weatherEvents.filter(weather => weather.start >= now);
+    this.sortByStart(sortedWeather);
+
+    let lastFreeEvent = {
+      start: futureEvents[futureEvents.length-1].end,
+      end: sortedWeather[sortedWeather.length-1].end
+    }
+    freeEvents.push(lastFreeEvent);
 
     let freeEventsDurationFilter = freeEvents.filter(function(free) {
       let freeDuration = (free.end-free.start)/60000;
@@ -64,32 +90,6 @@ class NextRun extends Component {
     });
     console.log('free events duration filter')
     console.log(freeEventsDurationFilter);
-
-    // let sortedWeather = this.props.weatherEvents.sort(function (a, b) {
-    //   var key1 = a.start;
-    //   var key2 = b.start;
-    //
-    //   if (key1 < key2) {
-    //     return -1;
-    //   } else if (key1 == key2) {
-    //     return 0;
-    //   } else {
-    //     return 1;
-    //   }
-    // });
-    let sortedWeather = this.props.weatherEvents.filter(weather => weather.start >= now);
-    sortedWeather.sort(function (a, b) {
-      var key1 = a.start;
-      var key2 = b.start;
-
-      if (key1 < key2) {
-        return -1;
-      } else if (key1 == key2) {
-        return 0;
-      } else {
-        return 1;
-      }
-    });
 
     let freeEventsWeatherFilter = [];
     let freeEventsWeatherFilterTemp = [];
@@ -162,9 +162,9 @@ class NextRun extends Component {
     freeEventsGapFilter.forEach(function (gap) {
       let gapStart = gap.start.getHours();
       let gapEnd = gap.end.getHours();
-      let invalidStart = 21;
-      let invalidEnd = 8;
-      if ((gapStart < invalidStart && gapStart > invalidEnd) || (gapEnd < invalidStart && gapEnd > invalidEnd)){
+      let validStart = 8;
+      let validEnd = 21;
+      if ((validStart < gapStart && gapStart < validEnd) && (validStart < gapEnd && gapEnd < validEnd)){
         timeFilter.push(gap);
       }
     })
