@@ -91,12 +91,12 @@ class Info extends Component {
     if (this.props.editEventView.editorView) editor =<div key="1"><EventEditor/></div>;
     else editor = undefined;
     if (this.state.city) dropdownValue = this.state.city;
+    // <Dropdown options={city_options} onChange={this.handleDropDown} value={dropdownValue} placeholder="Select an option" />
+    // <br />
+    // <iframe title="Environment Canada Weather" width="287px" height="191px" src={this.state.precip_url_selected} allowtransparency="true" frameBorder="0"></iframe>
 
     return (
       <div>
-        <Dropdown options={city_options} onChange={this.handleDropDown} value={dropdownValue} placeholder="Select an option" />
-        <br />
-        <iframe title="Environment Canada Weather" width="287px" height="191px" src={this.state.precip_url_selected} allowtransparency="true" frameBorder="0"></iframe>
         <NextRun/>
         <ReactCSSTransitionGroup
           transitionName="editor"

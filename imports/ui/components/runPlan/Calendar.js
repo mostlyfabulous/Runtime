@@ -20,8 +20,61 @@ import {bindActionCreators} from 'redux';
 import PropTypes from 'prop-types';
 import GoogleCalendarHandler from './GoogleCalendarHandler';
 
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+
+
 // Calendar component -
 class Calendar extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      modal: false,
+      modalTitle: "",
+      modalText: "",
+      eventToAdd: {}
+    };
+     this.toggle = this.toggle.bind(this);
+     this.toggleConfirm = this.toggleConfirm.bind(this);
+   }
+
+   toggle() {
+   this.setState(prevState => ({
+     modal: !prevState.modal
+   }));
+ }
+
+ toggleConfirm() {
+   // Date.parse returns the ms elapsed since January 1, 1970, 00:00:00 UTC
+   // toString(16) converts the ms to hex which is concatenated with a
+   // random number between 0 to 1000
+   let e = this.state.eventToAdd;
+   let unique = (Date.parse(new Date)).toString(16) + Math.floor(Math.random()*1000);
+   let newEvent = {
+     id: unique,
+     _id: unique,
+     title: "New Run",
+     start: e.date, // TODO: client's timezone set's the date's timezone
+     end: moment(e.date).add(1, 'hours').toDate(),
+     duration: moment.duration(1, 'hours'),
+     durationActual: moment.duration(1, 'hours'),
+     difficulty: 5,
+     allDay: e.allDay,
+     distance: 5,
+     category: "run",
+     owner: this.props.account.userId,
+     username: this.props.account.user.username,
+   }
+   console.log('newEvent')
+   console.log(newEvent)
+   this.props.addEvent(newEvent);
+   this.toggle();
+   // clear eventToAdd?
+}
+
+toggleCancel() {
+  this.toggle();
+  // clear modalText?
+}
 
   static propTypes = {
     weatherReady: PropTypes.bool.isRequired,
@@ -61,6 +114,16 @@ class Calendar extends Component {
           nowIndicator= {true}
           plugins={[ dayGridPlugin, timeGridPlugin, interactionPlugin]}
           />
+          <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
+           <ModalHeader toggle={this.toggle}>{this.state.modalTitle}</ModalHeader>
+           <ModalBody>
+             {this.state.modalText}
+           </ModalBody>
+           <ModalFooter>
+             <Button color="primary" onClick={this.toggleConfirm}>Do Something</Button>{' '}
+             <Button color="secondary" onClick={this.toggle}>Cancel</Button>
+           </ModalFooter>
+         </Modal>
         </>
         : ''
         }
@@ -69,35 +132,16 @@ class Calendar extends Component {
     );
   }
 
-
-
   handleDateClick = (e) => {
-    if (confirm("Would you like to add a run to " + e.dateStr + " ?")) {
-        // Date.parse returns the ms elapsed since January 1, 1970, 00:00:00 UTC
-        // toString(16) converts the ms to hex which is concatenated with a
-        // random number between 0 to 1000
-        let unique = (Date.parse(new Date)).toString(16) + Math.floor(Math.random()*1000);
-        let newEvent = {
-        id: unique,
-        _id: unique,
-        title: "New Run",
-        start: e.date, // TODO: client's timezone set's the date's timezone
-        end: moment(e.date).add(1, 'hours').toDate(),
-        duration: moment.duration(1, 'hours'),
-        durationActual: moment.duration(1, 'hours'),
-        difficulty: 5,
-        allDay: e.allDay,
-        distance: 5,
-        category: "run",
-        owner: this.props.account.userId,
-        username: this.props.account.user.username,
-      }
-      console.log('newEvent')
-      console.log(newEvent)
-      this.props.addEvent(newEvent);
-
-    }
+    console.log(e);
+      this.setState({
+        modalTitle: "Add a run",
+        modalText: "Would you like to add a run on " + moment(e.date).format("dddd [the] Do, h:mm a") + "?",
+        eventToAdd: e
+      })
+      this.toggle(); // bring up modal
   }
+
   // should trigger a component to display and allow event editting
   // Will send action to render <EventEditor/> in <Info/>
   handleEventClick = (e) => {
