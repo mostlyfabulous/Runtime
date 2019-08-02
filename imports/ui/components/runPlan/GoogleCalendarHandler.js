@@ -4,6 +4,8 @@ import {bindActionCreators} from 'redux';
 import ApiCalendar from '../../../utils/ApiCalendar.js';
 import { addGoogleEvent, clearGoogleEvents } from '../../actions/index';
 
+import { Button } from 'reactstrap';
+
 class GoogleCalendarHandler extends React.Component {
       constructor(props) {
         super(props);
@@ -63,22 +65,23 @@ class GoogleCalendarHandler extends React.Component {
       render() {
         return (
             <div>
-            Google Calendar:&nbsp;
-                <button
+            <i class="google icon"></i> Calendar:&nbsp;
+                <Button
                     onClick={(e) => this.handleItemClick(e, 'sign-in')}
                 >
                   sign-in
-                </button>
-                <button
+                </Button>
+                <Button
                     onClick={(e) => this.handleItemClick(e, 'sign-out')}
                 >
                   sign-out
-                </button>
-                <button
+                </Button>
+                <Button
+                    color="warning"
                     onClick={(e) => this.handleItemClick(e, 'fetch Google Calendar Events')}
                 >
                   fetch Google Calendar events
-                </button>
+                </Button>
             </div>
           );
         }

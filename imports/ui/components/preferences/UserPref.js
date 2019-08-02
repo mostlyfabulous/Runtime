@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 
 import PrefEditor from './PrefEditor';
+import { Spinner } from 'reactstrap';
+
 class UserPref extends Component {
 
   render() {
@@ -11,7 +13,8 @@ class UserPref extends Component {
             <PrefEditor preferences={this.props.preferences}/>
         );
     }
-    else return (<div className='spinner'/>);
+    //else return (<div className='spinner'/>);
+    else return <div> <Spinner color="info" style={{ width: '10rem', height: '10rem' }}/> </div>;
   }
 }
 

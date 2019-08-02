@@ -3,6 +3,10 @@ import { connect } from 'react-redux';
 import { addEvent, getNextRun } from '../../actions/index'
 import {bindActionCreators} from 'redux'
 
+import { Form, FormGroup, Label, Input, FormFeedback, FormText } from 'reactstrap';
+import { Container, Row, Col } from 'reactstrap';
+import {Button} from 'reactstrap';
+
 var moment = require("moment");
 var momentDurationFormatSetup = require("moment-duration-format");
 momentDurationFormatSetup(moment);
@@ -251,12 +255,20 @@ class NextRun extends Component {
       return (
             <div>
               <h2>Your Next Run</h2>
-              <form onSubmit={this.handleSubmit} ref='form'>
-                <label htmlFor="duration">Duration (in minutes)</label>
-                <input type="number" id="duration" defaultValue={eventDuration} />
-                <br/>
-                <button type="submit">Find a Run!</button>
-              </form>
+              <Form onSubmit={this.handleSubmit} ref='form'>
+              <FormGroup>
+                <Label htmlFor="duration">Duration (in minutes)</Label>
+                <Row>
+                <Col md={5}>
+                  <Input type="number" id="duration" placeholder={"minutes"} />
+                </Col>
+
+                <Col md={7}>
+                  <Button color="info" type="submit"> Find a Run! <i class="search icon"> </i></Button>
+                </Col>
+                </Row>
+              </FormGroup>
+              </Form>
             </div>
       )
   }

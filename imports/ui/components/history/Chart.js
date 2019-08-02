@@ -15,7 +15,7 @@ class Chart extends Component {
     render() {
         return (
             <div>
-                <h2>Run History</h2>
+                <h2>Run History <i class="history icon"></i></h2>
                 <Bar
                     data={this.props.data}
                     onElementsClick={elems => this.handleClick(elems)}

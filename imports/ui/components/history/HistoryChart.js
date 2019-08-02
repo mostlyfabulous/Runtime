@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Chart from './Chart';
+import { Spinner } from 'reactstrap';
 
 class HistoryChart extends Component {
     component
@@ -9,7 +10,8 @@ class HistoryChart extends Component {
                 <Chart runs={this.props.runEvents}/>
             );
         }
-        else return (<div className='spinner'/>);
+        //else return (<div className='spinner'/>);
+        else return <div> <Spinner color="info" style={{ width: '10rem', height: '10rem' }} /> </div>;
     }
 }
 

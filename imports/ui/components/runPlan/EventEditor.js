@@ -6,9 +6,12 @@ import { Slider } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 import {difficultyMarks, valuetext} from '../../../utils/slider.js'
 import DatePicker from "react-datepicker";
+//var DatePicker = require("react-bootstrap-date-picker");
 
-import "react-datepicker/dist/react-datepicker.css";
 import { Button } from 'reactstrap';
+import { Form, FormGroup, Label, Input, FormFeedback, FormText } from 'reactstrap';
+import { Container, Row, Col } from 'reactstrap';
+import "react-datepicker/dist/react-datepicker.css";
 
 export class EventEditor extends Component {
   constructor(props) {
@@ -110,18 +113,22 @@ export class EventEditor extends Component {
     if (this.props.editEventView.editorView) {
       return (
         <div className="editor">
+
           <h2>Edit Run: {title}</h2>
-          <form onSubmit={this.handleSubmit} ref='form'>
-            <label htmlFor="title">Run Name</label>
-            <input type="string" id="title" name="title"
+          <Form onSubmit={this.handleSubmit} ref='form'>
+
+          <FormGroup row>
+            <Label htmlFor="title"  sm={5} >Run Name</Label>
+            <Col sm={7}>
+            <Input type="string" id="title" name="title"
               onChange={this.handleChange} placeholder={title} />
-            <br/>
-            <label htmlFor="distance">Distance (km)</label>
-            <input type="number" id="distance" name="distance"
-              onChange={this.handleChange} step="0.01"
-              placeholder={extendedProps.distance + "km"} />
-            <br/>
-            <label htmlFor="start_time">Start Time</label>
+            </Col>
+          </FormGroup>
+
+
+
+          <FormGroup>
+            <Label htmlFor="start_time">Start Time</Label>
             <DatePicker
               selected={this.state.start}
               onChange={this.handleChangeStart}
@@ -131,8 +138,10 @@ export class EventEditor extends Component {
               dateFormat="MMMM d, yyyy h:mm aa"
               timeCaption="Start time"
             />
-            <br/>
-            <label htmlFor="end_time">End Time</label>
+          </FormGroup>
+
+          <FormGroup>
+            <Label htmlFor="end_time">End Time</Label>
             <DatePicker
               selected={this.state.end}
               onChange={this.handleChangeEnd}
@@ -142,13 +151,30 @@ export class EventEditor extends Component {
               dateFormat="MMMM d, yyyy h:mm aa"
               timeCaption="End time"
             />
-            <br/>
-            <label htmlFor="durationActual">Actual Duration</label>
-              <input type="number" id="durationActualH" name="durationActualH"
-                min="0" max="24" step="1"
-                placeholder={extendedProps.actualDuration}/>
-            <br/>
-            <label htmlFor="difficulty">Difficulty:</label>
+          </FormGroup>
+
+          <Row>
+          <Col md={6}>
+          <FormGroup>
+            <Label htmlFor="distance">Distance</Label>
+            <Input type="number" id="distance" name="distance"
+              onChange={this.handleChange} step="0.01"
+              placeholder={extendedProps.distance + " km"} />
+          </FormGroup>
+          </Col>
+
+          <Col md={6}>
+          <FormGroup>
+            <Label htmlFor="durationActual">Actual Duration</Label>
+              <Input type="number" id="durationActual" name="durationActual"
+
+                placeholder={ (extendedProps.actualDuration === undefined) ? "minutes" : extendedProps.actualDuration + " minutes"}/>
+          </FormGroup>
+          </Col>
+          </Row>
+
+          <FormGroup>
+            <Label htmlFor="difficulty">Difficulty:</Label>
             <Slider
               min={0} max={10} step={1}
               defaultValue={5}
@@ -160,20 +186,24 @@ export class EventEditor extends Component {
               marks={difficultyMarks}
               onChange={this.handleChangeDifficulty}
               />
-            <br/>
-            <button
-              type="submit">
-              Update Run Information
-            </button>
-            <button
+          </FormGroup>
+
+          <Row>
+            <Col>
+            <Button color="info" type="submit">Update Info</Button>
+            </Col>
+
+            <Col>
+            <Button
+              color="danger"
               type="submit"
               onSubmit={ (e) => {
                 this.props.highlightEvent("");
                 this.props.toggleEventEditor(false, "");
                 }
               }>Cancel
-            </button>
-            <button
+            </Button>
+            <Button
               type="submit"
               className="delete"
               onClick={ (e) => {
@@ -181,9 +211,12 @@ export class EventEditor extends Component {
                 this.props.deleteEvent(this.state.id);
                 this.props.toggleEventEditor(false, "");
                 }
-              }>Delete Run
-            </button>
-          </form>
+              }>
+                Delete Run <i className="trash alternate outline icon"> </i>
+            </Button>
+            </Col>
+          </Row>
+          </Form>
         </div>
       );
     }

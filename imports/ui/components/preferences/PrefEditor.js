@@ -153,7 +153,7 @@ export class PrefEditor extends Component {
             </Col>
 </FormGroup>
 
-          <Button color="primary" type="submit">Update User Preferences</Button>
+          <Button color="info" type="submit">Update User Preferences</Button>
         </Form>
         </Col>
         </Row>
