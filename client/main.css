@@ -45,10 +45,10 @@ body {
 .topbar {
   z-index: 2;
   padding: 1em;
-  padding-left: 17%; 
+  padding-left: 17%;
   font-size: 18pt;
   box-shadow: 0 2px;
-  height: 2.3em;
+  height: 4em;
 }
 
 .topbarWeather {
@@ -124,6 +124,10 @@ body {
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+.editor {
+  z-index: 1;
 }
 
 .editor-appear {
