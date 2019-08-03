@@ -5,6 +5,8 @@ import {bindActionCreators} from 'redux'
 
 var moment = require("moment");
 var momentDurationFormatSetup = require("moment-duration-format");
+const VALID_START = 6;
+const VALID_END = 21;
 momentDurationFormatSetup(moment);
 
 class NextRun extends Component {
@@ -60,7 +62,35 @@ class NextRun extends Component {
     let futureEvents = this.props.calendarEvents.filter(run => run.start >= now);
     let freeEvents = [];
 
-    this.sortByStart(futureEvents);
+    let sortedWeather = this.props.weatherEvents.filter(weather => weather.start >= now);
+    sortedWeather = this.sortByStart(sortedWeather);
+    
+    futureEvents = this.sortByStart(futureEvents);
+    
+    let lastFutureEvent = {
+      start: sortedWeather[sortedWeather.length-1].end,
+      end: sortedWeather[sortedWeather.length-1].end
+    }
+
+    futureEvents.push(lastFutureEvent);
+
+    for (let i = 0; i < futureEvents.length-1; i++) {
+      let current = futureEvents[i].end;
+      let next = futureEvents[i+1].start;
+      if (current.getDate() !== next.getDate()) {
+        let start = new Date(current);
+        start.setHours(VALID_END,0,0,0);
+        let end = new Date(current);
+        end.setDate(current.getDate()+1);
+        end.setHours(VALID_START,0,0,0);
+        let blockEvent = {
+          start: start,
+          end: end
+        };
+        futureEvents.splice(i+1,0,blockEvent);
+        console.log(futureEvents);
+      }
+    }
 
     let firstFreeEvent = {};
     firstFreeEvent.start = now;
@@ -75,14 +105,7 @@ class NextRun extends Component {
         freeEvents.push(freeEvent)
       }
     }
-    let sortedWeather = this.props.weatherEvents.filter(weather => weather.start >= now);
-    this.sortByStart(sortedWeather);
-
-    let lastFreeEvent = {
-      start: futureEvents[futureEvents.length-1].end,
-      end: sortedWeather[sortedWeather.length-1].end
-    }
-    freeEvents.push(lastFreeEvent);
+    //freeEvents.push(lastFreeEvent);
 
     let freeEventsDurationFilter = freeEvents.filter(function(free) {
       let freeDuration = (free.end-free.start)/60000;
@@ -162,9 +185,7 @@ class NextRun extends Component {
     freeEventsGapFilter.forEach(function (gap) {
       let gapStart = gap.start.getHours();
       let gapEnd = gap.end.getHours();
-      let validStart = 8;
-      let validEnd = 21;
-      if ((validStart < gapStart && gapStart < validEnd) && (validStart < gapEnd && gapEnd < validEnd)){
+      if ((VALID_START < gapStart && gapStart < VALID_END) && (VALID_START < gapEnd && gapEnd < VALID_END)){
         timeFilter.push(gap);
       }
     })
