@@ -18,7 +18,7 @@ Our project will encourage users to be more physically active by suggesting runs
   - [x] User history page: view history, edit actual time taken to run, rate runs (shows optimal weather user likes to run in).
   
 3-7 "standard" requirements (will most likely complete):
-  - [ ] Scheduling runs according to user's schedule on top of other constraints - users manually add their own schedule
+  - [x] Scheduling runs according to user's schedule on top of other constraints - users manually add their own schedule
   - [x] Allow users to schedule runs in advance and save them. 
   - [x] Display user's scheduled runs.
   - [x] Users can store and edit their preferences (some like running in the rain, or when it's below 10 degrees) - used to rate weather conditions in the scheduler.
