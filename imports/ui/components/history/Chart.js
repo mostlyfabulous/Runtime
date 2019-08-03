@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Bar } from 'react-chartjs-2';
+import { Line } from 'react-chartjs-2';
 import { getHistoryChartData, historyInfo } from '../../actions/index';
 import { connect } from 'react-redux';
 
@@ -16,11 +16,13 @@ class Chart extends Component {
         return (
             <div>
                 <h2>Run History <i class="history icon"></i></h2>
-                <Bar
+                <Line
                     data={this.props.data}
                     onElementsClick={elems => this.handleClick(elems)}
                     options={{
-
+                        legend: {
+                            display: false
+                        },
                         maintainAspectRatio: true,
                         scales: {
                             xAxes: [{
