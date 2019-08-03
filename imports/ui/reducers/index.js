@@ -144,25 +144,6 @@ const runHistoryDataReducer = (data = {}, action) => {
     historyData = action.data;
     let runList = historyData;
 
-    console.log(historyData);
-
-    // for (i = 0; i < runList.length; i++){
-    //   let distances = [];
-    //   let list = runList[i]
-    //   for (let j = 0; j < list.length; j++) {
-    //     let run = list[j];
-    //     if (run === null) {
-    //       distances[j] = 0
-    //     } else
-    //       distances[j] = run.distance;
-    //   }
-    //   datasets[i] = {
-    //     label: 'Run #'+(i+1),
-    //     backgroundColor: 'rgba(75, 75, 192, 0.4)',//barColors[i%barColors.length],
-    //     data: distances
-    //   }
-    // }
-
     let distances = [];
     runList.forEach(function (list) {
       for (i = 0; i < list.length; i++) {
@@ -172,7 +153,6 @@ const runHistoryDataReducer = (data = {}, action) => {
         distances[i] += (run) ? run.distance : 0;
       }
     })
-    console.log(distances);
     let datasets = [
       {
         label: 'Distance (km)',
