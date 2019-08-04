@@ -120,7 +120,7 @@ const getPreferencesReducer = (info = [], action) => {
 
 const runHistoryDataReducer = (data = {}, action) => {
   if (action.type === 'GET_HISTORY') {
-    // let barColors = ['blue', 'green', 'red', 'yellow', 'purple', 'orange', 'indigo']
+    let barColors = ['rgb(186, 222, 255)','rgb(242, 170, 170)', 'rgb(158, 228, 217)', 'rgb(245, 243, 203)'];
     currentChartFormat = action.format;
 
     let labels = [];
@@ -140,26 +140,26 @@ const runHistoryDataReducer = (data = {}, action) => {
     // else if (action.format === 'DAY'){}
     // else if (action.format === 'MONTH') {}
 
-    //let datasets = [];
+    let datasets = [];
     historyData = action.data;
     let runList = historyData;
 
-    let distances = [];
-    runList.forEach(function (list) {
-      for (i = 0; i < list.length; i++) {
-        let run = list[i];
-        if (!distances[i])
-          distances[i] = 0;
-        distances[i] += (run) ? run.distance : 0;
+    for (i = 0; i < runList.length; i++){
+      let distances = [];
+      let list = runList[i]
+      for (let j = 0; j < list.length; j++) {
+        let run = list[j];
+        if (run === null) {
+          distances[j] = 0
+        } else
+          distances[j] = run.distance;
       }
-    })
-    let datasets = [
-      {
-        label: 'Distance (km)',
-        backgroundColor: 'rgba(25, 25, 62, 0.8)',
+      datasets[i] = {
+        label: 'Run #'+(i+1),
+        backgroundColor: barColors[i%barColors.length],
         data: distances
       }
-    ]
+    }
 
     data = {
       labels: labels,
