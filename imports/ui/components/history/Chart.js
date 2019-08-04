@@ -32,7 +32,11 @@ class Chart extends Component {
                                 }
                             }],
                             yAxes: [{
-                                label: 'km',
+                                stacked: true,
+                                scaleLabel: {
+                                    display: true,
+                                    labelString: 'Distance (km)'
+                                },
                                 gridLines: {
                                     display: false
                                 },
