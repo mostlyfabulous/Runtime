@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
 
-import {getFormattedDate, getOverallStats} from '../formatHelpers.js'
+import {getRunInfo, getOverallStats} from '../formatHelpers.js'
 
 class HistoryInfo extends React.Component {
 
@@ -15,22 +15,21 @@ class HistoryInfo extends React.Component {
             let timeDependant = ""
             if (stats.avgSpeed > 0){
                 timeDependant = <div>
-                    Average speed: {stats.avgSpeed} km/h
+                    <b>Average speed:</b> {stats.avgSpeed} km/h
                     <br />
-                    Total time spent: {stats.totalTime}
+                    <b>Total time spent:</b> {stats.totalTime}
                 </div>
             }
+            console.log(info);
             
             details = <div>
-                <h1>{stats.day}</h1>
-                Total distance travelled: {stats.totalDist} km 
+                <h2>{stats.day}</h2>
+                <b>Total distance travelled:</b> {stats.totalDist} km 
                 {timeDependant}
                 {info.map((run, index) => (
                     <div key = {index}>
-                        <h3>Run #{index+1}</h3>
-                        Distance: {run.distance} km
                         <br />
-                        {stats.timeList[index]}
+                        {getRunInfo(run)}
                     </div>
                 ))}
             </div>;

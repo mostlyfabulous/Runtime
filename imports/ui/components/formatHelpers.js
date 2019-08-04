@@ -6,7 +6,7 @@ const getFormattedDate = (date) => {
     return DATE_TO_WEEKDAY[date.getDay()]+', '+(date.getMonth()+1)+'/'+date.getDate();
 }
 
-const getFormattedTime = (date) => {
+export const getFormattedTime = (date) => {
     let hours = date.getHours();
     let info = 'am';
     if (hours > 11) {
@@ -35,7 +35,9 @@ export const getRunInfo = (run) => {
 
     let dist = "";
     let end = "";
-    let speed = ""
+    let speed = "";
+    let time = "";
+    let difficulty = "";
     if (run.distance){
         dist = run.distance;
     }
@@ -46,16 +48,27 @@ export const getRunInfo = (run) => {
         let duration = moment(run.end).diff(run.start, 'seconds');
         // speed = "Speed: "+ (dist/(duration/3600)).toFixed(2) +" km/h";
         speed = (dist/(duration/3600)).toFixed(2) +" km/h";
+        time = moment.utc(duration*1000).format('HH:mm:ss');
+    }
+
+    if (run.difficulty) {
+        difficulty = <span>
+            <b> Difficulty: </b> {(run.difficulty === "") ? 0 : run.difficulty}/10
+        </span> 
     }
     return <div>
         <h4>{run.title}</h4>
-          <b> Date: </b> {day}
+        <b> Date: </b> {day}
         <br />
-          <b> Distance: </b> {dist} km
+        <b> Distance: </b> {dist} km
         <br />
-          <b> Time: </b> {start} {end}
+        <b> Time: </b> {start} {end}
         <br />
-          <b> Speed: </b> {speed}
+        <b> Length: </b> {time} (h:m:s)
+        <br />
+        <b> Speed: </b> {speed}
+        <br />
+         {difficulty}
     </div>
 }
 
@@ -65,7 +78,6 @@ export const getOverallStats = (runs) => {
 
     let distance = 0;
     let time = 0;
-    let timeList = [];
     let calcSpeedDist = 0;
     let topDist = null;
     let topTime = 0;
@@ -79,8 +91,6 @@ export const getOverallStats = (runs) => {
         if (topDist === null || run.distance > topDist.distance){
             topDist = run;
         }
-
-        timeList[i] = "";
 
         if (run.end) {
             calcSpeedDist += run.distance;
@@ -97,26 +107,17 @@ export const getOverallStats = (runs) => {
                 topSpeed = speed;
                 topSpeedRun = run;
             }
-
-            timeList[i] = <span>
-                Time: {moment.utc(duration*1000).format('HH:mm:ss')}
-                <br />
-                Speed: {speed} km/h
-            </span>;
         }
     };
 
     stats.totalDist = distance.toFixed(2);
     stats.totalTime = 0;
-    stats.timeList = timeList;
 
-    if (timeList.length > 0) {
-        let average = calcSpeedDist/(time/3600);
-        let formattedTime = convertSeconds(time);
+    let average = calcSpeedDist/(time/3600);
+    let formattedTime = convertSeconds(time);
 
-        stats.totalTime = formattedTime + " (h:m:s)";
-        stats.avgSpeed = average.toFixed(2);
-    }
+    stats.totalTime = formattedTime + " (h:m:s)";
+    stats.avgSpeed = average.toFixed(2);
 
     let bests;
     if (runs.length > 0) {
