@@ -69,9 +69,9 @@ class NextRun extends Component {
 
     let sortedWeather = this.props.weatherEvents.filter(weather => weather.start >= now);
     sortedWeather = this.sortByStart(sortedWeather);
-    
+
     futureEvents = this.sortByStart(futureEvents);
-    
+
     let lastFutureEvent = {
       start: sortedWeather[sortedWeather.length-1].end,
       end: sortedWeather[sortedWeather.length-1].end
@@ -101,7 +101,7 @@ class NextRun extends Component {
     firstFreeEvent.start = now;
     firstFreeEvent.end = futureEvents[0].start;
     freeEvents.push(firstFreeEvent);
-    
+
     for (let i = 0; i < futureEvents.length-1; i++){
       if (futureEvents[i].end.getTime() !== futureEvents[i+1].start.getTime()){
         let freeEvent = {};
@@ -285,7 +285,7 @@ class NextRun extends Component {
                 </Col>
 
                 <Col md={7}>
-                  <Button color="info" type="submit"> Find a Run! <i class="search icon"> </i></Button>
+                  <Button color="info" type="submit"> Find a Run! <i className="search icon"> </i></Button>
                 </Col>
                 </Row>
               </FormGroup>

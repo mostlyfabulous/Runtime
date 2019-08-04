@@ -20,7 +20,7 @@ import {bindActionCreators} from 'redux';
 import PropTypes from 'prop-types';
 import GoogleCalendarHandler from './GoogleCalendarHandler';
 
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Label, Input} from 'reactstrap';
 
 
 // Calendar component -
@@ -31,10 +31,23 @@ class Calendar extends Component {
       modal: false,
       modalTitle: "",
       modalText: "",
-      eventToAdd: {}
+      eventToAdd: {},
+      eventToUpdate: {}
     };
      this.toggle = this.toggle.bind(this);
      this.toggleConfirm = this.toggleConfirm.bind(this);
+     this.toggleCancel = this.toggleCancel.bind(this);
+   }
+
+   static propTypes = {
+     weatherReady: PropTypes.bool.isRequired,
+     weatherEvents: PropTypes.array.isRequired,
+     weatherSubscriptionStopped: PropTypes.bool.isRequired,
+     calendarReady: PropTypes.bool.isRequired,
+     calendarEvents: PropTypes.array.isRequired,
+     calendarSubscriptionStopped: PropTypes.bool.isRequired,
+     preferencesReady: PropTypes.bool.isRequired,
+     preferencesEvents: PropTypes.array.isRequired,
    }
 
    toggle() {
@@ -47,45 +60,43 @@ class Calendar extends Component {
    // Date.parse returns the ms elapsed since January 1, 1970, 00:00:00 UTC
    // toString(16) converts the ms to hex which is concatenated with a
    // random number between 0 to 1000
-   let e = this.state.eventToAdd;
-   let unique = (Date.parse(new Date)).toString(16) + Math.floor(Math.random()*1000);
-   let newEvent = {
-     id: unique,
-     _id: unique,
-     title: "New Run",
-     start: e.date, // TODO: client's timezone set's the date's timezone
-     end: moment(e.date).add(1, 'hours').toDate(),
-     duration: moment.duration(1, 'hours'),
-     durationActual: moment.duration(1, 'hours'),
-     difficulty: 5,
-     allDay: e.allDay,
-     distance: 5,
-     category: "run",
-     owner: this.props.account.userId,
-     username: this.props.account.user.username,
+   if (this.state.modalTitle === "Add a run") {
+     let e = this.state.eventToAdd;
+     let unique = (Date.parse(new Date)).toString(16) + Math.floor(Math.random()*1000);
+     let newEvent = {
+       id: unique,
+       _id: unique,
+       title: "New Run",
+       start: e.date, // TODO: client's timezone set's the date's timezone
+       end: moment(e.date).add(1, 'hours').toDate(),
+       duration: moment.duration(1, 'hours'),
+       durationActual: moment.duration(1, 'hours'),
+       difficulty: 5,
+       allDay: e.allDay,
+       distance: 5,
+       category: "run",
+       owner: this.props.account.userId,
+       username: this.props.account.user.username,
+     }
+     console.log('newEvent')
+     console.log(newEvent)
+     this.props.addEvent(newEvent);
+     // clear this.state.eventToAdd?
    }
-   console.log('newEvent')
-   console.log(newEvent)
-   this.props.addEvent(newEvent);
+   if (this.state.modalTitle === "Change a run") {
+     this.props.dragEvent(this.state.eventToUpdate);
+   }
    this.toggle();
-   // clear eventToAdd?
 }
 
 toggleCancel() {
-  this.toggle();
-  // clear modalText?
-}
-
-  static propTypes = {
-    weatherReady: PropTypes.bool.isRequired,
-    weatherEvents: PropTypes.array.isRequired,
-    weatherSubscriptionStopped: PropTypes.bool.isRequired,
-    calendarReady: PropTypes.bool.isRequired,
-    calendarEvents: PropTypes.array.isRequired,
-    calendarSubscriptionStopped: PropTypes.bool.isRequired,
-    preferencesReady: PropTypes.bool.isRequired,
-    preferencesEvents: PropTypes.array.isRequired,
+this.setState(prevState => ({
+  modal: !prevState.modal
+}));
+if (this.state.modalTitle === "Change a run") {
+  this.state.eventToUpdate.revert();
   }
+}
   // { (this.props.account.user !== {}) ?
   // <GoogleCalendarHandler/> : ''
   // }
@@ -115,14 +126,15 @@ toggleCancel() {
           plugins={[ dayGridPlugin, timeGridPlugin, interactionPlugin]}
           />
           <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
-           <ModalHeader toggle={this.toggle}>{this.state.modalTitle}</ModalHeader>
-           <ModalBody>
-             {this.state.modalText}
-           </ModalBody>
-           <ModalFooter>
-             <Button color="primary" onClick={this.toggleConfirm}>Do Something</Button>{' '}
-             <Button color="secondary" onClick={this.toggle}>Cancel</Button>
-           </ModalFooter>
+             <ModalHeader toggle={this.toggle}>{this.state.modalTitle}
+             </ModalHeader>
+             <ModalBody>
+               {this.state.modalText}
+             </ModalBody>
+             <ModalFooter>
+               <Button color="primary" onClick={this.toggleConfirm}>Confirm</Button>{' '}
+               <Button color="secondary" onClick={this.toggleCancel}>Cancel</Button>
+             </ModalFooter>
          </Modal>
         </>
         : ''
@@ -131,7 +143,6 @@ toggleCancel() {
       </div>
     );
   }
-
   handleDateClick = (e) => {
     console.log(e);
       this.setState({
@@ -155,14 +166,15 @@ toggleCancel() {
 
   handleEventDrop = (e) => {
     // e.jsEvent.cancelBubble=true;
+    console.log(e);
     if (e.event.extendedProps.category === "run") {
-      alert(e.event.title + " was dropped on " + e.event.start.toISOString());
-      if (!confirm("Are you sure about this change?")) {
-        e.revert();
-      } else {
-        this.props.dragEvent(e);
-      }
-      console.log(this.props.calendarEvents);
+      this.setState({
+        modalTitle: "Change a run",
+        modalText: e.event.title + " was dropped on " +  moment(e.event.start).format("dddd [the] Do, h:mm a")
+          + "? \n Are you sure about this change?",
+        eventToUpdate: e
+      })
+      this.toggle();
     }
   }
 
