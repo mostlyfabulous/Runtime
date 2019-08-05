@@ -73,6 +73,9 @@ export const getRunInfo = (run) => {
 }
 
 export const getOverallStats = (runs) => {
+    if (!runs[0]) {
+        return null;
+    }
     let date = runs[0].start
     let stats = {day: getFormattedDate(date)};
 
