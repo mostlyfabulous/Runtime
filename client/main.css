@@ -40,6 +40,7 @@ body {
   margin: 0;
   color: aliceblue;
   text-align: center;
+  padding-top: 2em;
 }
 
 .topbar {
@@ -47,7 +48,6 @@ body {
   padding: 1em;
   padding-left: 17%;
   font-size: 18pt;
-  box-shadow: 0 2px;
   height: 4em;
 }
 
@@ -88,11 +88,21 @@ body {
   float: left;
 }
 
+#sidebar h1 {
+  padding: 1em;
+}
+
 #mainContent {
   width: 60%;
   float: right;
   padding: 1em;
   padding-top: 0;
+}
+
+#centerContent {
+  padding: 1em;
+  margin: auto;
+  width: 70%;
 }
 
 .calendar {

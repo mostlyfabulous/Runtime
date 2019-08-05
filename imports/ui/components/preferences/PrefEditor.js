@@ -71,12 +71,12 @@ export class PrefEditor extends Component {
       currentPrefs = <div>
         <h2> Current Preferences </h2>
         <p> <b>Username: </b> {userName}</p>
-        <p> <b>Clouds (%): </b> {this.props.preferences.preferencesEvents[0].clouds}</p>
         <p> <b>Min Temp (°C): </b> {this.props.preferences.preferencesEvents[0].min_temp}</p>
         <p> <b>Max Temp (°C): </b> {this.props.preferences.preferencesEvents[0].max_temp}</p>
+        <p> <b>Clouds (%): </b> {this.props.preferences.preferencesEvents[0].clouds}</p>
         <p> <b>Precipitation (%): </b> {this.props.preferences.preferencesEvents[0].precipitation}</p>
-        <p> <b>Preferred City: </b> {this.props.preferences.preferencesEvents[0].city}</p>
         <p> <b>Minimum time between runs (in hours): </b> {this.props.preferences.preferencesEvents[0].min_duration}</p>
+        <p> <b>Preferred City: </b> {this.props.preferences.preferencesEvents[0].city}</p>
       </div>
     }
     return (

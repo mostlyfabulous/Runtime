@@ -11,7 +11,7 @@ class Preferences extends React.Component {
       if (/*this.props.loggedIn*/ true === true) {
         return (
             <div className='body'>
-                <div id='mainContent'>
+                <div id='centerContent'>
                     <UserContainer/>
                 </div>
             </div>

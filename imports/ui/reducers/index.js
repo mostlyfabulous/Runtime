@@ -147,9 +147,9 @@ const runHistoryDataReducer = (data = {}, action) => {
     for (i = 0; i < runList.length; i++){
       let distances = [];
       let list = runList[i]
-      for (let j = 0; j < list.length; j++) {
+      for (let j = 0; j < numDays+1; j++) {
         let run = list[j];
-        if (run === null) {
+        if (!run) {
           distances[j] = 0
         } else
           distances[j] = run.distance;
