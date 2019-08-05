@@ -65,7 +65,7 @@ class GoogleCalendarHandler extends React.Component {
       render() {
         return (
             <div>
-            <i class="google icon"></i> Calendar:&nbsp;
+            <i className="google icon"></i> Calendar:&nbsp;
                 <Button
                     onClick={(e) => this.handleItemClick(e, 'sign-in')}
                 >
