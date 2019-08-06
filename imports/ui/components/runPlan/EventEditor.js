@@ -132,30 +132,36 @@ export class EventEditor extends Component {
 
 
 
-          <FormGroup>
-            <Label htmlFor="start_time">Start Time</Label>
+          <FormGroup row>
+            <Label htmlFor="start_time" sm={5}> Start Time</Label>
+            <Col sm={7}>
             <DatePicker
+              className="datetimePicker"
               selected={this.state.start}
               onChange={this.handleChangeStart}
-              showTimeSelect
+              showTimeInput
               timeFormat="HH:mm"
               timeIntervals={5}
               dateFormat="MMMM d, yyyy h:mm aa"
               timeCaption="Start time"
             />
+          </Col>
           </FormGroup>
 
-          <FormGroup>
-            <Label htmlFor="end_time">End Time</Label>
+          <FormGroup row>
+            <Label htmlFor="end_time" sm={5}>End Time</Label>
+            <Col sm={7}>
             <DatePicker
+              className="datetimePicker"
               selected={this.state.end}
               onChange={this.handleChangeEnd}
-              showTimeSelect
+              showTimeInput
               timeFormat="HH:mm"
               timeIntervals={5}
               dateFormat="MMMM d, yyyy h:mm aa"
               timeCaption="End time"
             />
+        </Col>
           </FormGroup>
 
           <Row>
