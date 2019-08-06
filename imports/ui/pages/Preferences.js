@@ -19,7 +19,7 @@ class Preferences extends React.Component {
       } else {
         return (
             <div className='body'>
-                <div id='mainContent'>
+                <div id='mainContentPref'>
                     <Login/>
                 </div>
             </div>

@@ -4,8 +4,9 @@ import { addEvent, getNextRun } from '../../actions/index'
 import {bindActionCreators} from 'redux'
 
 import { Form, FormGroup, Label, Input, FormFeedback, FormText } from 'reactstrap';
+import { Card, CardImg, CardText, CardBody,
+  CardTitle, CardSubtitle, Button, CardHeader } from 'reactstrap';
 import { Container, Row, Col } from 'reactstrap';
-import {Button} from 'reactstrap';
 
 var moment = require("moment");
 var momentDurationFormatSetup = require("moment-duration-format");
@@ -203,7 +204,7 @@ class NextRun extends Component {
     // console.log(this.props.preferencesEvents)
 
     let timeFilter = [];
-    //freeEventsGapFilter.forEach(function (gap) 
+    //freeEventsGapFilter.forEach(function (gap)
     for (let i = 0; i < freeEventsGapFilter.length; i++) {
       let gap = freeEventsGapFilter[i];
       let gapStart = gap.start.getHours();
@@ -306,7 +307,9 @@ class NextRun extends Component {
 
       return (
             <div>
-              <h2>Your Next Run</h2>
+              <Card>
+              <CardHeader tag="h2"> Your Next Run</CardHeader>
+              <CardBody>
               <Form onSubmit={this.handleSubmit} ref='form'>
               <FormGroup>
                 <Label htmlFor="duration">Duration (in minutes)</Label>
@@ -321,6 +324,8 @@ class NextRun extends Component {
                 </Row>
               </FormGroup>
               </Form>
+              </CardBody>
+              </Card>
             </div>
       )
   }

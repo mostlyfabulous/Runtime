@@ -6,9 +6,12 @@ import { Slider } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 import {difficultyMarks, valuetext} from '../../../utils/slider.js'
 import DatePicker from "react-datepicker";
+import 'flatpickr/dist/themes/material_green.css'
+import Flatpickr from 'react-flatpickr'
 //var DatePicker = require("react-bootstrap-date-picker");
 
-import { Button } from 'reactstrap';
+import { Card, CardImg, CardText, CardBody,
+  CardTitle, CardSubtitle, Button, CardHeader } from 'reactstrap';
 import { Form, FormGroup, Label, Input, FormFeedback, FormText } from 'reactstrap';
 import { Container, Row, Col } from 'reactstrap';
 import "react-datepicker/dist/react-datepicker.css";
@@ -113,8 +116,10 @@ export class EventEditor extends Component {
     if (this.props.editEventView.editorView) {
       return (
         <div className="editor">
+          <Card>
+          <CardHeader tag="h2"> Edit Run: {title} </CardHeader>
 
-          <h2>Edit Run: {title}</h2>
+          <CardBody>
           <Form onSubmit={this.handleSubmit} ref='form'>
 
           <FormGroup row>
@@ -197,14 +202,6 @@ export class EventEditor extends Component {
             <Button
               color="danger"
               type="submit"
-              onSubmit={ (e) => {
-                this.props.highlightEvent("");
-                this.props.toggleEventEditor(false, "");
-                }
-              }>Cancel
-            </Button>
-            <Button
-              type="submit"
               className="delete"
               onClick={ (e) => {
                 this.props.highlightEvent("");
@@ -215,8 +212,22 @@ export class EventEditor extends Component {
                 Delete Run <i className="trash alternate outline icon"> </i>
             </Button>
             </Col>
+
+            <Col>
+            <Button
+              type="submit"
+              onSubmit={ (e) => {
+                this.props.highlightEvent("");
+                this.props.toggleEventEditor(false, "");
+                }
+              }>Cancel
+            </Button>
+            </Col>
           </Row>
           </Form>
+
+          </CardBody>
+          </Card>
         </div>
       );
     }

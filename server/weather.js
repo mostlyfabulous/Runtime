@@ -1,8 +1,22 @@
 import { Meteor } from 'meteor/meteor';
 import Weather from '/imports/api/weather';
+import DarkSky from '/imports/api/weatherDarkSky';
+import DarkSkyApi from 'dark-sky-api';
 import { createWeatherEvents } from '../imports/utils/createWeatherEvents.js'
 
 const locations = ["Vancouver", "Toronto", "Calgary"];
+const api = new DarkSkyApi(process.env.DARKSKY_SECRET_KEY, true, 'si', 'en');
+const position = { // Vancouver: https://simplemaps.com/data/ca-cities
+  latitude: 49.25,
+  longitude: -123.133333
+};
+api.extendHourly(true);
+api.loadForecast(position)
+  .then( res => {
+    console.log(res.daily.data);
+  });
+// api.loadCurrent(position)
+//   .then(result => console.log(result));
 
 /**
  * expects an array of locations
@@ -81,3 +95,12 @@ Meteor.publish('weather', function(location) {
   }
   return Weather.find({city: location});
 });
+
+// Meteor.publish('darkSky', function(location) {
+//   if (!this.userId || !location) {
+//     if (!this.userId) console.log("No userId supplied");
+//     if (!location) console.log("No location supplied");
+//     return this.ready();
+//   }
+//   return DarkSky.find({city: location});
+// });

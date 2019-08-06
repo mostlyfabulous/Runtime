@@ -22,11 +22,8 @@ class Main extends React.Component {
     Meteor.call('getGoogleKeys', function(err, res) {
       if (err) {console.log(err);}
       if (res) {
-        this.setState({
-          gmaps: res.api
-        })
-      }
-    }.bind(this));
+        this.setState({gmaps: res.api});
+      }}.bind(this));
   }
 
   componentDidMount() {

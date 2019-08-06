@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
 
-import {getRunInfo, getOverallStats} from '../formatHelpers.js'
+import {getRunInfoHistPage, getOverallStats} from '../formatHelpers.js'
+
 
 class HistoryInfo extends React.Component {
 
@@ -21,19 +22,21 @@ class HistoryInfo extends React.Component {
                     </div>
                 }
                 console.log(info);
-                
+
                 details = <div>
                     <h2>{stats.day}</h2>
-                    <b>Total distance travelled:</b> {stats.totalDist} km 
+                    <b>Total distance travelled:</b> {stats.totalDist} km
                     {timeDependant}
                     {info.map((run, index) => (
                         <div key = {index}>
                             <br />
-                            {getRunInfo(run)}
+
+                            {getRunInfoHistPage(run)}
+
                         </div>
                     ))}
                 </div>;
-            } else 
+            } else
                 details = <div>
                     {details}
                     <br />

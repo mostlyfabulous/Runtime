@@ -7,11 +7,17 @@ import PropTypes from 'prop-types';
 import { Button } from 'reactstrap';
 import { Form, FormGroup, Label, Input, FormFeedback, FormText } from 'reactstrap';
 import { Container, Row, Col } from 'reactstrap';
+import { CompactPicker } from 'react-color';
+import { Card, CardImg, CardText, CardBody,
+  CardTitle, CardSubtitle, CardHeader } from 'reactstrap';
+
 
 export class PrefEditor extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      background: this.props.preferences.preferencesEvents[0].min_duration || 'fff',
+    };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -31,6 +37,10 @@ export class PrefEditor extends Component {
     const value = event.target.value;
   }
 
+  handleChangeComplete = (color, event) => {
+    this.setState({ background: color.hex });
+  };
+
   handleSubmit(e) {
     e.preventDefault();
     let editedPref = {};
@@ -48,6 +58,7 @@ export class PrefEditor extends Component {
         // console.log(res);
       }
     });
+    editedPref.background = this.state.background;
 
     let inputType = (typeof editedPref.clouds === "number") && (typeof editedPref.min_temp === "number") && (typeof editedPref.max_temp === "number") && (typeof editedPref.precipitation === "number") /*&& (typeof editedPref.city === "string")*/;
     let inputRange = (editedPref.clouds <= 100) && (editedPref.clouds >= 0) && (editedPref.precipitation <= 100) && (editedPref.precipitation >= 0) && (editedPref.city.length > 0);
@@ -69,7 +80,12 @@ export class PrefEditor extends Component {
     let currentPrefs = "";
     if (this.props.preferences.preferencesEvents[0] !== undefined) {
       currentPrefs = <div>
+        <Card>
+        <CardHeader tag="h1">
         <h2> Current Preferences </h2>
+        </CardHeader>
+        <CardBody>
+
         <p> <b>Username: </b> {userName}</p>
         <p> <b>Min Temp (°C): </b> {this.props.preferences.preferencesEvents[0].min_temp}</p>
         <p> <b>Max Temp (°C): </b> {this.props.preferences.preferencesEvents[0].max_temp}</p>
@@ -77,84 +93,123 @@ export class PrefEditor extends Component {
         <p> <b>Precipitation (%): </b> {this.props.preferences.preferencesEvents[0].precipitation}</p>
         <p> <b>Minimum time between runs (in hours): </b> {this.props.preferences.preferencesEvents[0].min_duration}</p>
         <p> <b>Preferred City: </b> {this.props.preferences.preferencesEvents[0].city}</p>
+        <img id="prefIcon" width="90%" height="90%" src={'https://robohash.org/' + this.props.account.user._id} alt="Profile Icon" />
+        </CardBody>
+        </Card>
       </div>
     }
     return (
       <div>
       <Container>
       <Row>
-      <Col>
+      <Col sm={4}>
         {currentPrefs}
       </Col>
-      <Col>
-        <h2>Edit Preferences:</h2>
+      <Col sm={8}>
+        <Card>
+        <CardHeader tag="h1">
+        <h2>Edit Preferences: <i class="edit outline icon"></i></h2>
+        </CardHeader>
+
+        <CardBody>
         <Form onSubmit={this.handleSubmit} ref='form'>
           <FormGroup row>
 
-          <Label htmlFor="username" sm={4} >Username</Label>
-          <Col sm={8}>
-          <Input type="string" id="username" name="username" placeholder={userName}
-            onChange={this.handleChange} />
-          </Col>
+            <Col sm={2}>
+              <Label htmlFor="username">Username</Label>
+            </Col>
+            <Col sm={3}>
+              <Input type="string" id="username" name="username" placeholder={userName}
+                onChange={this.handleChange} />
+            </Col>
+            <Col sm={3}>
+              <Label htmlFor="city">Preferred City</Label>
+            </Col>
+            <Col sm={4}>
+              <Input type="select" name="city" id ="city">
+                <option value="Vancouver"> Vancouver </option>
+                <option value="Toronto"> Toronto </option>
+                <option value="Calgary"> Calgary </option>
+              </Input>
+              </Col>
           </FormGroup>
 
 
+          <FormGroup row>
 
-          <Row>
-          <Col md={6}>
-          <FormGroup>
-          <Label htmlFor="minTemp">Min Temp (°C)</Label>
-          <Input type="number" id="minTemp" name="minTemp" defaultValue={this.props.preferences.preferencesEvents[0].min_temp}
-            onChange={this.handleChange}  step="1" placeholder="°C"/>
-</FormGroup>
-</Col>
-          <Col md={6}>
-          <FormGroup>
-          <Label htmlFor="maxTemp">Max Temp (°C)</Label>
-          <Input type="number" id="maxTemp" name="maxTemp" defaultValue={this.props.preferences.preferencesEvents[0].max_temp}
-            onChange={this.handleChange}  step="1" placeholder="°C" />
-</FormGroup>
-</Col>
+            <Col md={2}>
+                <Label htmlFor="clouds">Clouds (%)</Label>
+            </Col>
+
+            <Col md={3}>
+              <Input type="number" id="clouds" name="clouds" defaultValue={this.props.preferences.preferencesEvents[0].clouds}
+                onChange={this.handleChange} step="1" placeholder="%" />
+            </Col>
+
+            <Col md={3}>
+              <Label htmlFor="minMaxTemp">Min/Max Temp (°C)</Label>
+            </Col>
+
+            <Col md={2}>
+              <Input type="number" id="minTemp" name="minTemp" defaultValue={this.props.preferences.preferencesEvents[0].min_temp}
+                onChange={this.handleChange}  step="1" placeholder="°C"/>
+            </Col>
+
+            <Col md={2}>
+              <Input type="number" id="maxTemp" name="maxTemp" defaultValue={this.props.preferences.preferencesEvents[0].max_temp}
+                onChange={this.handleChange}  step="1" placeholder="°C" />
+            </Col>
+
+
+            </FormGroup>
+
+<Row>
+  <Col md={2}>
+    <Label htmlFor="precipitation">Max Precip %</Label>
+  </Col>
+
+  <Col md={3}>
+    <Input type="number" id="precipitation" name="precipitation" defaultValue={this.props.preferences.preferencesEvents[0].precipitation}
+          onChange={this.handleChange} step="1" placeholder="%" />
+  </Col>
+  <Col md={5}>
+    <Label htmlFor="min_duration">Min duration between runs (hours)</Label>
+  </Col>
+
+  <Col md={2}>
+    <Input type="number" id="min_duration" name="min duration" defaultValue={this.props.preferences.preferencesEvents[0].min_duration}
+      onChange={this.handleChange} step="1" placeholder="e.g. 24" />
+  </Col>
+
 </Row>
 
 <Row>
-<Col md={6}>
-<FormGroup>
-<Label htmlFor="clouds">Clouds (%)</Label>
-<Input type="number" id="clouds" name="clouds" defaultValue={this.props.preferences.preferencesEvents[0].clouds}
-  onChange={this.handleChange} step="1" placeholder="%" />
-  </FormGroup>
-</Col>
-
-<Col md={6}>
-<FormGroup>
-          <Label htmlFor="precipitation">Max Precip %</Label>
-          <Input type="number" id="precipitation" name="precipitation" defaultValue={this.props.preferences.preferencesEvents[0].precipitation}
-            onChange={this.handleChange} step="1" placeholder="%" />
-            </FormGroup>
-</Col>
 </Row>
 
-<FormGroup>
-          <Label htmlFor="min_duration">Min Duration (between runs, hours)</Label>
-          <Input type="number" id="min_duration" name="min duration" defaultValue={this.props.preferences.preferencesEvents[0].min_duration}
-            onChange={this.handleChange} step="1" placeholder="e.g. 24" />
-</FormGroup>
-
-
 <FormGroup row>
-          <Label htmlFor="city"  sm={4}>Preferred City</Label>
-          <Col sm={8}>
-            <Input type="select" name="city" id ="city">
-              <option value="Vancouver"> Vancouver </option>
-              <option value="Toronto"> Toronto </option>
-              <option value="Calgary"> Calgary </option>
-            </Input>
-            </Col>
+
+
+  <Col sm={2}>
+    <Label htmlFor="city" >Color Theme</Label>
+  </Col>
+
+  <Col sm={6}>
+    <CompactPicker
+      color={ this.state.background }
+      onChangeComplete={ this.handleChangeComplete }/>
+  </Col>
+
+  <Col sm={4}>
+    <Button color="info" type="submit">Update User Preferences</Button>
+  </Col>
+
 </FormGroup>
 
-          <Button color="info" type="submit">Update User Preferences</Button>
+
         </Form>
+
+        </CardBody>
+        </Card>
         </Col>
         </Row>
         </Container>

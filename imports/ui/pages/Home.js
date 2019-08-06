@@ -6,10 +6,10 @@ class Home extends React.Component {
     render() {
         return (
             <div className='body'>
-                <div id='sideMenu'>
+                <div id='sideMenuHome'>
                     <HomeStatsContainer/>
                 </div>
-                <div id='mainContent'>
+                <div id='mainContentHome'>
                     <NextRunInfoContainer/>
                 </div>
             </div>
