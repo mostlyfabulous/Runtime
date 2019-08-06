@@ -1,5 +1,7 @@
 import React from 'react';
 import { getRunInfo, getOverallStats } from '../formatHelpers.js';
+import { Card, CardImg, CardText, CardBody,
+  CardTitle, CardSubtitle, Button, CardHeader } from 'reactstrap';
 
 class HomeStats extends React.Component {
   chooseRandomStat(stats) {
@@ -16,6 +18,8 @@ class HomeStats extends React.Component {
       let stats = getOverallStats(runs);
       let random = this.chooseRandomStat(stats.bests);
       statInfo = <div>
+
+        <CardText>
         <b> Total Distance: </b> {stats.totalDist} km
         <br />
         <b> Total Time: </b> {stats.totalTime}
@@ -23,13 +27,23 @@ class HomeStats extends React.Component {
         <b> Average Speed:  </b>{stats.avgSpeed} km/h
         <br />
         <br />
-        <b> {random.desc} </b> {getRunInfo(random.run)}
+
+         {random.desc}
+
+        {getRunInfo(random.run)}</CardText>
+
       </div>
     }
     return (
       <div>
-        <h1>Lifetime Statistics:</h1>
+        <Card>
+        <CardHeader tag="h1">Lifetime Statistics:</CardHeader>
+        <CardBody>
+
+
         {statInfo}
+        </CardBody>
+        </Card>
       </div>
     )
   }

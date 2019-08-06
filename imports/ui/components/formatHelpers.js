@@ -1,4 +1,6 @@
 import React from 'react';
+import { Card, CardImg, CardText, CardBody,
+  CardTitle, CardSubtitle, Button, CardHeader } from 'reactstrap';
 
 const DATE_TO_WEEKDAY = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
@@ -54,7 +56,7 @@ export const getRunInfo = (run) => {
     if (run.difficulty) {
         difficulty = <span>
             <b> Difficulty: </b> {(run.difficulty === "") ? 0 : run.difficulty}/10
-        </span> 
+        </span>
     }
     return <div>
         <h4>{run.title}</h4>
@@ -69,6 +71,53 @@ export const getRunInfo = (run) => {
         <b> Speed: </b> {speed}
         <br />
          {difficulty}
+    </div>
+}
+
+export const getRunInfoHistPage = (run) => {
+    let day = getFormattedDate(run.start);
+    let start = getFormattedTime(run.start);
+
+    let dist = "";
+    let end = "";
+    let speed = "";
+    let time = "";
+    let difficulty = "";
+    if (run.distance){
+        dist = run.distance;
+    }
+    if (run.end){
+        let date = new Date(run.end);
+        end = ' to '+getFormattedTime(date);
+
+        let duration = moment(run.end).diff(run.start, 'seconds');
+        // speed = "Speed: "+ (dist/(duration/3600)).toFixed(2) +" km/h";
+        speed = (dist/(duration/3600)).toFixed(2) +" km/h";
+        time = moment.utc(duration*1000).format('HH:mm:ss');
+    }
+
+    if (run.difficulty) {
+        difficulty = <span>
+            <b> Difficulty: </b> {(run.difficulty === "") ? 0 : run.difficulty}/10
+        </span>
+    }
+    return <div>
+        <Card>
+        <CardHeader tag="h4">{run.title}</CardHeader>
+        <CardBody>
+        <b> Date: </b> {day}
+        <br />
+        <b> Distance: </b> {dist} km
+        <br />
+        <b> Time: </b> {start} {end}
+        <br />
+        <b> Length: </b> {time} (h:m:s)
+        <br />
+        <b> Speed: </b> {speed}
+        <br />
+         {difficulty}
+        </CardBody>
+        </Card>
     </div>
 }
 

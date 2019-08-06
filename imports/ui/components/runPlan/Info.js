@@ -98,6 +98,7 @@ class Info extends Component {
     return (
       <div>
         <NextRun/>
+        <br/>
         <ReactCSSTransitionGroup
           transitionName="editor"
           transitionAppear={false}

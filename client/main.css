@@ -85,7 +85,8 @@ body {
 
 #sideMenu {
   padding-left: 2em;
-  width: 30%;
+  padding-right: 2em;
+  width: 40%;
   float: left;
 }
 
@@ -93,12 +94,46 @@ body {
   padding: 1em;
 }
 
+#mainContentPref {
+  /* width: 90%
+  float: right; */
+  padding: 1em;
+}
+
+
 #mainContent {
   width: 60%;
   float: right;
   padding: 1em;
   padding-top: 0;
 }
+
+#mainContentHome {
+  /* width: 60%; */
+  width: 50%;
+  float: right;
+  padding: 1em;
+  padding-top: 0;
+}
+
+#sideMenuHome {
+  padding-left: 2em;
+  width: 50%;
+  float: left;
+}
+
+/* #homeStats {
+  width: 45%;
+  float: left;
+  padding: 1em;
+}
+
+#nextRunInfo {
+  width: 45%;
+  float: right;
+  padding: 1em;
+} */
+
 #fullContent {
   width: 100%;
   float: right;
@@ -106,10 +141,16 @@ body {
   padding-top: 0;
 }
 
+#prefIcon{
+    padding: 0;
+    display: block;
+    margin: auto;
+}
+
 #centerContent {
   padding: 1em;
   margin: auto;
-  width: 70%;
+  width: 95%;
 }
 
 .calendar {
