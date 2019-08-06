@@ -24,6 +24,7 @@
     "bootstrap-material-design": "^4.1.2",
     "chart.js": "^2.8.0",
     "create-react-class": "^15.6.3",
+    "dark-sky-api": "^0.6.32",
     "google-maps-react": "^2.0.2",
     "lodash": "^4.17.14",
     "meteor-node-stubs": "^0.4.1",
