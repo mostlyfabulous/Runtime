@@ -36,12 +36,7 @@ class HistoryInfo extends React.Component {
                         </div>
                     ))}
                 </div>;
-            } else
-                details = <div>
-                    {details}
-                    <br />
-                    No runs on this day.
-                    </div>;
+            }
         }
         return (
             <div>

@@ -174,18 +174,18 @@ export const getOverallStats = (runs) => {
     let bests;
     if (runs.length > 0) {
         bests = {topDist: {
-            desc: "Most distance travelled: ",
+            desc: <b>Most distance travelled: </b>,
             run: topDist
         }};
         if (topTimeRun) {
             bests.topTime = {
-                desc: "Longest Time Spent: ",
+                desc: <b>Longest Time Spent: </b>,
                 run: topTimeRun
             }
         }
         if (topSpeedRun) {
             bests.topSpeed = {
-                desc: "Highest average speed: ",
+                desc: <b>Highest average speed: </b>,
                 run: topSpeedRun
             }
         }
