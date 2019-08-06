@@ -17,7 +17,7 @@ class NextRunInfo extends React.Component {
         }
         return (
             <div>
-                <h1>Upcoming Run</h1>
+                <h2>Upcoming Run</h2>
                 {result}
             </div>
         )

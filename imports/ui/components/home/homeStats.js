@@ -28,7 +28,7 @@ class HomeStats extends React.Component {
     }
     return (
       <div>
-        <h1>Lifetime Statistics:</h1>
+        <h2>Lifetime Statistics:</h2>
         {statInfo}
       </div>
     )
