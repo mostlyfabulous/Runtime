@@ -5,6 +5,7 @@ import Home from '../../pages/Home';
 import RunPlan from '../../pages/RunPlan';
 import History from '../../pages/History';
 import Preferences from '../../pages/Preferences';
+import ExploreContainer from '../../pages/Explore';
 
 import { loadWeatherEvents, WEATHER_SUB, loadRunEvents, RUNS_SUB,
   loadPreferences, PREFERENCES_SUB, clearGoogleEvents } from '../../actions/index';
@@ -12,6 +13,21 @@ import { stopSubscription } from 'meteor-redux-middlewares';
 import {bindActionCreators} from 'redux';
 
 class Main extends React.Component {
+
+  constructor(props){
+    super(props);
+    this.state = {
+      gmaps: ""
+    }
+    Meteor.call('getGoogleKeys', function(err, res) {
+      if (err) {console.log(err);}
+      if (res) {
+        this.setState({
+          gmaps: res.api
+        })
+      }
+    }.bind(this));
+  }
 
   componentDidMount() {
     this.props.loadPreferences();
@@ -46,7 +62,7 @@ class Main extends React.Component {
              this.props.loadWeatherEvents(city);
            }
          }
-      } 
+      }
     // once preferences are loaded, load weather events
     if (prevProps.preferencesReady !== this.props.preferencesReady) {
       let {clouds, min_temp, max_temp,
@@ -71,6 +87,9 @@ class Main extends React.Component {
       body =<History/>;
     } else if (this.props.page === 'preferences') {
       body = <Preferences/>;
+    } else if (this.props.page === 'explore') {
+      body = <ExploreContainer gmaps={this.state.gmaps}/>;
+
     }
     return (
       <div>
