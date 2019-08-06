@@ -72,10 +72,16 @@ class NextRun extends Component {
 
     futureEvents = this.sortByStart(futureEvents);
 
+    let eventNow = {
+      start: now,
+      end: now
+    };
+    futureEvents.splice(0,0,eventNow);
+
     let lastFutureEvent = {
       start: sortedWeather[sortedWeather.length-1].end,
       end: sortedWeather[sortedWeather.length-1].end
-    }
+    };
 
     futureEvents.push(lastFutureEvent);
 
@@ -93,7 +99,6 @@ class NextRun extends Component {
           end: end
         };
         futureEvents.splice(i+1,0,blockEvent);
-        console.log(futureEvents);
       }
     }
 
@@ -121,6 +126,8 @@ class NextRun extends Component {
 
     let freeEventsWeatherFilter = [];
     let freeEventsWeatherFilterTemp = [];
+    let tempVariance = [];
+    let medianTemp = (this.props.preferencesEvents[0].max_temp + this.props.preferencesEvents[0].min_temp)/2;
     for (let entry of freeEventsDurationFilter) {
       for (let i = 0; i < sortedWeather.length-1; i++) {
         if ((entry.start >= sortedWeather[i].start) && (entry.start <= sortedWeather[i+1].start)){
@@ -133,6 +140,7 @@ class NextRun extends Component {
           let minCond = this.props.preferencesEvents[0].min_temp <= (sortedWeather[i].temp -273.15);
           if (maxCond && minCond) {
             freeEventsWeatherFilterTemp.push(entry);
+            tempVariance.push((sortedWeather[i].temp -273.15)-medianTemp);
           }
           // if ( (diffMax <= avg) && (diffMin <= avg)) {
           //   freeEventsWeatherFilterTemp.push(entry);
@@ -146,6 +154,7 @@ class NextRun extends Component {
 
     if (freeEventsWeatherFilterTemp.length < 3){
       freeEventsWeatherFilter = freeEventsDurationFilter;
+      tempVariance = [];
     } else {
       freeEventsWeatherFilter = [...new Set(freeEventsWeatherFilterTemp)];
     }
@@ -155,8 +164,10 @@ class NextRun extends Component {
     //console.log(freeEventsWeatherFilter);
     let totalDuration = (this.props.preferencesEvents[0].min_duration)*2 + duration/60;
     let freeEventsGapFilterTemp = [];
+    let tempVarianceFilter = [];
 
-    for (let entry of freeEventsWeatherFilter){
+    for (let i = 0; i < freeEventsWeatherFilter.length; i++){
+      let entry = freeEventsWeatherFilter[i];
       let freeRange = (entry.end - entry.start)/3600000; // in Hours
       if (freeRange >= totalDuration){
         let newGap = {};
@@ -168,6 +179,9 @@ class NextRun extends Component {
         let newEndUNIX = Date.parse(newEnd);
         newGap.end = new Date(newEndUNIX);
         freeEventsGapFilterTemp.push(newGap);
+        if (tempVariance.length > 0) {
+          tempVarianceFilter.push(tempVariance[i]);
+        }
       }
     }
     //
@@ -175,6 +189,8 @@ class NextRun extends Component {
     // console.log(freeEventsGapFilterTemp)
 
     let freeEventsGapFilter = [];
+    tempVariance = tempVarianceFilter;
+    tempVarianceFilter = [];
 
     if (freeEventsGapFilterTemp.length < 1) {
       freeEventsGapFilter = freeEventsWeatherFilter;
@@ -187,13 +203,18 @@ class NextRun extends Component {
     // console.log(this.props.preferencesEvents)
 
     let timeFilter = [];
-    freeEventsGapFilter.forEach(function (gap) {
+    //freeEventsGapFilter.forEach(function (gap) 
+    for (let i = 0; i < freeEventsGapFilter.length; i++) {
+      let gap = freeEventsGapFilter[i];
       let gapStart = gap.start.getHours();
       let gapEnd = gap.end.getHours();
       if ((VALID_START < gapStart && gapStart < VALID_END) && (VALID_START < gapEnd && gapEnd < VALID_END)){
         timeFilter.push(gap);
+        if (tempVariance.length > 0) {
+          tempVarianceFilter.push(tempVariance[i]);
+        }
       }
-    })
+    }
 
     suggestions = timeFilter;
     console.log('run suggestions');
@@ -210,15 +231,25 @@ class NextRun extends Component {
     if (suggestions.length > 0) {
       console.log('s[0] true')
       console.log(suggestions[0])
+
+      console.log(tempVariance);
+      let period = suggestions[0];
+      if (tempVariance.length > 0) {
+        let i = tempVariance.indexOf(Math.min(...tempVariance));
+        console.log(i);
+        console.log(tempVariance[i]);
+        period = suggestions[i];
+      }
+
       let unique = (Date.parse(new Date)).toString(16) + Math.floor(Math.random()*1000);
-      let endTime = moment(suggestions[0].start).add(duration, 'minutes').format();
+      let endTime = moment(period.start).add(duration, 'minutes').format();
       let endTimeUNIX = Date.parse(endTime);
       let endTimeFormatted = new Date(endTimeUNIX);
       let newEvent = {
         id: unique,
         _id: unique,
         title: "Suggested Run",
-        start: suggestions[0].start,//e.date, // TODO: determine how to set timezone if needed
+        start: period.start,//e.date, // TODO: determine how to set timezone if needed
         end: endTimeFormatted,
         duration: moment.duration(duration, 'minutes'),
         allDay: false, //e.allDay,
