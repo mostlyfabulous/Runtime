@@ -9,11 +9,6 @@ import {connect} from 'react-redux';
 
 class Explore extends React.Component {
   componentDidMount () {
-    // const script = document.createElement("script");
-    // script.src = "https://darksky.net/map-embed/@temperature,49.127,-122.506,9.js?embed=true&timeControl=false&fieldControl=true&defaultField=temperature&defaultUnits=_c";
-    // script.async = true;
-    //
-    // document.body.appendChild(script);
     postscribe('#fullContent', '<script src="https://darksky.net/map-embed/@temperature,49.127,-122.506,9.js?embed=true&timeControl=false&fieldControl=true&defaultField=temperature&defaultUnits=_c"></script>')
 
 }
