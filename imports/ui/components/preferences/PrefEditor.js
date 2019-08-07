@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import { Button } from 'reactstrap';
 import { Form, FormGroup, Label, Input, FormFeedback, FormText } from 'reactstrap';
 import { Container, Row, Col } from 'reactstrap';
-import { CompactPicker } from 'react-color';
+import { SliderPicker, CompactPicker } from 'react-color';
 import { Card, CardImg, CardText, CardBody,
   CardTitle, CardSubtitle, CardHeader } from 'reactstrap';
 
@@ -190,7 +190,7 @@ export class PrefEditor extends Component {
   </Col>
 
   <Col sm={6}>
-    <CompactPicker
+    <SliderPicker
       color={ this.state.background }
       onChangeComplete={ this.handleChangeComplete }/>
   </Col>

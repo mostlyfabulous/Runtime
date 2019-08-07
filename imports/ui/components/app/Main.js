@@ -94,8 +94,6 @@ class Main extends React.Component {
 
 
   render() {
-    console.log('render main');
-    console.log(this.state.backgroundColor);
     let body =<RunPlan />;
     if (this.props.page === 'home') {
       body =<Home />;
