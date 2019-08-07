@@ -11,7 +11,7 @@ import { Container, Row, Col, Modal, ModalHeader, ModalBody, ModalFooter } from 
 var moment = require("moment");
 var momentDurationFormatSetup = require("moment-duration-format");
 const VALID_START = 6;
-const VALID_END = 21;
+const VALID_END = 23;
 momentDurationFormatSetup(moment);
 
 class NextRun extends Component {
@@ -153,11 +153,54 @@ class NextRun extends Component {
     console.log('free events duration filter')
     console.log(freeEventsDurationFilter);
 
+    let totalDuration = (this.props.preferencesEvents[0].min_duration)*2 + duration/60;
+    let freeEventsGapFilter = [];
+
+    for (let entry of freeEventsDurationFilter) {
+      let freeRange = (entry.end - entry.start)/3600000; // in Hours
+      if (freeRange >= totalDuration){
+        let newGap = {};
+        let newStart = moment(entry.start).add(this.props.preferencesEvents[0].min_duration, 'hours').format();
+        let newStartUNIX = Date.parse(newStart);
+        newGap.start = new Date(newStartUNIX);
+
+        let newEnd = moment(entry.end).subtract(this.props.preferencesEvents[0].min_duration, 'hours').format();
+        let newEndUNIX = Date.parse(newEnd);
+        newGap.end = new Date(newEndUNIX);
+        freeEventsGapFilter.push(newGap);
+      }
+    }
+
+    console.log(freeEventsGapFilter)
+
+    let tempBlock = moment(sortedWeather[1].start).diff(moment(sortedWeather[0].start), 'minutes');
+    for (let i = 0; i < freeEventsGapFilter.length; i++) {
+      let entry = freeEventsGapFilter[i];
+      let entryDuration = moment(entry.end).diff(moment(entry.start),'minutes')
+      if ((entryDuration > tempBlock) && (entryDuration/duration > 2)) {
+        let newEnd = moment(entry.start).add(tempBlock, 'minutes').format();
+        let endTimeUNIX = Date.parse(newEnd);
+        let endTimeFormatted = new Date(endTimeUNIX);
+        let trimmedEvent = {
+          start: entry.start,
+          end: endTimeFormatted
+        }
+        let extraEvent = {
+          start: endTimeFormatted,
+          end: entry.end
+        }
+        freeEventsGapFilter.splice(i,1,trimmedEvent);
+        freeEventsGapFilter.splice(i+1,0,extraEvent);
+      }
+    }
+
+    console.log(freeEventsGapFilter)
+
     let freeEventsWeatherFilter = [];
     let freeEventsWeatherFilterTemp = [];
     let tempVariance = [];
     let medianTemp = (this.props.preferencesEvents[0].max_temp + this.props.preferencesEvents[0].min_temp)/2;
-    for (let entry of freeEventsDurationFilter) {
+    for (let entry of freeEventsGapFilter) {
       for (let i = 0; i < sortedWeather.length-1; i++) {
         if ((entry.start >= sortedWeather[i].start) && (entry.start <= sortedWeather[i+1].start)){
           // console.log('comparing');
@@ -182,7 +225,7 @@ class NextRun extends Component {
     }
 
     if (freeEventsWeatherFilterTemp.length < 3){
-      freeEventsWeatherFilter = freeEventsDurationFilter;
+      freeEventsWeatherFilter = freeEventsGapFilter;
       tempVariance = [];
     } else {
       freeEventsWeatherFilter = [...new Set(freeEventsWeatherFilterTemp)];
@@ -191,50 +234,20 @@ class NextRun extends Component {
     //let freeEventsGapFilter = freeEventsWeatherFilter.filter(run => run.start-run.end >= now);
     //console.log('filtered weather')
     //console.log(freeEventsWeatherFilter);
-    let totalDuration = (this.props.preferencesEvents[0].min_duration)*2 + duration/60;
-    let freeEventsGapFilterTemp = [];
-    let tempVarianceFilter = [];
-
-    for (let i = 0; i < freeEventsWeatherFilter.length; i++){
-      let entry = freeEventsWeatherFilter[i];
-      let freeRange = (entry.end - entry.start)/3600000; // in Hours
-      if (freeRange >= totalDuration){
-        let newGap = {};
-        let newStart = moment(entry.start).add(this.props.preferencesEvents[0].min_duration, 'hours').format();
-        let newStartUNIX = Date.parse(newStart);
-        newGap.start = new Date(newStartUNIX);
-
-        let newEnd = moment(entry.end).subtract(this.props.preferencesEvents[0].min_duration, 'hours').format();
-        let newEndUNIX = Date.parse(newEnd);
-        newGap.end = new Date(newEndUNIX);
-        freeEventsGapFilterTemp.push(newGap);
-        if (tempVariance.length > 0) {
-          tempVarianceFilter.push(tempVariance[i]);
-        }
-      }
-    }
     //
     // console.log('FINAL FILTER')
     // console.log(freeEventsGapFilterTemp)
 
-    let freeEventsGapFilter = [];
-    tempVariance = tempVarianceFilter;
-    tempVarianceFilter = [];
-
-    if (freeEventsGapFilterTemp.length < 1) {
-      freeEventsGapFilter = freeEventsWeatherFilter;
-    } else {
-      freeEventsGapFilter = freeEventsGapFilterTemp;
-    }
     // console.log('weather in next run: ')
     // console.log(this.props.weatherEvents);
     // console.log(this.props.calendarEvents)
     // console.log(this.props.preferencesEvents)
 
     let timeFilter = [];
+    let tempVarianceFilter = [];
     //freeEventsGapFilter.forEach(function (gap)
-    for (let i = 0; i < freeEventsGapFilter.length; i++) {
-      let gap = freeEventsGapFilter[i];
+    for (let i = 0; i < freeEventsWeatherFilter.length; i++) {
+      let gap = freeEventsWeatherFilter[i];
       let gapStart = gap.start.getHours();
       let gapEnd = gap.end.getHours();
       if ((VALID_START < gapStart && gapStart < VALID_END) && (VALID_START < gapEnd && gapEnd < VALID_END)){
