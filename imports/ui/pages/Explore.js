@@ -1,4 +1,5 @@
 import React from 'react';
+import postscribe from 'postscribe'
 //import UserPref from '../components/UserPref.js';
 import { withAccount } from '../components/accounts/connector.js'
 import MapContainer from '../containers/MapContainer.js';
@@ -7,13 +8,21 @@ import {connect} from 'react-redux';
 
 
 class Explore extends React.Component {
+  componentDidMount () {
+    // const script = document.createElement("script");
+    // script.src = "https://darksky.net/map-embed/@temperature,49.127,-122.506,9.js?embed=true&timeControl=false&fieldControl=true&defaultField=temperature&defaultUnits=_c";
+    // script.async = true;
+    //
+    // document.body.appendChild(script);
+    postscribe('#fullContent', '<script src="https://darksky.net/map-embed/@temperature,49.127,-122.506,9.js?embed=true&timeControl=false&fieldControl=true&defaultField=temperature&defaultUnits=_c"></script>')
 
+}
+  // <MapContainer apiKey={this.props.gmaps}/>
     render() {
       if (this.props.account.userId && this.props.gmaps) {
         return (
             <div className='body'>
                 <div id='fullContent'>
-                  <MapContainer apiKey={this.props.gmaps}/>
 
                 </div>
             </div>
@@ -22,7 +31,7 @@ class Explore extends React.Component {
         return (
             <div className='body'>
                 <div id='mainContent'>
-                  <AccountsUIWrapper/>
+                  <h1>Please log in</h1>
                 </div>
             </div>
         )
