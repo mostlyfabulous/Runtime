@@ -14,59 +14,53 @@ const locations = ["Vancouver", "Toronto", "Calgary"];
 //   return item; // must return weather data item
 // });
 
-
-function getHourlyForecast(city, country, position) {
+function getHourlyForecast(city, country) {
+  const cityData = canadaCities.find((entry) => entry.city === city);
+  if (cityData === undefined) {
+    console.log("Could not find city in JSON list");
+    return;
+  }
+  const position = {latitude: cityData.lat, longitude: cityData.lng};
   DarkSkyApi.initialize(process.env.DARKSKY_SECRET_KEY, true, 'si', 'en', function(item) {
-  // add a location representation using moment.calender
+    // postprocessor function body to add properties to weather data response
     // add units object onto item
     // item.units = DarkSkyApi.getResponseUnits(); // this would be outdated if you changed api units later
   return item; // must return weather data item
   });
-  DarkSkyApi.extendHourly(true);
-  // returns 169 hourly forecasts in "result.hourly.data"
-  api.loadItAll('daily,minutely,flags', position)
+  DarkSkyApi.extendHourly(true); // returns 169 hourly forecasts in "result.hourly.data"
+  DarkSkyApi.loadItAll('daily,minutely,flags', position) // (excludeTheseCalls, LatLon)
   .catch(err => console.log(err))
   .then(result => {
     console.log(result);
     result.hourly.data.map( (h) => {
+      h.start = moment(h.time*1000).toDate();
+      h.end = moment(h.time*1000).add(1, 'hours').toDate();
       h.city = city;
       h.country = country;
-      DarkSky.insert(h);
+      h.editable = false;
+      h.rendering = 'background';
+      DarkSky.upsert({$and:[{time: h.time},{city: h.city}]}, h); // update events or insert if not present
     });
   });
 }
-//
-// let position = { // Vancouver: https://simplemaps.com/data/ca-cities
-//   latitude: 49.25,
-//   longitude: -123.133333
-// };
-// callWeather(position);
-//
-//
-// position = {
-//   latitude: 45.416667,
-//   longitude: -75.7
-// }
-// callWeather(position);
-//
-// position = {
-//   latitude: 51.083333,
-//   longitude: -114.083333
-// }
-// callWeather(position);
-// DarkSkyApi.loadCurrent(position)
-// .catch(err => console.log(err)) // Today
-// .then(result => {
-//   console.log(position)
-//   console.log(result)
-// })
-// api.loadItAll('daily,minutely,flags', position)
-// .then(result =>
-//   {
-//   result.hourly.data.map( (h) => console.log(h))
-//   console.log(result.hourly.data.length);
-//   }
-// );
+/**
+ * expects a 'city' and 'country'
+ * @param {object} city
+ * @param {object} country
+**/
+Meteor.publish('weatherDarkSky', function(city) {
+  if (!this.userId || !city) {
+    if (!this.userId) console.log("No userId supplied");
+    if (!city) console.log("No city supplied");
+    return this.ready();
+  }
+  console.log(city);
+  console.log("User subbed to DarkSky");
+  if (DarkSky.find({city: city}).count() === 0) getHourlyForecast(city, "Canada");
+  // console.log("No events for "+city);
+  console.log(DarkSky.find({city: city}).count());
+  return DarkSky.find({city: city});
+});
 
 /**
  * expects an array of locations
@@ -137,6 +131,8 @@ function updateWeatherForLocations(locations) {
 // refetch weather for all cities every 3 hours
 if (!(Meteor.absoluteUrl()+"").includes('local')) {
   Meteor.setInterval(updateWeatherForLocations(locations), 3*60*60*1000) // delay in ms before function re-run
+  locations.map( (city) =>
+    Meteor.setInterval(getHourlyForecast(city, "Canada"), 6*60*60*1000));
 } else {
   console.log("Server is running locally, periodic weather updates disabled.");
 }
@@ -149,12 +145,3 @@ Meteor.publish('weather', function(location) {
   }
   return Weather.find({city: location});
 });
-
-// Meteor.publish('darkSky', function(location) {
-//   if (!this.userId || !location) {
-//     if (!this.userId) console.log("No userId supplied");
-//     if (!location) console.log("No location supplied");
-//     return this.ready();
-//   }
-//   return DarkSky.find({city: location});
-// });

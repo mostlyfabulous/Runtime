@@ -179,11 +179,9 @@ if (this.state.modalTitle === "Change a run") {
   }
 
   handleEventResize = (e) => {
-    if (e.event.extendedProps.category === "run") {
-      this.props.dragEvent(e);
-    }
+    if (e.event.extendedProps.category === "run") this.props.dragEvent(e);
   }
-
+  
 }
 
 const mapStateToProps = (state) => {

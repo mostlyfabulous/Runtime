@@ -19,16 +19,32 @@ const initialWeatherState = {
   weatherReady: false,
   weatherEvents: [],
   weatherSubscriptionStopped: false,
+  weatherColorPrefs: {}
 };
 
 export function weatherReducerMiddleware(state = initialWeatherState, action) {
   switch (action.type) {
     case WEATHER_SUBSCRIPTION_READY:
+    console.log(action.payload.data);
       return {
         ...state,
         weatherReady: action.payload.ready,
+        weatherColorPrefs: action.payload.data
       };
     case WEATHER_SUBSCRIPTION_CHANGED:
+    if (state.weatherEvents) {
+      console.log("coloring weather events");
+      const {cool, warm} = state.weatherColorPrefs;
+      action.payload.map( (e) => {
+        if (e.temperature > 24.0) {e.color = 'red';}
+        else if (e.temperature > 20.0 && e.temperature < 24.0) {e.color = 'green'}
+        else {e.color = 'blue'};
+      });
+      return {
+        ...state,
+        weatherEvents: action.payload,
+      };
+    }
       return {
         ...state,
         weatherEvents: action.payload,
@@ -62,7 +78,7 @@ export function calendarEventsReducer(state = initialCalendarState, action) {
         ...state,
         calendarEvents: action.payload,
       };
-    case STOP_SUBSCRIPTION: // TODO: stop a sub when a user logs out or exits
+    case STOP_SUBSCRIPTION:
       return action.payload === RUNS_SUB
         ? { ...state, calendarSubscriptionStopped: true }
         : state;

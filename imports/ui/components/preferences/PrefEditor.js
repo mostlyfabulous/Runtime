@@ -10,7 +10,7 @@ import { Container, Row, Col } from 'reactstrap';
 import { SliderPicker, CompactPicker } from 'react-color';
 import { Card, CardImg, CardText, CardBody,
   CardTitle, CardSubtitle, CardHeader } from 'reactstrap';
-
+const canadaCities = require('../../../utils/CanadaCityLatLonPairs.json');
 
 export class PrefEditor extends Component {
   constructor(props) {
@@ -123,9 +123,11 @@ export class PrefEditor extends Component {
             </Col>
             <Col sm={4}>
               <Input type="select" name="city" id ="city">
-                <option value="Vancouver"> Vancouver </option>
-                <option value="Toronto"> Toronto </option>
-                <option value="Calgary"> Calgary </option>
+                {canadaCities.map(c => (
+                  <option value={c.city}>
+                      {c.city}
+                  </option>
+                ))}
               </Input>
               </Col>
           </FormGroup>
