@@ -213,6 +213,10 @@ body {
   transition: opacity 1300ms ease-in;
 }
 
+.indent {
+  margin-left: 3%;
+}
+
 .chartInfo0.card-header {
   background-color: #badeff;
 }

@@ -2,11 +2,12 @@ import React, { Component } from 'react';
 import {connect} from 'react-redux';
 
 import {getRunInfoHistPage, getOverallStats} from '../formatHelpers.js'
-
+import { Card, CardBody, CardHeader } from 'reactstrap';
 
 class HistoryInfo extends React.Component {
 
     render() {
+        let header = "Run Information";
         let details = <p>Click on the chart to see more details.</p>;
 
         if (this.props.info.length !== 0) {
@@ -24,7 +25,6 @@ class HistoryInfo extends React.Component {
                 console.log(info);
 
                 details = <div>
-                    <h2>{stats.day}</h2>
                     <b>Total distance travelled:</b> {stats.totalDist} km
                     {timeDependant}
                     {info.map((run, index) => (
@@ -36,11 +36,17 @@ class HistoryInfo extends React.Component {
                         </div>
                     ))}
                 </div>;
+                header = stats.day;
             }
         }
         return (
             <div>
-                {details}
+                <Card>
+                    <CardHeader tag="h2">{header}</CardHeader>
+                    <CardBody>
+                        {details}
+                    </CardBody>
+                </Card>
             </div>
         )
     }

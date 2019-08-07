@@ -26,11 +26,12 @@ class HomeStats extends React.Component {
         <br />
         <b> Average Speed:  </b>{stats.avgSpeed} km/h
         <br />
+        {random.desc}
         <br />
-
-         {random.desc}
-
-        {getRunInfo(random.run)}</CardText>
+        <div className='indent'>
+          {getRunInfo(random.run)}
+        </div>
+        </CardText>
 
       </div>
     }
