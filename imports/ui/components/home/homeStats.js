@@ -34,6 +34,18 @@ class HomeStats extends React.Component {
 
       </div>
     }
+
+    // let color = '#fff';
+    // if (this.props.preferences.preferencesEvents[0] !== undefined) {
+    //   color = this.props.preferences.preferencesEvents[0].background;
+    // }
+    // let backgroundColor = "{backgroundColor: '" + color + "'} ";
+    // console.log('bgCol: ')
+    // console.log(backgroundColor);
+    // console.log('homestats');
+    // console.log(this.props.preferences);
+    // console.log(this.props.preferencesEvents);
+    // console.log(this.props.preferencesEvents[0].background);
     return (
       <div>
         <Card>

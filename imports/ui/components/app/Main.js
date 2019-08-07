@@ -17,7 +17,8 @@ class Main extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      gmaps: ""
+      gmaps: "",
+      backgroundColor: '#fff',
     }
     Meteor.call('getGoogleKeys', function(err, res) {
       if (err) {console.log(err);}
@@ -63,9 +64,25 @@ class Main extends React.Component {
     // once preferences are loaded, load weather events
     if (prevProps.preferencesReady !== this.props.preferencesReady) {
       let {clouds, min_temp, max_temp,
-        precipitation, city} = this.props.preferencesEvents[0];
+        precipitation, city, background} = this.props.preferencesEvents[0];
       this.props.loadWeatherEvents(city);
+
+      // then get backgroundColor
+      this.setState({backgroundColor: this.props.preferencesEvents[0].background})
+      // , () =>
+      // console.log(this.state.backgroundColor);
+
+      console.log('bgCol: ')
+      console.log(this.props.preferencesEvents[0]);
+      console.log(background);
+      //console.log(this.props.preferences.preferencesEvents[0].background);
+      //console.log(this.state.backgroundColor);
+      // console.log('homestats');
+      // console.log(this.props.preferences);
+      // console.log(this.props.preferencesEvents);
+      // console.log(this.props.preferencesEvents[0].background);
     }
+
     if (!this.props.account.userId && prevProps.account.userId !== this.props.account.userId) {
       // on logout, stop subscriptions
       console.log("User logged out");
@@ -73,13 +90,15 @@ class Main extends React.Component {
       this.props.stopSubscription(RUNS_SUB);
       this.props.stopSubscription(PREFERENCES_SUB);
       this.props.clearGoogleEvents();}
-
   }
 
+
   render() {
-    let body =<RunPlan/>;
+    console.log('render main');
+    console.log(this.state.backgroundColor);
+    let body =<RunPlan />;
     if (this.props.page === 'home') {
-      body =<Home/>;
+      body =<Home />;
     } else if (this.props.page === 'history') {
       body =<History/>;
     } else if (this.props.page === 'preferences') {
@@ -89,7 +108,7 @@ class Main extends React.Component {
 
     }
     return (
-      <div>
+      <div style={{backgroundColor : this.state.backgroundColor}}>
         {body}
       </div>
     )

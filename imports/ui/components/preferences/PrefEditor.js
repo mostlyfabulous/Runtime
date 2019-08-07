@@ -16,7 +16,7 @@ export class PrefEditor extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      background: this.props.preferences.preferencesEvents[0].min_duration || 'fff',
+      background: this.props.preferences.preferencesEvents[0].background || 'fff',
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -26,11 +26,6 @@ export class PrefEditor extends Component {
     preferencesEvents: PropTypes.array.isRequired,
     preferencesSubscriptionStopped: PropTypes.bool.isRequired,
   }
-
-  componentDidMount() {
-     console.log('get preferences data in pref editor')
-     console.log(this.props.preferences.preferencesEvents);
- }
 
   handleChange(event) {
     const name = event.target.name;
@@ -64,7 +59,7 @@ export class PrefEditor extends Component {
     let inputRange = (editedPref.clouds <= 100) && (editedPref.clouds >= 0) && (editedPref.precipitation <= 100) && (editedPref.precipitation >= 0) && (editedPref.city.length > 0);
     if (inputType && inputRange) {
       // console.log("Submitted event:");
-      // console.log(e.target.minTemp.value);
+      // // console.log(e.target.minTemp.value);
       // console.log(editedPref)
       this.props.editPreferences(editedPref);
     } else {
@@ -79,6 +74,7 @@ export class PrefEditor extends Component {
     }
     let currentPrefs = "";
     if (this.props.preferences.preferencesEvents[0] !== undefined) {
+
       currentPrefs = <div>
         <Card>
         <CardHeader tag="h1">
