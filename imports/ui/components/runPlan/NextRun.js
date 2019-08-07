@@ -141,7 +141,7 @@ class NextRun extends Component {
           let minCond = this.props.preferencesEvents[0].min_temp <= (sortedWeather[i].temp -273.15);
           if (maxCond && minCond) {
             freeEventsWeatherFilterTemp.push(entry);
-            tempVariance.push((sortedWeather[i].temp -273.15)-medianTemp);
+            tempVariance.push(Math.abs((sortedWeather[i].temp -273.15)-medianTemp));
           }
           // if ( (diffMax <= avg) && (diffMin <= avg)) {
           //   freeEventsWeatherFilterTemp.push(entry);
