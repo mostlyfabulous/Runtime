@@ -2,6 +2,7 @@ import React from 'react';
 import Info from '../components/runPlan/Info.js';
 import Calendar from '../components/runPlan/Calendar.js';
 import {connect} from 'react-redux';
+import { Container, Row, Col } from 'reactstrap';
 
 class RunPlan extends React.Component {
   constructor(props) {
@@ -14,12 +15,19 @@ class RunPlan extends React.Component {
 
       return (
         <div className='body'>
+          <Row>
+            <Col sm={5}>
                   <div id='sideMenu'>
                       <Info/>
                   </div>
+            </Col>
+
+            <Col sm={7}>
                   <div id='mainContent'>
                       <Calendar />
                   </div>
+            </Col>
+          </Row>
         </div>
       );
 

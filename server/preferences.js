@@ -8,7 +8,7 @@ Meteor.publish('preferences', function() {
     return Preferences.find({_id: "defaultUser"});
   }
   if (Preferences.find({_id: this.userId}).fetch().length === 0) {
-  let pref = {_id: this.userId, clouds: 50, min_temp: 10, max_temp: 20, precipitation: 25, city: 'Vancouver', min_duration: 24};
+  let pref = {_id: this.userId, clouds: 50, min_temp: 10, max_temp: 20, precipitation: 25, city: 'Vancouver', min_duration: 24, background: "#fff"};
     Preferences.insert(pref);
   }
   return Preferences.find({_id: this.userId});
