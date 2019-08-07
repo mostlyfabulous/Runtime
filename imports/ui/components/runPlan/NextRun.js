@@ -32,6 +32,7 @@ class NextRun extends Component {
       nextRun: {},
       modal: false,
       modalText: "",
+      modalTitle: "",
       eventToAdd: {}
     };
     this.handleChange = this.handleChange.bind(this);
@@ -52,8 +53,10 @@ class NextRun extends Component {
   }
  
   toggleConfirm() {
-    let newEvent = this.state.eventToAdd;
-    this.props.addEvent(newEvent);
+    if (this.state.modalTitle === "Add a run") {
+      let newEvent = this.state.eventToAdd;
+      this.props.addEvent(newEvent);
+    }
     this.toggle();
   }
  
@@ -288,6 +291,7 @@ class NextRun extends Component {
       console.log(newEvent)
 
       this.setState({
+        modalTitle: 'Add a run',
         modalText: "Would you like to add a run on " + moment(newEvent.start).format("dddd [the] Do, h:mm a") + "?",
         eventToAdd: newEvent
       })
@@ -295,6 +299,12 @@ class NextRun extends Component {
       //this.props.addEvent(newEvent);
     } else {
       //could not find run
+      this.setState({
+        modalTitle: 'No run scheduled',
+        modalText: "Sorry, we were unable to find a time that works for you. You can change your preferences and try again or pick a time on the calendar.",
+        eventToAdd: {}
+      })
+      this.toggle();
     }
   }
 
@@ -309,6 +319,10 @@ class NextRun extends Component {
       // console.log(eventDuration);
     }
 
+    let cancel = "";
+    if (this.state.modalTitle === 'Add a run') {
+      cancel = <Button color="secondary" onClick={this.toggleCancel}>Cancel</Button>
+    }
 
       return (
             <div>
@@ -333,14 +347,14 @@ class NextRun extends Component {
               </Card>
 
               <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
-                <ModalHeader toggle={this.toggle}>Add a Run
+                <ModalHeader toggle={this.toggle}>{this.state.modalTitle}
                 </ModalHeader>
                 <ModalBody>
                   {this.state.modalText}
                 </ModalBody>
                 <ModalFooter>
                   <Button color="primary" onClick={this.toggleConfirm}>Confirm</Button>{' '}
-                  <Button color="secondary" onClick={this.toggleCancel}>Cancel</Button>
+                  {cancel}
                 </ModalFooter>
               </Modal>
             </div>
