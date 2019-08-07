@@ -6,7 +6,7 @@ import {bindActionCreators} from 'redux'
 import { Form, FormGroup, Label, Input, FormFeedback, FormText } from 'reactstrap';
 import { Card, CardImg, CardText, CardBody,
   CardTitle, CardSubtitle, Button, CardHeader } from 'reactstrap';
-import { Container, Row, Col } from 'reactstrap';
+import { Container, Row, Col, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
 var moment = require("moment");
 var momentDurationFormatSetup = require("moment-duration-format");
@@ -29,13 +29,38 @@ class NextRun extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      nextRun: {}
+      nextRun: {},
+      modal: false,
+      modalText: "",
+      eventToAdd: {}
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+
+    this.toggle = this.toggle.bind(this);
+    this.toggleConfirm = this.toggleConfirm.bind(this);
+    this.toggleCancel = this.toggleCancel.bind(this);
   }
   handleChange(event) {
     this.setState({duration: event.target.duration});
+  }
+
+  toggle() {
+    this.setState(prevState => ({
+      modal: !prevState.modal
+    }));
+  }
+ 
+  toggleConfirm() {
+    let newEvent = this.state.eventToAdd;
+    this.props.addEvent(newEvent);
+    this.toggle();
+  }
+ 
+  toggleCancel() {
+    this.setState(prevState => ({
+      modal: !prevState.modal
+    }));
   }
 
   sortByStart(eventList) {
@@ -261,35 +286,15 @@ class NextRun extends Component {
       }
       console.log('newEvent in plan a run')
       console.log(newEvent)
-      this.props.addEvent(newEvent);
+
+      this.setState({
+        modalText: "Would you like to add a run on " + moment(newEvent.start).format("dddd [the] Do, h:mm a") + "?",
+        eventToAdd: newEvent
+      })
+      this.toggle();
+      //this.props.addEvent(newEvent);
     } else {
-      let unique = (Date.parse(new Date)).toString(16) + Math.floor(Math.random()*1000);
-      let length = this.props.calendarEvents.length;
-      let start = this.props.calendarEvents[length-1].end;
-      let startOffset = moment(start).add(this.props.preferencesEvents[0].min_duration, 'hours').format();
-      let startTime = moment(startOffset).format();
-      let startUNIX = Date.parse(startTime);
-      let startFormatted = new Date(startUNIX);
-      let end = startOffset;
-      let endTime = moment(end).add(duration, 'minutes').format();
-      let endTimeUNIX = Date.parse(endTime);
-      let endTimeFormatted = new Date(endTimeUNIX);
-      let newEvent = {
-        id: unique,
-        _id: unique,
-        title: "Suggested Run",
-        start: startFormatted,//e.date, // TODO: determine how to set timezone if needed
-        end: endTimeFormatted,// moment(suggestions[0]).add(duration, 'minutes').format(),
-        duration: moment.duration(duration, 'minutes'),
-        allDay: false, //e.allDay,
-        distance: 5,
-        category: "run",
-        owner: Meteor.userId(),//this.props.account.userId,
-        username: Meteor.user().username,//this.props.account.user.username,
-      }
-      console.log('newEvent in plan a run')
-      console.log(newEvent)
-      this.props.addEvent(newEvent);
+      //could not find run
     }
   }
 
@@ -326,6 +331,18 @@ class NextRun extends Component {
               </Form>
               </CardBody>
               </Card>
+
+              <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
+                <ModalHeader toggle={this.toggle}>Add a Run
+                </ModalHeader>
+                <ModalBody>
+                  {this.state.modalText}
+                </ModalBody>
+                <ModalFooter>
+                  <Button color="primary" onClick={this.toggleConfirm}>Confirm</Button>{' '}
+                  <Button color="secondary" onClick={this.toggleCancel}>Cancel</Button>
+                </ModalFooter>
+              </Modal>
             </div>
       )
   }
