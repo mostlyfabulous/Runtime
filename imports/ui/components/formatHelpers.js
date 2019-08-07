@@ -3,6 +3,7 @@ import { Card, CardImg, CardText, CardBody,
   CardTitle, CardSubtitle, Button, CardHeader } from 'reactstrap';
 
 const DATE_TO_WEEKDAY = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+export const barColors = ['#badeff','#f2aaaa', '#9ee4d9', '#f5f3cb'];
 
 const getFormattedDate = (date) => {
     return DATE_TO_WEEKDAY[date.getDay()]+', '+(date.getMonth()+1)+'/'+date.getDate();
@@ -74,7 +75,7 @@ export const getRunInfo = (run) => {
     </div>
 }
 
-export const getRunInfoHistPage = (run) => {
+export const getRunInfoHistPage = (run, index) => {
     let day = getFormattedDate(run.start);
     let start = getFormattedTime(run.start);
 
@@ -101,9 +102,11 @@ export const getRunInfoHistPage = (run) => {
             <b> Difficulty: </b> {(run.difficulty === "") ? 0 : run.difficulty}/10
         </span>
     }
+
+    let colour = 'chartInfo'+(index % barColors.length);
     return <div>
         <Card>
-        <CardHeader tag="h4">{run.title}</CardHeader>
+        <CardHeader tag="h4" className={colour}>{run.title}</CardHeader>
         <CardBody>
         <b> Date: </b> {day}
         <br />

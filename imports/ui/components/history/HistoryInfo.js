@@ -31,7 +31,7 @@ class HistoryInfo extends React.Component {
                         <div key = {index}>
                             <br />
 
-                            {getRunInfoHistPage(run)}
+                            {getRunInfoHistPage(run, index)}
 
                         </div>
                     ))}

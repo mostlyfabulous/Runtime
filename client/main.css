@@ -106,6 +106,7 @@ body {
   float: right;
   padding: 1em;
   padding-top: 0;
+  text-align: center;
 }
 
 #mainContentHome {
@@ -213,4 +214,20 @@ body {
 .editor-leave.editor-leave-active {
   opacity: 0.01;
   transition: opacity 1300ms ease-in;
+}
+
+.chartInfo0.card-header {
+  background-color: #badeff;
+}
+
+.chartInfo1.card-header {
+  background-color: #f2aaaa;
+}
+
+.chartInfo2.card-header {
+  background-color: #9ee4d9;
+}
+
+.chartInfo3.card-header {
+  background-color: #f5f3cb;
 }

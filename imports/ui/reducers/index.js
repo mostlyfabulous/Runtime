@@ -2,6 +2,7 @@ import React from 'react';
 import { combineReducers } from 'redux';
 import { weatherReducerMiddleware, calendarEventsReducer } from './calendarEventsReducer';
 import { preferencesEventsReducer } from './preferencesEventsReducer';
+import { barColors } from '../components/formatHelpers';
 
   const weatherReducer = (weather, action) => {
     weather = weather || {};
@@ -120,7 +121,7 @@ const getPreferencesReducer = (info = [], action) => {
 
 const runHistoryDataReducer = (data = {}, action) => {
   if (action.type === 'GET_HISTORY') {
-    let barColors = ['rgb(186, 222, 255)','rgb(242, 170, 170)', 'rgb(158, 228, 217)', 'rgb(245, 243, 203)'];
+    //let barColors = ['#badeff','#f2aaaa', '#9ee4d9', '#f5f3cb'];
     currentChartFormat = action.format;
 
     let labels = [];
@@ -154,11 +155,12 @@ const runHistoryDataReducer = (data = {}, action) => {
         } else
           distances[j] = run.distance;
       }
-      datasets[i] = {
+      let newSet = {
         label: 'Run #'+(i+1),
         backgroundColor: barColors[i%barColors.length],
         data: distances
       }
+      datasets.splice(0,0,newSet);
     }
 
     data = {

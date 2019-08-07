@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Line } from 'react-chartjs-2';
+import { Bar } from 'react-chartjs-2';
 import { getHistoryChartData, historyInfo } from '../../actions/index';
 import { connect } from 'react-redux';
 
@@ -16,7 +16,7 @@ class Chart extends Component {
         return (
             <div>
                 <h2>Run History <i className="history icon"></i></h2>
-                <Line
+                <Bar
                     data={this.props.data}
                     onElementsClick={elems => this.handleClick(elems)}
                     options={{
@@ -26,9 +26,14 @@ class Chart extends Component {
                         maintainAspectRatio: true,
                         scales: {
                             xAxes: [{
+                                stacked: true,
                                 label: 'Day',
                                 griLines: {
                                     display: false
+                                },
+                                scaleLabel: {
+                                    display: true,
+                                    labelString: 'Last 7 days'
                                 }
                             }],
                             yAxes: [{
