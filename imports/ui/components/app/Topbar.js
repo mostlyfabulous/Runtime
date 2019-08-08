@@ -15,7 +15,7 @@ class Topbar extends React.Component {
     let weatherInfo = ""
     let city = "";
     if (this.props.weatherEvents.length > 0){
-      let now = new Date();
+      let now = Date.now();
       let data = this.props.weatherEvents.filter(weather =>
         (weather.start <= now) && (weather.end >= now));
 
@@ -49,14 +49,14 @@ class Topbar extends React.Component {
   }
 
   render() {
-    console.log(this.props.weatherEvents[0])
     // console.log(fog)
     let user = "";
     if (this.props.account.user) user = ' '+this.props.account.user.username;
 
     let t = null;
     let result;
-    if (this.props.weather.data) t = this.props.weather.data.list[0].main.temp;
+    if (this.props.weatherEvents.length>0) t = this.props.weatherEvents.filter(weather =>
+      (weather.start <= Date.now()) && (weather.end >= Date.now())).temperature;
 
     let picture = "";
     if (user !== "") {
