@@ -2,12 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { withAccount } from '../accounts/connector.js'
 import AccountsUIWrapper from '../accounts/AccountsUIWrapper.js';
-import { addWeatherData, loadPreferences } from '../../actions/index'
 import {bindActionCreators} from 'redux'
-
-//can't find
-//import fog from './icons/fog.png';
-//console.log(fog);
 
 class Topbar extends React.Component {
 
@@ -21,10 +16,11 @@ class Topbar extends React.Component {
     let city = "";
     if (this.props.weatherEvents.length > 0){
       let now = new Date();
-      let data = this.props.weatherEvents.filter(weather => 
+      let data = this.props.weatherEvents.filter(weather =>
         (weather.start <= now) && (weather.end >= now));
 
       data = data[0];
+      console.log(data);
       let prefs = this.props.preferences.preferencesEvents[0];
 
       let temp = Math.round(data.temperature) + '°C';
@@ -49,12 +45,12 @@ class Topbar extends React.Component {
         <div className = 'topbarCity'>{city}</div>
         <div className = 'topbarWeather'>{weatherInfo}</div>
         <div className = 'topbarLogin'><AccountsUIWrapper/></div>
-      </div> 
+      </div>
   }
 
   render() {
     console.log(this.props.weatherEvents[0])
-    console.log(fog)
+    // console.log(fog)
     let user = "";
     if (this.props.account.user) user = ' '+this.props.account.user.username;
 
@@ -68,16 +64,15 @@ class Topbar extends React.Component {
       picture = <img src={baseUrl + this.props.account.user._id} alt="Profile Icon" width="60" height="60"/>;
     }
     // warm
-    if (t > 298.15) 
+    if (t > 298.15)
       result = "topbar warm";
-    
     // fair
     else if (t > 295.15 && t <= 298.15)
       result = "topbar fair";
     // cool
-    else if (t <= 295.15) 
+    else if (t <= 295.15)
       result = "topbar cold";
-    else 
+    else
       result = "topbar";
 
     let content = <div className = {result}>Hello{user}! {picture} {this.topbarInfo()}</div>
@@ -99,10 +94,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
-    {
-      addWeatherData,
-      loadPreferences
-    },
+    {},
     dispatch
   );
 };
