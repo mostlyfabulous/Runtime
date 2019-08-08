@@ -21,11 +21,7 @@ class History extends React.Component {
 
               <Col sm={8}>
                 <div id='mainContent'>
-                <Card>
-                  <CardBody>
-                    <HistoryChartContainer/>
-                  </CardBody>
-                </Card>
+                  <HistoryChartContainer/>
                 </div>
               </Col>
             </Row>

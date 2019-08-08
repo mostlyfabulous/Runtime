@@ -98,6 +98,7 @@ class NextRun extends Component {
 
     let sortedWeather = this.props.weatherEvents.filter(weather => weather.start >= now);
     sortedWeather = this.sortByStart(sortedWeather);
+    console.log(sortedWeather)
 
     futureEvents = this.sortByStart(futureEvents);
 
@@ -181,6 +182,7 @@ class NextRun extends Component {
         let newEnd = moment(entry.start).add(tempBlock, 'minutes').format();
         let endTimeUNIX = Date.parse(newEnd);
         let endTimeFormatted = new Date(endTimeUNIX);
+        endTimeFormatted.setMinutes(0,0,0);
         let trimmedEvent = {
           start: entry.start,
           end: endTimeFormatted

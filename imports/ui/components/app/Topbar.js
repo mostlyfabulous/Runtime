@@ -4,55 +4,44 @@ import { withAccount } from '../accounts/connector.js'
 import AccountsUIWrapper from '../accounts/AccountsUIWrapper.js';
 import { addWeatherData, loadPreferences } from '../../actions/index'
 import {bindActionCreators} from 'redux'
-const axios = require('axios');
-import { config } from '../../../../config.js';
+
+import logo from './icons/fog.png';
+
+console.log(logo);
 
 class Topbar extends React.Component {
-  componentDidMount() {
-    this.props.loadPreferences();
-  }
-  
-  loadWeather() {
-    let weatherkey = config().openweatherapi
-    let weather_url = 'https://api.openweathermap.org/data/2.5/forecast?q=Vancouver,ca&appid=' + weatherkey;
-    let preferences = this.props.preferences.preferencesEvents;
-    if (preferences.length > 0) {
-      if (preferences[0].city !== ''){
-        weather_url = 'https://api.openweathermap.org/data/2.5/forecast?q=' + this.props.preferences.preferencesEvents[0].city + ',ca&appid=' + weatherkey;
-      }
-      axios.get(weather_url)
-      .then(response => {
-        this.props.addWeatherData(response)
-      })
-      .catch(error => {
-        console.log(error);
-      });
-    }
+
+  getIcon(value) {
+    let icon = './icons/'+value+'.png';
+    return icon;
   }
 
   topbarInfo() {
     let weatherInfo = ""
     let city = "";
-    if (this.props.weather.data){
-      let data = this.props.weather.data;
-      
-      let prefs = this.props.preferences.preferencesEvents;
-      if (prefs.length > 0 && this.props.weather.data.city.name !== prefs[0].city){
-        this.loadWeather();
-      }
+    if (this.props.weatherEvents.length > 0){
+      let now = new Date();
+      let data = this.props.weatherEvents.filter(weather => 
+        (weather.start <= now) && (weather.end >= now));
 
-      let temp = Math.round(data.list[0].main.temp-273.15) + '°C';
-      let temp_min = Math.round(data.list[0].main.temp_min-273.15) + '°C';
-      let temp_max = Math.round(data.list[0].main.temp_max-273.15) + '°C';
-      let clouds = data.list[0].clouds.all + '%';
-      city = data.city.name+", "+data.city.country;
+      data = data[0];
+      let prefs = this.props.preferences.preferencesEvents[0];
+
+      let temp = Math.round(data.temperature) + '°C';
+      let apparent_temp = Math.round(data.apparentTemperature) + '°C';
+      let clouds = data.cloudCover*100 + '%';
+      city = data.city+", "+data.country;
+      let pop = data.precipProbability*100+'%';
+
+      let icon = this.getIcon(data.icon);
 
       weatherInfo = <div>
-        <p><b>Currently</b> {temp}</p>
-        <p><b>Low </b> {temp_min}, <b>High </b>{temp_max}</p>
+        <img src={logo} alt='logo' />
+        <p>{temp} (Feels like {apparent_temp})</p>
         <p><b>Cloud Coverage:</b> {clouds}</p>
+        <p><b>Chance of Rain:</b> {pop}</p>
       </div>;
-    } else this.loadWeather();
+    }
 
     return <div>
         <div className = 'topbarCity'>{city}</div>
@@ -62,6 +51,8 @@ class Topbar extends React.Component {
   }
 
   render() {
+    console.log(this.props.weatherEvents[0])
+    console.log(fog)
     let user = "";
     if (this.props.account.user) user = ' '+this.props.account.user.username;
 
@@ -97,6 +88,7 @@ const mapStateToProps = (state) => {
     weather: state.weather,
     page: state.pages,
     preferences: state.preferences,
+    weatherEvents: state.weatherMiddleware.weatherEvents,
     preferencesReady: state.preferences.preferencesReady,
     preferencesEvents: state.preferences.preferencesEvents,
     preferencesSubscriptionStopped: state.preferences.preferencesSubscriptionStopped,
