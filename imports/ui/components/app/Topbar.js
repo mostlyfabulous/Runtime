@@ -5,9 +5,9 @@ import AccountsUIWrapper from '../accounts/AccountsUIWrapper.js';
 import { addWeatherData, loadPreferences } from '../../actions/index'
 import {bindActionCreators} from 'redux'
 
-import logo from './icons/fog.png';
-
-console.log(logo);
+//can't find
+//import fog from './icons/fog.png';
+//console.log(fog);
 
 class Topbar extends React.Component {
 
@@ -33,10 +33,12 @@ class Topbar extends React.Component {
       city = data.city+", "+data.country;
       let pop = data.precipProbability*100+'%';
 
-      let icon = this.getIcon(data.icon);
+      let path = this.getIcon(data.icon);
+      // tried with fog as src too
+      let icon = <img src={path} alt='weather' />
 
       weatherInfo = <div>
-        <img src={logo} alt='logo' />
+        {icon}
         <p>{temp} (Feels like {apparent_temp})</p>
         <p><b>Cloud Coverage:</b> {clouds}</p>
         <p><b>Chance of Rain:</b> {pop}</p>
