@@ -7,10 +7,10 @@ import PropTypes from 'prop-types';
 import { Button } from 'reactstrap';
 import { Form, FormGroup, Label, Input, FormFeedback, FormText } from 'reactstrap';
 import { Container, Row, Col } from 'reactstrap';
-import { CompactPicker } from 'react-color';
+import { SliderPicker, CompactPicker } from 'react-color';
 import { Card, CardImg, CardText, CardBody,
   CardTitle, CardSubtitle, CardHeader } from 'reactstrap';
-
+const canadaCities = require('../../../utils/CanadaCityLatLonPairs.json');
 
 export class PrefEditor extends Component {
   constructor(props) {
@@ -123,9 +123,11 @@ export class PrefEditor extends Component {
             </Col>
             <Col sm={4}>
               <Input type="select" name="city" id ="city">
-                <option value="Vancouver"> Vancouver </option>
-                <option value="Toronto"> Toronto </option>
-                <option value="Calgary"> Calgary </option>
+                {canadaCities.map(c => (
+                  <option value={c.city}>
+                      {c.city}
+                  </option>
+                ))}
               </Input>
               </Col>
           </FormGroup>
@@ -190,7 +192,7 @@ export class PrefEditor extends Component {
   </Col>
 
   <Col sm={6}>
-    <CompactPicker
+    <SliderPicker
       color={ this.state.background }
       onChangeComplete={ this.handleChangeComplete }/>
   </Col>

@@ -2,6 +2,7 @@ import React from 'react';
 import { getRunInfo, getOverallStats } from '../formatHelpers.js';
 import { Card, CardImg, CardText, CardBody,
   CardTitle, CardSubtitle, Button, CardHeader } from 'reactstrap';
+import { Progress } from 'reactstrap';
 
 class HomeStats extends React.Component {
   chooseRandomStat(stats) {
@@ -14,9 +15,42 @@ class HomeStats extends React.Component {
     let statInfo = "";
     let runs = this.props.runs;
 
+
+
     if (runs.length > 0) {
+
+
       let stats = getOverallStats(runs);
       let random = this.chooseRandomStat(stats.bests);
+      let barColor = "success"
+      let barText = "";
+      let barValue = stats.totalDist;
+
+      if (stats.totalDist < 500) {
+        barColor = "success";
+        barText = "Level 1/4";
+        barValue = stats.totalDist/500;
+      } else if (stats.totalDist < 2000) {
+        barColor = "info";
+        barText = "Level 2/4";
+        barValue = stats.totalDist/2000;
+      } else if (stats.totalDist < 10000) {
+        barColor = "warning";
+        barText = "Level 3/4";
+        barValue = stats.totalDist/10000;
+      } else if (stats.totalDist < 50000){
+        barColor = "danger";
+        barText = "Level 4/4";
+        barValue = stats.totalDist/50000;
+      } else {
+        barColor = "danger";
+        barText = "TOP LEVEL ACHIEVED!";
+      }
+
+      barValue = barValue*100;
+      console.log('bar val');
+      console.log(barValue);
+
       statInfo = <div>
 
         <CardText>
@@ -26,27 +60,22 @@ class HomeStats extends React.Component {
         <br />
         <b> Average Speed:  </b>{stats.avgSpeed} km/h
         <br />
-        {random.desc}
+        <Progress color = {barColor} value={barValue}> {barText} </Progress>
         <br />
-        <div className='indent'>
+
+         {random.desc}
+
+         <div className='indent'>
           {getRunInfo(random.run)}
         </div>
         </CardText>
 
+
       </div>
     }
 
-    // let color = '#fff';
-    // if (this.props.preferences.preferencesEvents[0] !== undefined) {
-    //   color = this.props.preferences.preferencesEvents[0].background;
-    // }
-    // let backgroundColor = "{backgroundColor: '" + color + "'} ";
-    // console.log('bgCol: ')
-    // console.log(backgroundColor);
-    // console.log('homestats');
-    // console.log(this.props.preferences);
-    // console.log(this.props.preferencesEvents);
-    // console.log(this.props.preferencesEvents[0].background);
+
+
     return (
       <div>
         <Card>

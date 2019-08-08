@@ -48,7 +48,7 @@ class Main extends React.Component {
           precipitation, city} = this.props.preferencesEvents[0];
         this.props.loadPreferences();
         this.props.loadRunEvents(this.props.account.userId);
-        this.props.loadWeatherEvents(city); // city may not be available
+        this.props.loadWeatherEvents(city, {min_temp, max_temp}); // city may not be available
         }
         if (prevProps.preferencesEvents.length > 0) {
           if (this.props.preferencesEvents[0].city !== prevProps.preferencesEvents[0].city) {
@@ -57,7 +57,7 @@ class Main extends React.Component {
            this.props.stopSubscription(WEATHER_SUB);
            let {clouds, min_temp, max_temp,
              precipitation, city} = this.props.preferencesEvents[0];
-             this.props.loadWeatherEvents(city);
+             this.props.loadWeatherEvents(city, {min_temp, max_temp});
            }
          }
       }
@@ -65,7 +65,7 @@ class Main extends React.Component {
     if (prevProps.preferencesReady !== this.props.preferencesReady) {
       let {clouds, min_temp, max_temp,
         precipitation, city, background} = this.props.preferencesEvents[0];
-      this.props.loadWeatherEvents(city);
+      this.props.loadWeatherEvents(city, {min_temp, max_temp});
 
       // then get backgroundColor
       this.setState({backgroundColor: this.props.preferencesEvents[0].background})
@@ -94,8 +94,6 @@ class Main extends React.Component {
 
 
   render() {
-    console.log('render main');
-    console.log(this.state.backgroundColor);
     let body =<RunPlan />;
     if (this.props.page === 'home') {
       body =<Home />;

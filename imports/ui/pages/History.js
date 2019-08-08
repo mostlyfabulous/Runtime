@@ -4,7 +4,8 @@ import { connect } from 'react-redux';
 import HistoryChartContainer from '../containers/HistoryChartContainer';
 import HistoryInfo from '../components/history/HistoryInfo';
 import { Container, Row, Col } from 'reactstrap';
-
+import { Card, CardImg, CardText, CardBody,
+  CardTitle, CardSubtitle, CardHeader } from 'reactstrap';
 
 class History extends React.Component {
     render() {
@@ -20,7 +21,11 @@ class History extends React.Component {
 
               <Col sm={8}>
                 <div id='mainContent'>
+                <Card>
+                  <CardBody>
                     <HistoryChartContainer/>
+                  </CardBody>
+                </Card>
                 </div>
               </Col>
             </Row>

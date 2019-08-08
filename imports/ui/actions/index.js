@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 
 import { startSubscription } from 'meteor-redux-middlewares';
 import Weather from '../../api/weather.js'
+import DarkSky from '../../api/weatherDarkSky.js'
 import Runs from '../../api/runs.js'
 import Preferences from '../../api/preferences.js'
 
@@ -11,10 +12,10 @@ export const PREFERENCES_SUBSCRIPTION_READY = 'PREFERENCES_SUBSCRIPTION_READY';
 export const PREFERENCES_SUBSCRIPTION_CHANGED = 'PREFERENCES_SUBSCRIPTION_CHANGED';
 export const PREFERENCES_SUB = 'preferences';
 export const EDIT_PREFERENCES = 'EDIT_PREFERENCES';
-
-export const WEATHER_SUBSCRIPTION_READY = 'WEATHER_SUBSCRIPTION_READY';
-export const WEATHER_SUBSCRIPTION_CHANGED = 'WEATHER_SUBSCRIPTION_CHANGED';
-export const WEATHER_SUB = 'weather';
+// to change back to open weather api, rename WEATHERDARKSKY to WEATHER
+export const WEATHER_SUBSCRIPTION_READY = 'WEATHERDARKSKY_SUBSCRIPTION_READY';
+export const WEATHER_SUBSCRIPTION_CHANGED = 'WEATHERDARKSKY_SUBSCRIPTION_CHANGED';
+export const WEATHER_SUB = 'weatherDarkSky';
 
 export const RUNS_SUBSCRIPTION_READY = 'RUNS_SUBSCRIPTION_READY';
 export const RUNS_SUBSCRIPTION_CHANGED = 'RUNS_SUBSCRIPTION_CHANGED';
@@ -41,12 +42,15 @@ export const loadPreferences = () =>
     };
   };
 
-export const loadWeatherEvents = (location) =>
+export const loadWeatherEvents = (city, userPrefs) =>
 // do not put console.log here, it causes a semi-cryptic error
   startSubscription({
     key: WEATHER_SUB,
-    get: () => Weather.find({city: location}).fetch(), // find should recieve a location
-    subscribe: () => Meteor.subscribe(WEATHER_SUB, location),
+    get: () => DarkSky.find({city: city}).fetch(), // find should recieve a location
+    subscribe: () => Meteor.subscribe(WEATHER_SUB, city),
+    onReadyData: () => ({
+      userPreferences: userPrefs,
+    })
   });
 
 export const loadRunEvents = (userId) =>
