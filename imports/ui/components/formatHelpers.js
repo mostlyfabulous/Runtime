@@ -23,12 +23,12 @@ export const getFormattedTime = (date) => {
 const convertSeconds = (time) => {
     let hours = 0;
     let mins = 0;
-    console.log(time)
+    // console.log(time)
     hours = Math.floor(time/(60*60));
     time -= hours*3600;
     mins = Math.floor(time/60);
     time -= mins*60;
-    console.log(hours)
+    // console.log(hours)
     return hours+':'+mins+':'+time;
 }
 

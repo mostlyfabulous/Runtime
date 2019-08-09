@@ -41,11 +41,11 @@ class Topbar extends React.Component {
       </div>;
     }
 
-    return <div>
+    return <>
         <div className = 'topbarCity'>{city}</div>
         <div className = 'topbarWeather'>{weatherInfo}</div>
         <div className = 'topbarLogin'><AccountsUIWrapper/></div>
-      </div>
+      </>
   }
 
   render() {
@@ -55,22 +55,24 @@ class Topbar extends React.Component {
 
     let t = null;
     let result;
-    if (this.props.weatherEvents.length>0) t = this.props.weatherEvents.filter(weather =>
-      (weather.start <= Date.now()) && (weather.end >= Date.now())).temperature;
-
+    if (this.props.weatherEvents.length>0) {
+      t = this.props.weatherEvents.filter(weather =>
+        (weather.start <= Date.now()) && (weather.end >= Date.now()));
+      t = t[0].temperature;
+    }
     let picture = "";
     if (user !== "") {
       let baseUrl = 'https://robohash.org/';
       picture = <img src={baseUrl + this.props.account.user._id} alt="Profile Icon" width="60" height="60"/>;
     }
     // warm
-    if (t > 298.15)
+    if (t > 24.0)
       result = "topbar warm";
     // fair
-    else if (t > 295.15 && t <= 298.15)
+    else if (t > 20.0 && t <= 24.0)
       result = "topbar fair";
     // cool
-    else if (t <= 295.15)
+    else if (t <= 20.0)
       result = "topbar cold";
     else
       result = "topbar";
