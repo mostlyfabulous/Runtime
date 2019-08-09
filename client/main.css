@@ -156,6 +156,14 @@ body {
   background-color: inherit;
 }
 
+#badge {
+  width: 100%;
+  height: auto;
+  position: absolute;
+  left: 0%;
+  bottom: 1%;
+}
+
 .warm {
   background-color: orange;
 }
