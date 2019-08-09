@@ -89,7 +89,7 @@ export class PrefEditor extends Component {
         <p> <b>Precipitation (%): </b> {this.props.preferences.preferencesEvents[0].precipitation}</p>
         <p> <b>Minimum time between runs (in hours): </b> {this.props.preferences.preferencesEvents[0].min_duration}</p>
         <p> <b>Preferred City: </b> {this.props.preferences.preferencesEvents[0].city}</p>
-        <img id="prefIcon" width="90%" src={'https://robohash.org/' + this.props.account.user._id} alt="Profile Icon" />
+        <img id="prefIcon" width="90%" src={'https://robohash.org/' + this.props.account.userId} alt="Profile Icon" />
         </CardBody>
         </Card>
       </div>
