@@ -103,6 +103,19 @@ if (this.state.modalTitle === "Change a run") {
   // }
 
   render() {
+    let warm = 24;
+    let cool = 20;
+    if (this.props.preferencesEvents[0]) {
+      warm = this.props.preferencesEvents[0].max_temp;
+      cool = this.props.preferencesEvents[0].min_temp
+    }
+    let legend = <ul className='legend'>
+      <li>Legend: </li>
+      <li><span className='hot' /> More than {warm}°C</li>
+      <li><span className='fair' /> {cool}°C to {warm}°C</li>
+      <li><span className='cool' /> Less than {cool}°C</li>
+    </ul>
+
     return (
       <Card>
         <CardBody>
@@ -110,6 +123,9 @@ if (this.state.modalTitle === "Change a run") {
             { (this.props.account.user !== {}) ?
             <>
               <GoogleCalendarHandler/>
+              <br />
+              {legend}
+              <br />
               <FullCalendar
               dateClick={this.handleDateClick}
               eventClick={this.handleEventClick}

@@ -34,10 +34,15 @@ export function weatherReducerMiddleware(state = initialWeatherState, action) {
     case WEATHER_SUBSCRIPTION_CHANGED:
     if (state.weatherEvents) {
       console.log("coloring weather events");
-      const {cool, warm} = state.weatherColorPrefs;
+      let cool = 20;
+      let warm = 24;
+      if (state.weatherColorPrefs.userPreferences){
+        cool = state.weatherColorPrefs.userPreferences.min_temp;
+        warm = state.weatherColorPrefs.userPreferences.max_temp;
+      }
       action.payload.map( (e) => {
-        if (e.temperature > 24.0) {e.color = 'red';}
-        else if (e.temperature > 20.0 && e.temperature <= 24.0) {e.color = 'green'}
+        if (e.temperature > warm) {e.color = 'red';}
+        else if (e.temperature > cool && e.temperature <= warm) {e.color = 'green'}
         else {e.color = '#1cdcbe'};
       });
       return {

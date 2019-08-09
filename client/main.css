@@ -168,6 +168,29 @@ body {
   background-color: #9EE4D9;
 }
 
+.legend { 
+  list-style: none;
+  padding: 0;
+ }
+.legend li { 
+  float: left; margin-right: 10px; 
+}
+.legend span { 
+  float: left;
+  width: 15px;
+  height: 15px;
+  margin: 5px;
+ }
+
+.hot {
+  background-color: red;
+}
+
+.cool {
+  background-color: #1cdcbe;
+}
+
+
 .spinner {
   border: 16px solid #f3f3f3;
   border-top: 16px solid #3498db;
