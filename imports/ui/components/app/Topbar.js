@@ -7,7 +7,7 @@ import {bindActionCreators} from 'redux'
 class Topbar extends React.Component {
 
   getIcon(value) {
-    let icon = './icons/'+value+'.png';
+    let icon = './climaicons/'+value+'.svg';
     return icon;
   }
 
