@@ -49,20 +49,11 @@ body {
   padding-left: 17%;
   font-size: 18pt;
   height: 4em;
+  width: 100%
 }
 
-.topbarWeather {
-  font-size: 12pt;
-  position: absolute;
-  left: 45%;
-  top: 1em;
-}
 
-.topbarLogin {
-  font-size: 12pt;
-  position: absolute;
-  left: 80%;
-  top: 1em;
+.topbarUser {
 }
 
 .topbarWeather p, h3 {
@@ -72,8 +63,22 @@ body {
 .topbarCity {
   font-size: 12pt;
   position: absolute;
-  left: 35%;
+  left: 40%;
   top: 2em;
+}
+
+.topbarWeather {
+  font-size: 12pt;
+  position: absolute;
+  left: 60%;
+  top: 1em;
+}
+
+.topbarLogin {
+  font-size: 12pt;
+  position: absolute;
+  left: 80%;
+  top: 1em;
 }
 
 .body {
