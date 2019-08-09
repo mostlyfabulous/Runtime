@@ -72,9 +72,6 @@ class Main extends React.Component {
       // , () =>
       // console.log(this.state.backgroundColor);
 
-      console.log('bgCol: ')
-      console.log(this.props.preferencesEvents[0]);
-      console.log(background);
       //console.log(this.props.preferences.preferencesEvents[0].background);
       //console.log(this.state.backgroundColor);
       // console.log('homestats');

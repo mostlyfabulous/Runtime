@@ -14,7 +14,7 @@ class Topbar extends React.Component {
   topbarInfo() {
     let user = "";
     if (this.props.account.user) user = ' '+this.props.account.user.username;
-    let result;
+    let result = 'topbar';
     let weatherInfo = ""
     let city = "";
 
@@ -45,13 +45,10 @@ class Topbar extends React.Component {
       // cool
       else if (data.temperature <= 20.0)
         result = "topbar cold";
-      else
-        result = "topbar";
 
       let pop = data.precipProbability*100+'%';
 
       let path = this.getIcon(data.icon);
-      // tried with fog as src too
       let icon = <img src={path} alt='weather' />
 
       let clouds = data.cloudCover*100 + '%';
@@ -105,7 +102,7 @@ class Topbar extends React.Component {
     // else
     //   result = "topbar";
 
-    let content = <>{this.topbarInfo()}</>
+    let content = < >{this.topbarInfo()}</>
     return content;
   }
 }

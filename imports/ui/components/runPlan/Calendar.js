@@ -21,6 +21,7 @@ import PropTypes from 'prop-types';
 import GoogleCalendarHandler from './GoogleCalendarHandler';
 
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Label, Input} from 'reactstrap';
+import { Card, CardBody} from 'reactstrap';
 
 
 // Calendar component -
@@ -103,44 +104,49 @@ if (this.state.modalTitle === "Change a run") {
 
   render() {
     return (
-      <div className = 'calendar'>
-        { (this.props.account.user !== {}) ?
-        <>
-          <GoogleCalendarHandler/>
-          <FullCalendar
-          dateClick={this.handleDateClick}
-          eventClick={this.handleEventClick}
-          eventDrop={this.handleEventDrop}
-          eventResize={this.handleEventResize}
-          defaultView="timeGridWeek"
-          scrollTime={new Date(Date.now()).getHours()+":00"}
-          header={{
-                left: "prev,next today",
-                center: "title",
-                right: "dayGridMonth,timeGridWeek,timeGridDay,listWeek"
-              }}
-          events={(this.props.calendarEvents.concat(this.props.weatherEvents))
-            .concat(this.props.googleEvents)}
-          editable={true}
-          nowIndicator= {true}
-          plugins={[ dayGridPlugin, timeGridPlugin, interactionPlugin]}
-          />
-          <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
-             <ModalHeader toggle={this.toggle}>{this.state.modalTitle}
-             </ModalHeader>
-             <ModalBody>
-               {this.state.modalText}
-             </ModalBody>
-             <ModalFooter>
-               <Button color="primary" onClick={this.toggleConfirm}>Confirm</Button>{' '}
-               <Button color="secondary" onClick={this.toggleCancel}>Cancel</Button>
-             </ModalFooter>
-         </Modal>
-        </>
-        : ''
-        }
+      <Card>
+        <CardBody>
+          <div>
+            { (this.props.account.user !== {}) ?
+            <>
+              <GoogleCalendarHandler/>
+              <FullCalendar
+              dateClick={this.handleDateClick}
+              eventClick={this.handleEventClick}
+              eventDrop={this.handleEventDrop}
+              eventResize={this.handleEventResize}
+              defaultView="timeGridWeek"
+              scrollTime={new Date(Date.now()).getHours()+":00"}
+              header={{
+                    left: "prev,next today",
+                    center: "title",
+                    right: "dayGridMonth,timeGridWeek,timeGridDay,listWeek"
+                  }}
+              events={(this.props.calendarEvents.concat(this.props.weatherEvents))
+                .concat(this.props.googleEvents)}
+              editable={true}
+              nowIndicator= {true}
+              plugins={[ dayGridPlugin, timeGridPlugin, interactionPlugin]}
+              />
+              <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
+                <ModalHeader toggle={this.toggle}>{this.state.modalTitle}
+                </ModalHeader>
+                <ModalBody>
+                  {this.state.modalText}
+                </ModalBody>
+                <ModalFooter>
+                  <Button color="primary" onClick={this.toggleConfirm}>Confirm</Button>{' '}
+                  <Button color="secondary" onClick={this.toggleCancel}>Cancel</Button>
+                </ModalFooter>
+            </Modal>
+            </>
+            : ''
+            }
 
-      </div>
+          </div>
+        </CardBody>
+      </Card>
+      
     );
   }
   handleDateClick = (e) => {

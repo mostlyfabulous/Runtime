@@ -52,10 +52,6 @@ body {
   width: 100%
 }
 
-
-.topbarUser {
-}
-
 .topbarWeather p, h3 {
   margin: 0%;
 }
@@ -64,7 +60,7 @@ body {
   font-size: 12pt;
   position: absolute;
   left: 40%;
-  top: 2em;
+  top: 0;
 }
 
 .topbarWeather {
@@ -85,7 +81,7 @@ body {
   margin-left: 15%;
   padding-bottom: 2em;
   padding-top: 1em;
-
+  height: 50em;
 }
 
 #sideMenu {
@@ -158,10 +154,6 @@ body {
   margin: auto;
   width: 95%;
   background-color: inherit;
-}
-
-.calendar {
-  background-color: white;
 }
 
 .warm {
