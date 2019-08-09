@@ -14,7 +14,7 @@ class Explore extends React.Component {
 }
   // <MapContainer apiKey={this.props.gmaps}/>
     render() {
-      if (this.props.account.userId) {
+      if (this.props.account.userId && this.props.gmaps) {
         this.loadMap();
         return (
             <div className='body'>
