@@ -8,13 +8,14 @@ import {connect} from 'react-redux';
 
 
 class Explore extends React.Component {
-  componentDidMount () {
+  loadMap () {
     postscribe('#fullContent', '<script src="https://darksky.net/map-embed/@temperature,49.127,-122.506,9.js?embed=true&timeControl=false&fieldControl=true&defaultField=temperature&defaultUnits=_c"></script>')
 
 }
   // <MapContainer apiKey={this.props.gmaps}/>
     render() {
-      if (this.props.account.userId && this.props.gmaps) {
+      if (this.props.account.userId) {
+        this.loadMap();
         return (
             <div className='body'>
                 <div id='fullContent'>
@@ -25,8 +26,8 @@ class Explore extends React.Component {
       } else {
         return (
             <div className='body'>
-                <div id='mainContent'>
-                  <h1>Please log in</h1>
+                <div id='centerContent'>
+                  <h2>Please log in</h2>
                 </div>
             </div>
         )
