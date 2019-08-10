@@ -5,6 +5,7 @@ class Sidebar extends React.Component {
     render() {
         return (
             <div className="sidebar">
+             <img src='./Runtime_logo/logo_clear.png' width='60%'/>
                 <h1>Runtime</h1>
                 <ul>
                     <SideListElement title='Home' page='home'/>
