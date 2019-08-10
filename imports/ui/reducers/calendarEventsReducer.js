@@ -40,7 +40,7 @@ export function weatherReducerMiddleware(state = initialWeatherState, action) {
       }
       action.payload.map( (e) => {
         if (e.temperature > warm) {e.color = 'red';}
-        else if (e.temperature > cool && e.temperature <= warm) {e.color = 'green'}
+        else if (e.temperature > cool && e.temperature <= warm) {e.color = 'navajowhite'}
         else {e.color = '#1cdcbe'};
       });
       return {
@@ -141,7 +141,7 @@ export function calendarEventsReducer(state = initialCalendarState, action) {
     if (action.event === "") return {...state,
       calendarHighlightedEvent: ""
     }
-    if (action.event) { 
+    if (action.event) {
       if (state.calendarHighlightedEvent && state.calendarHighlightedEvent.id === action.event.id) {
         return state;
       }
