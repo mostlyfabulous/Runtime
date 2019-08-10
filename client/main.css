@@ -169,21 +169,21 @@ body {
 }
 
 .fair {
-  background-color: green;
+  background-color: navajowhite ;
 }
 
 .cold {
-  background-color: #9EE4D9;
+  background-color: #1cdcbe;
 }
 
-.legend { 
+.legend {
   list-style: none;
   padding: 0;
  }
-.legend li { 
-  float: left; margin-right: 10px; 
+.legend li {
+  float: left; margin-right: 10px;
 }
-.legend span { 
+.legend span {
   float: left;
   width: 15px;
   height: 15px;

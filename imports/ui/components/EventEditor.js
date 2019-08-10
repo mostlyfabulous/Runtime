@@ -8,7 +8,6 @@ import { Button } from 'reactstrap';
 export class EventEditor extends Component {
   constructor(props) {
     super(props);
-    // console.log(this.props.editEventView.calendarEvent);
     const e = this.props.editEventView.calendarEvent;
     this.state = {
       title     : e.title,
@@ -52,16 +51,11 @@ export class EventEditor extends Component {
     }
     this.props.dragEvent(e);
     this.props.toggleEventEditor(false, "");
-    console.log("Submitted event:");
-    console.log(e);
 
   }
 
   render() {
     const {title, start, end, extendedProps} = this.props.editEventView.calendarEvent;
-    // if condition needed to prevent errors when transitioning out upon submit
-    // transitioning out will remove props from being accessible and throw errors
-    // when calling start.toString and accessing extendedProps.distance
     if (this.props.editEventView.editorView) {
       return (
         <div className="editor">

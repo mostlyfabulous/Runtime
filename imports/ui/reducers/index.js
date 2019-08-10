@@ -17,8 +17,6 @@ import { barColors } from '../components/formatHelpers';
     currentResponses = currentResponses || [];
   	if (action.type === 'ADD_RESPONSE') {
       let newResponse = action.formData;
-      console.log('cur responses')
-      console.log(currentResponses);
       return [...currentResponses, newResponse
               ]
   	}
@@ -28,18 +26,13 @@ import { barColors } from '../components/formatHelpers';
 const nextRunReducer = (nextRun, action) => {
   nextRun = nextRun || {};
   if (action.type === 'NEXT_RUN') {
-    // console.log("get next run");
     let now = moment();
-    // console.log(action.calendarEvents);
     if (action.calendarEvents) {
       let events = action.calendarEvents.filter(calendarEvent => {
-        // console.log(calendarEvent);
         return (calendarEvent.category === 'run') && (calendarEvent.start > now)
       })
-    // action.mostRecent = {};
     if (events.length > 0) {
         nextRun = events[0];
-        // console.log(events);
         for (let entry of events) {
           if (entry.start < action.mostRecent.start)
             nextRun = entry;
@@ -47,28 +40,8 @@ const nextRunReducer = (nextRun, action) => {
       }
     }
   }
-  // console.log(nextRun);
   return nextRun;
 }
-/*
-const runDataReducer = (currentRuns, action) => {
-  currentRuns = currentRuns || {};
-	if (action.type === 'ADD_RUN') {
-    let newRun = {
-      user_id: action.runData.user_id,
-      calendar_id: action.runData.calendar_id,
-      calendar_date: action.runData.calendar_date,
-      calendar_start: action.runData.calendar_start,
-      calendar_end: action.runData.calendar_end,
-      calendar_title: action.runData.calendar_title,
-      expectedDuration: action.runData.expectedDuration,
-      actualDuration: 0,
-      distance: action.runData.distance};
-	}
-  return [...currentRuns, newRun
-          ]
-};
-*/
 
 const pagesReducer = (currentPage = 'home', action) => {
 	if (action.type === 'CHANGE_PAGE') {
@@ -84,10 +57,8 @@ const eventEditorReducer = (editEventView, action) => {
       editorView: action.payload.toggle,
       calendarEvent: action.payload.calendarEvent
     }
-    // console.log(newState);
     return newState;
   }
-  // console.log(editEventView);
   return editEventView;
 };
 
@@ -112,7 +83,6 @@ const getHistoryInfoReducer = (info = [], action) => {
   return info;
 }
 
-// add get pref reducer for 'GET_PREFERENCES'
 const getPreferencesReducer = (info = [], action) => {
   if (action.type === 'GET_HISTORY')
     info = [];
@@ -121,7 +91,6 @@ const getPreferencesReducer = (info = [], action) => {
 
 const runHistoryDataReducer = (data = {}, action) => {
   if (action.type === 'GET_HISTORY') {
-    //let barColors = ['#badeff','#f2aaaa', '#9ee4d9', '#f5f3cb'];
     currentChartFormat = action.format;
 
     let labels = [];
@@ -138,8 +107,6 @@ const runHistoryDataReducer = (data = {}, action) => {
         day.setDate(day.getDate()+1);
       }
     }
-    // else if (action.format === 'DAY'){}
-    // else if (action.format === 'MONTH') {}
 
     let datasets = [];
     historyData = action.data;
@@ -174,7 +141,6 @@ const runHistoryDataReducer = (data = {}, action) => {
 
 
 export default combineReducers({
-	//user_input: userInputReducer,
   weather: weatherReducer,
   weatherMiddleware: weatherReducerMiddleware,
   formData: formDataReducer,

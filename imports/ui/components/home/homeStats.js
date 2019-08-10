@@ -48,12 +48,10 @@ class HomeStats extends React.Component {
       }
 
       barValue = barValue*100;
-      console.log('bar val');
-      console.log(barValue);
 
-      statInfo = <div>
+      statInfo = <>
 
-        <CardText>
+        <CardText tag="div">
         <b> Total Distance: </b> {stats.totalDist} km
         <br />
         <b> Total Time: </b> {stats.totalTime}
@@ -71,13 +69,13 @@ class HomeStats extends React.Component {
         </CardText>
 
 
-      </div>
+      </>
     }
 
 
 
     return (
-      <div>
+      <>
         <Card>
         <CardHeader tag="h2">Lifetime Statistics:</CardHeader>
         <CardBody>
@@ -86,7 +84,7 @@ class HomeStats extends React.Component {
         {statInfo}
         </CardBody>
         </Card>
-      </div>
+      </>
     )
   }
 }

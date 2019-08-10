@@ -8,18 +8,9 @@ function insertRun() {
 }
 
 Meteor.publish('runs', function() {
- // args publish needs goes in: function(args)
   if (!this.userId) {
-    console.log("No userId supplied");
     return this.ready();
   }
-  console.log(this.userId);
-  // console.log(Runs);
-  //Runs.find({owner: this.userId}).toArray(function(err, items) {
-  //   console.log("Returning any items found");
-  //   console.log(items);
-  //   console.log("End of items found");
-  // });
   return Runs.find({owner: this.userId});
 });
 
@@ -52,33 +43,16 @@ Meteor.publish('past', function() {
 
 Meteor.methods({
   'runs.addRun'(event) {
-    // console.log(event);
     Runs.insert(event);
   },
   'runs.updateRun'(event) {
-    // https://docs.meteor.com/api/collections.html#modifiers
-    // Without using $-operators, a modifier is interpreted as a literal document,
-    // and completely replaces whatever was previously in the database.
-    // Find the document with ID 'event.id' and completely replace it.
     Runs.update({_id: event.id}, event, function (err, docsChanged) {
       if (err) console.log(err);
-      // console.log("event had id: " + event.id);
-      // console.log(docsChanged + " documents were changed");
       })
   },
   'runs.deleteRun'(eventId) {
     Runs.remove(eventId, function (err, res) {
       if (err) console.log(err);
-      else console.log("Deleted: " + res + " event");
     })
   }
 });
-
-// const handle = Meteor.subscribe('user.runs', args);
-// when passing args is optional and used
-// to pass a parameter to publish
-// https://guide.meteor.com/data-loading.html#fetching
-
-// if (Runs.find().count() < 15) {
-//   insertRun();
-// }

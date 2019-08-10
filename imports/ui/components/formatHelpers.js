@@ -23,12 +23,10 @@ export const getFormattedTime = (date) => {
 const convertSeconds = (time) => {
     let hours = 0;
     let mins = 0;
-    // console.log(time)
     hours = Math.floor(time/(60*60));
     time -= hours*3600;
     mins = Math.floor(time/60);
     time -= mins*60;
-    // console.log(hours)
     return hours+':'+mins+':'+time;
 }
 
@@ -49,7 +47,6 @@ export const getRunInfo = (run) => {
         end = ' to '+getFormattedTime(date);
 
         let duration = moment(run.end).diff(run.start, 'seconds');
-        // speed = "Speed: "+ (dist/(duration/3600)).toFixed(2) +" km/h";
         speed = (dist/(duration/3600)).toFixed(2) +" km/h";
         time = moment.utc(duration*1000).format('HH:mm:ss');
     }
@@ -92,7 +89,6 @@ export const getRunInfoHistPage = (run, index) => {
         end = ' to '+getFormattedTime(date);
 
         let duration = moment(run.end).diff(run.start, 'seconds');
-        // speed = "Speed: "+ (dist/(duration/3600)).toFixed(2) +" km/h";
         speed = (dist/(duration/3600)).toFixed(2) +" km/h";
         time = moment.utc(duration*1000).format('HH:mm:ss');
     }

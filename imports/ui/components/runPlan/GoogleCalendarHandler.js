@@ -25,21 +25,18 @@ class GoogleCalendarHandler extends React.Component {
         }
 
       loadGoogleEvents(events) {
-        console.log(events);
         let gEvents = events.map( (event) => {
-          // console.log(event);
           let e = {
             id: event.id,
             title: event.summary,
             start: new Date(event.start.dateTime),
             end: new Date(event.end.dateTime),
-            color: 'purple',
+            color: 'cadetblue',
             category: 'GoogleCalendar',
             editable: false,
           }
           return e;
         });
-        console.log(gEvents);
         this.props.addGoogleEvent(gEvents);
       }
 
@@ -53,10 +50,9 @@ class GoogleCalendarHandler extends React.Component {
           ApiCalendar.listenSign(this.signUpdate);
           rootThis.props.clearGoogleEvents();
         } else if (name === 'fetch Google Calendar Events') {
-          // manual fetch button if state change not detected
-          ApiCalendar.listUpcomingEvents(10)
+          // manual fetch button as state change not detected
+          ApiCalendar.listUpcomingEvents(30)
           .then( ({result}) => {
-            // console.log(result.items);
             rootThis.loadGoogleEvents(result.items);
           });
         }
@@ -85,19 +81,6 @@ class GoogleCalendarHandler extends React.Component {
             </div>
           );
         }
-
-      componentDidUpdate(prevProps, prevState) {
-        // if (ApiCalendar.sign) // not actually using props
-        if (this.state.sign && this.state.sign !== prevState.sign )
-        console.log(prevState.sign);
-        console.log("Sign in state updates occuring");
-        console.log(this.state.sign);
-          // ApiCalendar.listUpcomingEvents(10)
-          // .then( ({result}) => {
-          //   console.log(result.items);
-          // });
-      }
-
   }
 
 const mapDispatchToProps = dispatch => {
