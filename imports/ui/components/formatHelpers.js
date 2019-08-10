@@ -106,7 +106,7 @@ export const getRunInfoHistPage = (run, index) => {
     let colour = 'chartInfo'+(index % barColors.length);
     return <div>
         <Card>
-        <CardHeader tag="h4" className={colour}>{run.title}</CardHeader>
+        <CardHeader tag="h4" className={colour}>Run #{index+1}: {run.title}</CardHeader>
         <CardBody>
         <b> Date: </b> {day}
         <br />
