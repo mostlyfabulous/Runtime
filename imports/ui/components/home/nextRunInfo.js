@@ -7,20 +7,20 @@ import { Card, CardImg, CardText, CardBody,
 class NextRunInfo extends React.Component {
 
     render() {
-        let result = <div>
+        let result = <>
 
                 No upcoming runs.
                 <br />
                 Consider planning a run or see our suggestions.
 
-            </div>
+            </>
         if (this.props.runs.length > 0) {
             let run = this.props.runs[0];
 
             result = getRunInfo(run);
         }
         return (
-            <div>
+            <>
                 <Card>
                 <CardHeader tag="h2"> Upcoming Run</CardHeader>
                 <CardBody>
@@ -29,7 +29,7 @@ class NextRunInfo extends React.Component {
                 </CardText>
                 </CardBody>
                 </Card>
-            </div>
+            </>
         )
     }
 }
