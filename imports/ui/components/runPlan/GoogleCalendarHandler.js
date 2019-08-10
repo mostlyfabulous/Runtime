@@ -31,7 +31,7 @@ class GoogleCalendarHandler extends React.Component {
             title: event.summary,
             start: new Date(event.start.dateTime),
             end: new Date(event.end.dateTime),
-            color: 'purple',
+            color: 'cadetblue',
             category: 'GoogleCalendar',
             editable: false,
           }
@@ -50,8 +50,8 @@ class GoogleCalendarHandler extends React.Component {
           ApiCalendar.listenSign(this.signUpdate);
           rootThis.props.clearGoogleEvents();
         } else if (name === 'fetch Google Calendar Events') {
-          // manual fetch button if state change not detected
-          ApiCalendar.listUpcomingEvents(10)
+          // manual fetch button as state change not detected
+          ApiCalendar.listUpcomingEvents(30)
           .then( ({result}) => {
             rootThis.loadGoogleEvents(result.items);
           });
