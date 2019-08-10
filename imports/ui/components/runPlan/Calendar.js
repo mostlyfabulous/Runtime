@@ -58,9 +58,6 @@ class Calendar extends Component {
  }
 
  toggleConfirm() {
-   // Date.parse returns the ms elapsed since January 1, 1970, 00:00:00 UTC
-   // toString(16) converts the ms to hex which is concatenated with a
-   // random number between 0 to 1000
    if (this.state.modalTitle === "Add a run") {
      let e = this.state.eventToAdd;
      let unique = (Date.parse(new Date)).toString(16) + Math.floor(Math.random()*1000);
@@ -68,7 +65,7 @@ class Calendar extends Component {
        id: unique,
        _id: unique,
        title: "New Run",
-       start: e.date, // TODO: client's timezone set's the date's timezone
+       start: e.date,
        end: moment(e.date).add(1, 'hours').toDate(),
        duration: moment.duration(1, 'hours'),
        durationActual: moment.duration(1, 'hours'),
@@ -79,10 +76,7 @@ class Calendar extends Component {
        owner: this.props.account.userId,
        username: this.props.account.user.username,
      }
-     console.log('newEvent')
-     console.log(newEvent)
      this.props.addEvent(newEvent);
-     // clear this.state.eventToAdd?
    }
    if (this.state.modalTitle === "Change a run") {
      this.props.dragEvent(this.state.eventToUpdate);
@@ -98,9 +92,6 @@ if (this.state.modalTitle === "Change a run") {
   this.state.eventToUpdate.revert();
   }
 }
-  // { (this.props.account.user !== {}) ?
-  // <GoogleCalendarHandler/> : ''
-  // }
 
   render() {
     let warm = 24;
@@ -166,7 +157,6 @@ if (this.state.modalTitle === "Change a run") {
     );
   }
   handleDateClick = (e) => {
-    console.log(e);
       this.setState({
         modalTitle: "Add a run",
         modalText: "Would you like to add a run on " + moment(e.date).format("dddd [the] Do, h:mm a") + "?",
@@ -174,21 +164,14 @@ if (this.state.modalTitle === "Change a run") {
       })
       this.toggle(); // bring up modal
   }
-
-  // should trigger a component to display and allow event editting
-  // Will send action to render <EventEditor/> in <Info/>
   handleEventClick = (e) => {
-    // e.jsEvent.cancelBubble=true;
     if (e.event.extendedProps.category === "run") {
       this.props.toggleEventEditor(true, e.event);
       this.props.highlightEvent(e.event);
-         console.log(this.props.calendarEvents);
       }
     }
 
   handleEventDrop = (e) => {
-    // e.jsEvent.cancelBubble=true;
-    console.log(e);
     if (e.event.extendedProps.category === "run") {
       this.setState({
         modalTitle: "Change a run",

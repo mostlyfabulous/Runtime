@@ -38,14 +38,12 @@ class Info extends Component {
   handleLoad() {
     let weatherkey = config().openweatherapi
     let weather_url = 'https://api.openweathermap.org/data/2.5/forecast?q=Vancouver,ca&appid=' + weatherkey;
-    //precip_url_selected = precip_url.Vancouver;
     if (this.state.city !== ''){
       weather_url = 'https://api.openweathermap.org/data/2.5/forecast?q=' + this.state.city + ',ca&appid=' + weatherkey;
     }
     axios.get(weather_url)
   .then(response => {
     this.props.addWeatherData(response);
-    console.log(this.props.weather);
     const {weather} = this.props;
 
   })
@@ -65,8 +63,6 @@ class Info extends Component {
 
   handleDropDown(e){
   this.setState({city: e.value});
-    console.log('handleDropDown')
-    console.log('handledropdown: ' + this.state.city)
 
   if (e.value === 'Calgary') {
     this.setState({
@@ -81,7 +77,6 @@ class Info extends Component {
       precip_url_selected: precip_url[2]
     });
   }
-  console.log(this.state.precip_url_selected);
     this.handleLoad();
   }
 
@@ -91,10 +86,7 @@ class Info extends Component {
     if (this.props.editEventView.editorView) editor =<div key="1"><EventEditor/></div>;
     else editor = undefined;
     if (this.state.city) dropdownValue = this.state.city;
-    // <Dropdown options={city_options} onChange={this.handleDropDown} value={dropdownValue} placeholder="Select an option" />
-    // <br />
-    // <iframe title="Environment Canada Weather" width="287px" height="191px" src={this.state.precip_url_selected} allowtransparency="true" frameBorder="0"></iframe>
-
+    
     return (
       <div>
         <NextRun/>

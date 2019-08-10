@@ -25,7 +25,6 @@ const initialWeatherState = {
 export function weatherReducerMiddleware(state = initialWeatherState, action) {
   switch (action.type) {
     case WEATHER_SUBSCRIPTION_READY:
-    console.log(action.payload.data);
       return {
         ...state,
         weatherReady: action.payload.ready,
@@ -33,7 +32,6 @@ export function weatherReducerMiddleware(state = initialWeatherState, action) {
       };
     case WEATHER_SUBSCRIPTION_CHANGED:
     if (state.weatherEvents) {
-      console.log("coloring weather events");
       let cool = 20;
       let warm = 24;
       if (state.weatherColorPrefs.userPreferences){
@@ -54,7 +52,7 @@ export function weatherReducerMiddleware(state = initialWeatherState, action) {
         ...state,
         weatherEvents: action.payload,
       };
-    case STOP_SUBSCRIPTION: // currently don't need to stop a sub
+    case STOP_SUBSCRIPTION:
       return action.payload === WEATHER_SUB
         ? { ...state, weatherSubscriptionStopped: true }
         : state;
@@ -98,7 +96,6 @@ export function calendarEventsReducer(state = initialCalendarState, action) {
       return {
         ...state,
         calendarEvents: [...state.calendarEvents.concat(newEvent)] }
-        // concat allows an array of events to be added vs [...events, event(s)]
       });
     return state;
 
@@ -115,7 +112,6 @@ export function calendarEventsReducer(state = initialCalendarState, action) {
 
 
   case DELETE_EVENT:
-  console.log("deleting");
     Meteor.call('runs.deleteRun', action.calendarEventId, (error, result) => {
       const e = {id: action.calendarEventId};
       if (error) {
@@ -123,20 +119,17 @@ export function calendarEventsReducer(state = initialCalendarState, action) {
         return state;
       }
       return {
-        ...state, // on successful database delete, update state finally
+        ...state,
         calendarEvents: filterOutEvent(state.calendarEvents, e),
         calendarHighlightedEvent: ""
       }
     });
     if (calendarHighlightedEvent.id === e.id) {
-      console.log("Clearing highlightedEvent based on id");
-      // clear highlightedEvent from Store as well
       return {
-        ...state, // on successful database delete, update state finally
+        ...state,
         calendarHighlightedEvent: ""
       }
     }
-    // delete event does not wait on callback, returns original state first
     return {
       ...state,
       calendarHighlightedEvent: ""
@@ -144,33 +137,23 @@ export function calendarEventsReducer(state = initialCalendarState, action) {
     break;
 
   case HIGHLIGHT_EVENT:
-    console.log("highlightClickedEvent fire");
     let highlightedEvent = {};
-    // if action.event is "" then clear the highlightedEvent (Event deleted or editing canceled)
     if (action.event === "") return {...state,
       calendarHighlightedEvent: ""
     }
-    if (action.event) { // should recieve an event
-      // if user clicks on the same event, do nothing
+    if (action.event) { 
       if (state.calendarHighlightedEvent && state.calendarHighlightedEvent.id === action.event.id) {
         return state;
       }
       let modifiedEvents = state.calendarEvents.map((event) => {
         if (event.id !== action.event.id) return event;
-        // when event is found
         highlightedEvent = {...event};
-        console.log(highlightedEvent);
         let updatedEvent = {...event};
         updatedEvent.color = 'khaki';
         return updatedEvent;
       });
-      // restore previously highlighted event color and update highlightedEvent
       if (state.calendarHighlightedEvent) {
-        console.log(state.calendarHighlightedEvent);
-        console.log("Prev event highlighted:");
           let previouslyHighlighted = {...state.calendarHighlightedEvent};
-          console.log(previouslyHighlighted);
-          // remove highlightedEvent with khaki color
           modifiedEvents = filterOutEvent(modifiedEvents, previouslyHighlighted)
           modifiedEvents = modifiedEvents.concat(previouslyHighlighted);
       }
@@ -180,15 +163,12 @@ export function calendarEventsReducer(state = initialCalendarState, action) {
       }
 
     } else {
-      console.log("Could not get event ID");
       return state;
     }
 
 
   case DRAG_EVENT:
-    console.log("event drag fire");
     let de = action.calendarEvent
-    // console.log(de);
     let modifiedEvent = {
       id     : de.event.id,
       _id    : de.event.id,
@@ -206,7 +186,6 @@ export function calendarEventsReducer(state = initialCalendarState, action) {
     }
 
     const resUpdate = Meteor.call('runs.updateRun', modifiedEvent);
-    // console.log(modifiedEvent);
     return { ...state,
       calendarEvents: [...state.calendarEvents.filter( (event) => {
         return event.id !== (de.event.id)

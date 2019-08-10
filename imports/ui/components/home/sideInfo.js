@@ -12,7 +12,6 @@ class SideInfo extends React.Component {
             return <HomeStats runs={this.props.runEvents}/>
         }
         return <div> <Spinner color="info" style={{ width: '10rem', height: '10rem' }}/> </div>;
-        //return <div className='spinner'/>
     }
 }
 

@@ -10,7 +10,6 @@ class HistoryChart extends Component {
                 <Chart runs={this.props.runEvents}/>
             );
         }
-        //else return (<div className='spinner'/>);
         else return <div> <Spinner color="info" style={{ width: '10rem', height: '10rem' }} /> </div>;
     }
 }

@@ -22,7 +22,6 @@ class HistoryInfo extends React.Component {
                         <b>Total time spent:</b> {stats.totalTime}
                     </div>
                 }
-                console.log(info);
 
                 details = <div>
                     <b>Total distance travelled:</b> {stats.totalDist} km

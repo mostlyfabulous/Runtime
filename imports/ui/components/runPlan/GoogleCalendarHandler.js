@@ -25,9 +25,7 @@ class GoogleCalendarHandler extends React.Component {
         }
 
       loadGoogleEvents(events) {
-        console.log(events);
         let gEvents = events.map( (event) => {
-          // console.log(event);
           let e = {
             id: event.id,
             title: event.summary,
@@ -39,7 +37,6 @@ class GoogleCalendarHandler extends React.Component {
           }
           return e;
         });
-        console.log(gEvents);
         this.props.addGoogleEvent(gEvents);
       }
 
@@ -56,7 +53,6 @@ class GoogleCalendarHandler extends React.Component {
           // manual fetch button if state change not detected
           ApiCalendar.listUpcomingEvents(10)
           .then( ({result}) => {
-            // console.log(result.items);
             rootThis.loadGoogleEvents(result.items);
           });
         }
@@ -85,19 +81,6 @@ class GoogleCalendarHandler extends React.Component {
             </div>
           );
         }
-
-      componentDidUpdate(prevProps, prevState) {
-        // if (ApiCalendar.sign) // not actually using props
-        if (this.state.sign && this.state.sign !== prevState.sign )
-        console.log(prevState.sign);
-        console.log("Sign in state updates occuring");
-        console.log(this.state.sign);
-          // ApiCalendar.listUpcomingEvents(10)
-          // .then( ({result}) => {
-          //   console.log(result.items);
-          // });
-      }
-
   }
 
 const mapDispatchToProps = dispatch => {

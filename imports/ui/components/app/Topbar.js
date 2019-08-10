@@ -30,7 +30,6 @@ class Topbar extends React.Component {
         (weather.start <= now) && (weather.end >= now));
 
       data = data[0];
-      console.log(data);
       let prefs = this.props.preferences.preferencesEvents[0];
 
       let temp = Math.round(data.temperature) + '°C';
@@ -74,34 +73,6 @@ class Topbar extends React.Component {
   }
 
   render() {
-    // console.log(fog)
-    // let user = "";
-    // if (this.props.account.user) user = ' '+this.props.account.user.username;
-    //
-    // let result;
-    // let t = null;
-    // if (this.props.weatherEvents.length>0) {
-    //   t = this.props.weatherEvents.filter(weather =>
-    //     (weather.start <= Date.now()) && (weather.end >= Date.now()));
-    //   t = t[0].temperature;
-    // }
-    // let picture = "";
-    // if (user !== "") {
-    //   let baseUrl = 'https://robohash.org/';
-    //   picture = <img src={baseUrl + this.props.account.user._id} alt="Profile Icon" width="60" height="60"/>;
-    // }
-    // // warm
-    // if (t > 24.0)
-    //   result = "topbar warm";
-    // // fair
-    // else if (t > 20.0 && t <= 24.0)
-    //   result = "topbar fair";
-    // // cool
-    // else if (t <= 20.0)
-    //   result = "topbar cold";
-    // else
-    //   result = "topbar";
-
     let content = < >{this.topbarInfo()}</>
     return content;
   }
@@ -125,12 +96,7 @@ const mapDispatchToProps = dispatch => {
     dispatch
   );
 };
-
-// passes Meteor data reactively to component by wrapping it using withTracker()
-// note we export TopbarContainer, however App component is still rendering the
-// Topbar component—should this be changed?
 const TopbarContainer = withAccount(Topbar);
-// https://forums.meteor.com/t/react-context-withtracker-is-awesome/43811/18
 
 
 export default connect(mapStateToProps, mapDispatchToProps)(TopbarContainer);

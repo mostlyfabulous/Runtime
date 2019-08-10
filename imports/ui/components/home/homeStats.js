@@ -48,8 +48,6 @@ class HomeStats extends React.Component {
       }
 
       barValue = barValue*100;
-      console.log('bar val');
-      console.log(barValue);
 
       statInfo = <div>
 

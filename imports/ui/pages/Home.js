@@ -25,15 +25,4 @@ class Home extends React.Component {
     }
 }
 
-// return (
-//     <div className='body'>
-//         <div id='sideMenuHome'>
-//             <HomeStatsContainer/>
-//         </div>
-//         <div id='mainContentHome'>
-//             <NextRunInfoContainer/>
-//         </div>
-//     </div>
-// )
-
 export default Home;

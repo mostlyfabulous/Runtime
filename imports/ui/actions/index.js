@@ -28,7 +28,6 @@ export const ADD_GOOGLE_EVENT = 'ADD_GOOGLE_EVENT';
 export const CLEAR_GOOGLE_EVENTS = 'CLEAR_GOOGLE_EVENTS';
 
 export const loadPreferences = () =>
-// do not put console.log here, it causes a semi-cryptic error
   startSubscription({
     key: PREFERENCES_SUB,
     get: () => Preferences.find().fetch(),
@@ -43,7 +42,6 @@ export const loadPreferences = () =>
   };
 
 export const loadWeatherEvents = (city, userPrefs) =>
-// do not put console.log here, it causes a semi-cryptic error
   startSubscription({
     key: WEATHER_SUB,
     get: () => DarkSky.find({city: city}).fetch(), // find should recieve a location
@@ -54,7 +52,6 @@ export const loadWeatherEvents = (city, userPrefs) =>
   });
 
 export const loadRunEvents = (userId) =>
-// do not put console.log here, it causes a semi-cryptic error
   startSubscription({
     key: RUNS_SUB,
     get: () => Runs.find({owner: userId}).fetch(), // find should recieve a user

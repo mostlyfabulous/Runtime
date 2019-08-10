@@ -8,7 +8,6 @@ import {difficultyMarks, valuetext} from '../../../utils/slider.js'
 import DatePicker from "react-datepicker";
 import 'flatpickr/dist/themes/material_green.css'
 import Flatpickr from 'react-flatpickr'
-//var DatePicker = require("react-bootstrap-date-picker");
 
 import { Card, CardImg, CardText, CardBody,
   CardTitle, CardSubtitle, Button, CardHeader } from 'reactstrap';
@@ -70,17 +69,13 @@ export class EventEditor extends Component {
 
   handleSubmit(jsEvent) {
     jsEvent.preventDefault();
-    // 'event' var name is being reserved for being passed into the dragEvent action
     let eventDuration = "";
     if (this.state.end) {
       eventDuration = moment.duration(moment(this.state.end).diff(moment(this.state.start)));
     }
-    console.log(this.state);
     let durationAdjuster = moment().set({'hour': 0, 'seconds': 0, 'ms': 0});
     let parsedDuration = moment(this.state.durationActual).diff(durationAdjuster);
-    console.log("ms:" +parsedDuration);
     parsedDuration = moment.duration(parsedDuration);
-    console.log(parsedDuration);
     let e = {
       event: {
         id        : this.state.id,
@@ -101,16 +96,10 @@ export class EventEditor extends Component {
     this.props.dragEvent(e);
     this.props.toggleEventEditor(false, "");
     this.props.highlightEvent("");
-    console.log("Submitted event:");
-    console.log(e);
-
   }
 
   render() {
     let {title, start, end, extendedProps} = this.props.editEventView.calendarEvent;
-    // if condition needed to prevent errors when transitioning out upon submit
-    // transitioning out will remove props from being accessible and throw errors
-    // when calling start.toString and accessing extendedProps.distance
     let endTime = "";
     if (end) endTime = end.toString()
     if (this.props.editEventView.editorView) {
@@ -249,7 +238,6 @@ export class EventEditor extends Component {
     if(prevProps.editEventView.calendarEvent.id !== this.props.editEventView.calendarEvent.id
       && this.props.editEventView.calendarEvent !== "") {
       const {id, title, start, end, extendedProps} = this.props.editEventView.calendarEvent;
-      console.log(this.props.editEventView.calendarEvent);
       this.setState({
         id        : id,
         title     : title,

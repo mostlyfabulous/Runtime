@@ -42,8 +42,6 @@ class Main extends React.Component {
 
     if (this.props.preferencesEvents.length > 0) {
       if (this.props.account.userId && prevProps.account.userId !== this.props.account.userId) {
-        // on log in, start subscriptions
-        console.log("logging in");
         let {clouds, min_temp, max_temp,
           precipitation, city} = this.props.preferencesEvents[0];
         this.props.loadPreferences();
@@ -52,8 +50,6 @@ class Main extends React.Component {
         }
         if (prevProps.preferencesEvents.length > 0) {
           if (this.props.preferencesEvents[0].city !== prevProps.preferencesEvents[0].city) {
-           // if location changes through prefs, stop old sub and start a new one
-           console.log("Location changing");
            this.props.stopSubscription(WEATHER_SUB);
            let {clouds, min_temp, max_temp,
              precipitation, city} = this.props.preferencesEvents[0];
@@ -69,20 +65,9 @@ class Main extends React.Component {
 
       // then get backgroundColor
       this.setState({backgroundColor: this.props.preferencesEvents[0].background})
-      // , () =>
-      // console.log(this.state.backgroundColor);
-
-      //console.log(this.props.preferences.preferencesEvents[0].background);
-      //console.log(this.state.backgroundColor);
-      // console.log('homestats');
-      // console.log(this.props.preferences);
-      // console.log(this.props.preferencesEvents);
-      // console.log(this.props.preferencesEvents[0].background);
     }
 
     if (!this.props.account.userId && prevProps.account.userId !== this.props.account.userId) {
-      // on logout, stop subscriptions
-      console.log("User logged out");
       this.props.stopSubscription(WEATHER_SUB);
       this.props.stopSubscription(RUNS_SUB);
       this.props.stopSubscription(PREFERENCES_SUB);
