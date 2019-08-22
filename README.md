@@ -1,5 +1,8 @@
 # CPSC436I—Runtime
 
+### Documentation
+https://docs.google.com/document/d/1HDd6p4qGQ5hLDlRTDsQjJaZtr_nmUkHtpKNvOEVCxSA/edit?usp=sharing
+
 ### Summary
 
 Runtime helps users be more active by algorithmically scheduling runs, based on their preferences and Google Calendar events. It can show information on past runs and weather forecasts for future planning.
