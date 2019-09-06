@@ -23,8 +23,8 @@ class Explore extends React.Component {
       } else {
         return (
             <div className='body'>
+              <h1>Please log in</h1>
                 <div id='fullContent'>
-                  <h1>Please log in</h1>
                 </div>
             </div>
         )
