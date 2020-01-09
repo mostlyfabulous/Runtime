@@ -6,6 +6,7 @@ import RunPlan from '../../pages/RunPlan';
 import History from '../../pages/History';
 import Preferences from '../../pages/Preferences';
 import ExploreContainer from '../../pages/Explore';
+import AboutUs from '../../pages/AboutUs';
 
 import { loadWeatherEvents, WEATHER_SUB, loadRunEvents, RUNS_SUB,
   loadPreferences, PREFERENCES_SUB, clearGoogleEvents } from '../../actions/index';
@@ -85,7 +86,8 @@ class Main extends React.Component {
       body = <Preferences/>;
     } else if (this.props.page === 'explore') {
       body = <ExploreContainer gmaps={this.state.gmaps}/>;
-
+    } else if (this.props.page === 'aboutus') {
+      body = <AboutUs/>;
     }
     return (
       <div style={{backgroundColor : this.state.backgroundColor}}>

@@ -13,6 +13,7 @@ class Sidebar extends React.Component {
                     <SideListElement title='Run History' page='history'/>
                     <SideListElement title='Manage Preferences' page='preferences'/>
                     <SideListElement title='Explore' page='explore'/>
+                    <SideListElement title='About Us' page='aboutus'/>
                 </ul>
                 <img src='./DarkSky_badges/DarkSky_badge_dark.png' id='badge'/>
             </div>
