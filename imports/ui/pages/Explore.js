@@ -24,6 +24,7 @@ class Explore extends React.Component {
         // TODO: only let signed in users view the explore
         return (
             <div className='body'>
+              <h1>Please log in</h1>
                 <div id='fullContent'>
                 </div>
             </div>
