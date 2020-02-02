@@ -22,6 +22,7 @@ class AboutUs extends React.Component {
                 <Card body>
                   <CardTitle>Andrew Wong</CardTitle>
                   <CardText>
+                    CS new grad with experience in Full Stack Development and interests in Machine Learning, AI and Computer Vision.
                   </CardText>
                   <Button href="https://github.com/mostlyfabulous">GitHub</Button>
               </Card>
@@ -30,7 +31,7 @@ class AboutUs extends React.Component {
               <CardImg width="100%" src="/Runtime_logo/logo_clear.png" alt="Card image cap" />
               <Card body>
                 <CardTitle>Napat Karnsakultorn</CardTitle>
-                <CardText>.</CardText>
+                <CardText></CardText>
                 <Button href="">GitHub</Button>
               </Card>
             </Col>
@@ -38,7 +39,7 @@ class AboutUs extends React.Component {
               <CardImg width="100%" src="/Runtime_logo/logo_clear.png" alt="Card image cap" />
               <Card body>
                 <CardTitle>Andrew Choi</CardTitle>
-                <CardText>.</CardText>
+                <CardText></CardText>
                 <Button href="">GitHub</Button>
               </Card>
             </Col>
