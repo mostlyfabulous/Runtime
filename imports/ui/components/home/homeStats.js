@@ -3,6 +3,17 @@ import { getRunInfo, getOverallStats } from '../formatHelpers.js';
 import { Card, CardImg, CardText, CardBody,
   CardTitle, CardSubtitle, Button, CardHeader } from 'reactstrap';
 import { Progress } from 'reactstrap';
+import { withAccount } from '../accounts/connector.js'
+
+const userGuide = <>
+  <CardText tag="div">
+    <b>Please create an account or login to use the website.</b>
+    <br/>You may use the following credentials if you prefer:
+    <br/>
+    <br/><b>Username:</b> default
+    <br/><b>Password:</b> 123456
+  </CardText>
+</>
 
 class HomeStats extends React.Component {
   chooseRandomStat(stats) {
@@ -14,11 +25,9 @@ class HomeStats extends React.Component {
   render() {
     let statInfo = "";
     let runs = this.props.runs;
-
-
-
+    let guide = (this.props.account.user) ? <></> : userGuide;
+    console.log(this.props.account.user);
     if (runs.length > 0) {
-
 
       let stats = getOverallStats(runs);
       let random = this.chooseRandomStat(stats.bests);
@@ -68,7 +77,6 @@ class HomeStats extends React.Component {
         </div>
         </CardText>
 
-
       </>
     }
 
@@ -79,8 +87,7 @@ class HomeStats extends React.Component {
         <Card>
         <CardHeader tag="h2">Lifetime Statistics:</CardHeader>
         <CardBody>
-
-
+        {guide}
         {statInfo}
         </CardBody>
         </Card>
@@ -88,5 +95,6 @@ class HomeStats extends React.Component {
     )
   }
 }
+const HomeStatsContainer = withAccount(HomeStats);
 
-export default HomeStats;
+export default HomeStatsContainer;
