@@ -73,8 +73,8 @@ export class PrefEditor extends Component {
 
       currentPrefs = <div>
         <Card>
-        <CardHeader tag="h1">
-        <h2> Current Preferences </h2>
+        <CardHeader tag="h2">
+          Current Preferences
         </CardHeader>
         <CardBody>
 
@@ -90,6 +90,7 @@ export class PrefEditor extends Component {
         </Card>
       </div>
     }
+    let indexCity = 0;
     return (
       <div>
       <Container>
@@ -99,8 +100,8 @@ export class PrefEditor extends Component {
       </Col>
       <Col sm={8}>
         <Card>
-        <CardHeader tag="h1">
-        <h2>Edit Preferences: <i class="edit outline icon"></i></h2>
+        <CardHeader tag="h2">
+          Edit Preferences: <i className="edit outline icon"></i>
         </CardHeader>
 
         <CardBody>
@@ -118,9 +119,9 @@ export class PrefEditor extends Component {
               <Label htmlFor="city">Preferred City</Label>
             </Col>
             <Col sm={4}>
-              <Input type="select" name="city" id ="city">
+              <Input type="select" name="city" id ="city" defaultValue={this.props.preferences.preferencesEvents[0].city}>
                 {canadaCities.map(c => (
-                  <option value={c.city}>
+                  <option key={indexCity++} value={c.city}>
                       {c.city}
                   </option>
                 ))}
@@ -179,12 +180,12 @@ export class PrefEditor extends Component {
 
 <Row>
 </Row>
-
+<br/>
 <FormGroup row>
 
 
   <Col sm={2}>
-    <Label htmlFor="city" >Color Theme</Label>
+    <Label htmlFor="Color Theme" >Color Theme</Label>
   </Col>
 
   <Col sm={6}>

@@ -1,6 +1,8 @@
 import React from 'react';
+import Typography from '@material-ui/core/Typography';
 import { Card, CardImg, CardText, CardBody,
   CardTitle, CardSubtitle, Button, CardHeader } from 'reactstrap';
+import { RUNS_SUBSCRIPTION_CHANGED } from '../actions';
 
 const DATE_TO_WEEKDAY = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 export const barColors = ['#badeff','#f2aaaa', '#9ee4d9', '#f5f3cb'];
@@ -56,8 +58,10 @@ export const getRunInfo = (run) => {
             <b> Difficulty: </b> {(run.difficulty === "") ? 0 : run.difficulty}/10
         </span>
     }
-    return <div>
-        <h4>{run.title}</h4>
+    return <>
+    <CardSubtitle tag="h4">{run.title}</CardSubtitle>
+    <CardText>
+        <br />
         <b> Date: </b> {day}
         <br />
         <b> Distance: </b> {dist} km
@@ -69,7 +73,8 @@ export const getRunInfo = (run) => {
         <b> Speed: </b> {speed}
         <br />
          {difficulty}
-    </div>
+    </CardText>
+    </>
 }
 
 export const getRunInfoHistPage = (run, index) => {

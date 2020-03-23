@@ -24,9 +24,7 @@ class NextRunInfo extends React.Component {
                 <Card>
                 <CardHeader tag="h2"> Upcoming Run</CardHeader>
                 <CardBody>
-                <CardText>
                 {result}
-                </CardText>
                 </CardBody>
                 </Card>
             </>

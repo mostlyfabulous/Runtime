@@ -64,6 +64,7 @@ class HomeStats extends React.Component {
          {random.desc}
 
          <div className='indent'>
+           <br/>
           {getRunInfo(random.run)}
         </div>
         </CardText>
@@ -79,8 +80,6 @@ class HomeStats extends React.Component {
         <Card>
         <CardHeader tag="h2">Lifetime Statistics:</CardHeader>
         <CardBody>
-
-
         {statInfo}
         </CardBody>
         </Card>
