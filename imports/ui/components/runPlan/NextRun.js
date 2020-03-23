@@ -76,27 +76,24 @@ class NextRun extends Component {
   }
 
   handleSubmit(e) {
-    event.preventDefault();
+    e.preventDefault();
     let duration = parseInt(e.target.duration.value);
     let eventDuration = moment.duration(duration, "minutes").format("mm:ss:SS");
-    let i = 0;
     let suggestions = [];
     let now = new Date();
     let combinedEvents = this.props.calendarEvents.concat(this.props.googleEvents);
     let futureEvents = combinedEvents.filter(run => run.start >= now);
     let freeEvents = [];
-
     let sortedWeather = this.props.weatherEvents.filter(weather => weather.start >= now);
     sortedWeather = this.sortByStart(sortedWeather);
 
     futureEvents = this.sortByStart(futureEvents);
-
     let eventNow = {
       start: now,
       end: now
     };
     futureEvents.splice(0,0,eventNow);
-
+    
     let lastFutureEvent = {
       start: sortedWeather[sortedWeather.length-1].end,
       end: sortedWeather[sortedWeather.length-1].end
@@ -241,6 +238,7 @@ class NextRun extends Component {
         duration: moment.duration(duration, 'minutes'),
         allDay: false,
         distance: 5,
+        difficulty: 5,
         category: "run",
         owner: Meteor.userId(),
         username: Meteor.user().username,

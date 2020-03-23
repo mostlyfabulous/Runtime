@@ -124,12 +124,6 @@ export function calendarEventsReducer(state = initialCalendarState, action) {
         calendarHighlightedEvent: ""
       }
     });
-    if (calendarHighlightedEvent.id === e.id) {
-      return {
-        ...state,
-        calendarHighlightedEvent: ""
-      }
-    }
     return {
       ...state,
       calendarHighlightedEvent: ""

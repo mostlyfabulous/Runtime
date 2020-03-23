@@ -26,7 +26,6 @@ class HomeStats extends React.Component {
     let statInfo = "";
     let runs = this.props.runs;
     let guide = (this.props.account.user) ? <></> : userGuide;
-    console.log(this.props.account.user);
     if (runs.length > 0) {
 
       let stats = getOverallStats(runs);
