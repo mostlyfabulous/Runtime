@@ -41,7 +41,7 @@ Meteor.publish('weatherDarkSky', function(city) {
     return this.ready();
   }
   if (DarkSky.find({city: city}).count() === 0) getHourlyForecast(city, "Canada");
-  return DarkSky.find({city: city});
+  return DarkSky.find({city: city, time: {$gt: moment().subtract(28, 'days').unix()}});
 });
 
 /**
