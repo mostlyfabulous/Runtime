@@ -27,7 +27,7 @@
     "dark-sky-api": "^0.6.32",
     "flatpickr": "^4.6.3",
     "google-maps-react": "^2.0.2",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "lodash": "^4.17.19",
     "meteor-node-stubs": "^0.4.1",
     "meteor-redux-middlewares": "^3.0.7",
