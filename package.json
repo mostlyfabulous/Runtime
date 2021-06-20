@@ -28,7 +28,7 @@
     "flatpickr": "^4.6.3",
     "google-maps-react": "^2.0.2",
     "jquery": "^3.6.0",
-    "lodash": "^4.17.19",
+    "lodash": "^4.17.21",
     "meteor-node-stubs": "^0.4.1",
     "meteor-redux-middlewares": "^3.0.7",
     "minimist": "^1.2.5",
