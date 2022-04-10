@@ -31,7 +31,7 @@
     "lodash": "^4.17.21",
     "meteor-node-stubs": "^0.4.1",
     "meteor-redux-middlewares": "^3.0.7",
-    "minimist": "^1.2.5",
+    "minimist": "^1.2.6",
     "moment-duration-format": "^2.3.2",
     "mongodb": "^3.5.5",
     "postscribe": "^2.0.8",
